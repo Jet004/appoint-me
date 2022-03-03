@@ -17,7 +17,8 @@
     - components:
         - header
         - nav
+        - Layout
+            - Head - assign title in each page
 
 
     - theme switch
-    
