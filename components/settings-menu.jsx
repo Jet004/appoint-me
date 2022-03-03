@@ -56,6 +56,9 @@ export default SettingsMenu
 
 const styles = {
     settingsMenu: {
-        color: "custom.contrastText"
+        color: "custom.contrastText",
+        '&:hover': {
+            color: 'custom.action.hover'
+        }
     }
 }

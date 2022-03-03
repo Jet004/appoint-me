@@ -1,29 +1,57 @@
+import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from '@mui/icons-material/Person';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
+import RecentActorsRoundedIcon from '@mui/icons-material/RecentActorsRounded';
+
 const navData = {
-    home: {
-        text: 'Home',
-        icon: '',
-        path: '/'
-    },
-    profile: {
-        text: 'Profile',
-        icon: '',
-        path: '/profile'
-    },
-    calendar: {
-        text: 'Calendar',
-        icon: '',
-        path: '/calendar'
-    },
-    businessProfile: {
-        text: 'Jet Mandarin',
-        icon: '',
-        path: '/business-profile'
-    },
-    crm: {
-        text: 'Clients',
-        icon: '',
-        path: '/clients'
-    }
+    user: [
+        {
+            text: 'Home',
+            icon: <HomeRoundedIcon />,
+            path: '/'
+        },
+        {
+            text: 'Profile',
+            icon: <PersonIcon />,
+            path: '/profile'
+        },{
+            text: 'Calendar',
+            icon: <CalendarTodayRoundedIcon />,
+            path: '/calendar'
+        },{
+            text: 'Business Profile',
+            icon: <WorkIcon />,
+            path: '/business-profile'
+        },
+    ],
+    business: [
+        {
+            text: 'Home',
+            icon: <HomeRoundedIcon />,
+            path: '/'
+        },
+        {
+            text: 'Profile',
+            icon: <PersonIcon />,
+            path: '/profile'
+        },
+        {
+            text: 'Calendar',
+            icon: <CalendarTodayRoundedIcon />,
+            path: '/calendar'
+        },
+        {
+            text: 'Business',
+            icon: <WorkIcon />,
+            path: '/business-profile'
+        },
+        {
+            text: 'Clients',
+            icon: <RecentActorsRoundedIcon />,
+            path: '/client-list'
+        }
+    ]
 }
 
 export default navData

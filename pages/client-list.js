@@ -1,25 +1,24 @@
 import React from 'react'
 import Head from 'next/head'
 
-// Style, UI and UX
+// Styles, UI and UX imports
 import Typography from '@mui/material/Typography'
 
-// Components
 import Layout from '../layout/layout'
 
-const Profile = () => {
+
+const Clients = () => {
   return (
     <>
         <Head>
-            <title>AppointMe: Profile</title>
+            <title>AppointMe: Client List</title>
         </Head>
-        <Layout page="Profile">
-        <Typography variant="h3">Profile Page</Typography>
+        <Layout page="Clients">
+        <Typography variant="h3">Client List Page</Typography>
         <div>{}</div>
         </Layout>
-        
     </>
   )
 }
 
-export default Profile
+export default Clients

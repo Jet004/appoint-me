@@ -1,4 +1,9 @@
 const getDesignTokens = (mode) => ({
+    breakpoints: {
+        values: {
+            sm: 620
+        }
+    },
     palette: {
         mode: mode,
         ...(mode === 'light' ? lightThemePalette : darkThemePalette),
@@ -20,12 +25,29 @@ const darkThemePalette = {
         custom: {
             red: "#9A030D"
         }
+    },
+    custom: {
+        contrastText: "#bbb",
+        action: {
+            selected: {
+                color: '#fff',
+            },
+            hover: '#fff'
+        }
     }
 }
 
 const lightThemePalette = {
     // Light mode palette
     custom: {
-        contrastText: "#fff"
+        contrastText: "#ddd",
+        action: {
+            selected: {
+                color: '#fff',
+                fontWeight: "bold"
+            },
+            hover: '#fff'
+        }
+    
     }
 }
