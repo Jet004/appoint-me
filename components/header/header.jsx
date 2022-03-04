@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 import SettingsMenu from '../settings-menu'
 
@@ -18,6 +18,9 @@ import { useTheme } from '@mui/material/styles'
 // Navigation link data
 import navData from './navData'
 
+// THIS WILL CHANGE
+import userDataContext from '../../utility/mockData/userDataContext'
+
 
 const Header = ({ page, windowWidth }) => {
     // Initialise next router
@@ -25,8 +28,10 @@ const Header = ({ page, windowWidth }) => {
     // Access theme vars
     const theme = useTheme()
 
+    // THIS WILL CHANGE
+    const userData = useContext(userDataContext)
     // Get user type -- THIS IS DUMMY CODE AND NEEDS TO BE UPDATED
-    const user = { type: "business" }
+    const user = userData
 
     // Set navData based on user type
     const navLinkData = navData[user.type]

@@ -42,6 +42,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     const userMode = useMemo(() => {
         const User = userType === 'user' ? user : businessUser
         return {
+        type: userType,
         user: User.users[0],
         getUsers: User.getUsers,
         getUserByID: User.getUserById,

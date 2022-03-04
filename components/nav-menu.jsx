@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 
 // Styles, UI and UX imports
@@ -6,6 +6,9 @@ import { useTheme } from '@mui/material/styles'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import Link from './link'
+
+// THIS WILL CHANGE
+import userDataContext from '../utility/mockData/userDataContext'
 
 // Navigation link data
 import navData from './header/navData'
@@ -15,8 +18,11 @@ const NavMenu = ({ windowWidth }) => {
     const theme = useTheme()
     // Make the router accessable
     const router = useRouter()
+
+    // THIS WILL CHANGE
+    const userData = useContext(userDataContext)
     // Get user type -- THIS IS DUMMY CODE AND NEEDS TO BE UPDATED
-    const user = { type: "user" }
+    const user = userData
 
     // Set navData based on user type
     const navLinkData = navData[user.type]
