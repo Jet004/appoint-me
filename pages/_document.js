@@ -8,10 +8,7 @@ export default class CustomDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <link 
-                        rel="stylesheet"
-                        href="https://fonts.googleapis.con/css?family=Roboto:300,300,500,700&display=swap"
-                    />
+                    
                 </Head>
                 <body>
                     <Main />

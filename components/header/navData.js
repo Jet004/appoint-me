@@ -9,7 +9,7 @@ const navData = {
         {
             text: 'Home',
             icon: <HomeRoundedIcon />,
-            path: '/'
+            path: '/home'
         },
         {
             text: 'Profile',

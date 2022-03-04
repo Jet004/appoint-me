@@ -3,14 +3,18 @@ import { createTheme } from '@mui/material/styles'
 const darkTheme = (mode) => createTheme({
     breakpoints: {
         values: {
-            sm: 620
+            xs: 0,
+            sm: 620,
+            md: 900,
+            lg: 1200,
+            xl: 1536
         }
     },
     palette: {
         mode: mode,
         background: {
-            default: '#2b262c',
-            paper: '#2b262c'
+            // default: '#2b262c',
+            // paper: '#2b262c'
         },
         text: {
             custom: {

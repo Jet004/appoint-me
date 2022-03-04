@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
-import SettingsMenu from '../settings-menu'
+import SettingsMenu from './settings-menu'
 
 // Styles, UI, UX imports
 import Box from '@mui/material/Box'
@@ -64,7 +64,6 @@ const Header = ({ page, windowWidth }) => {
                             label={link.text} 
                             href={link.path}
                             component={Link}
-                            // onClick={() => router.push(link.path)} 
                         />
                     ))}
                     </Tabs>

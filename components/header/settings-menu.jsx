@@ -8,10 +8,10 @@ import MenuItem from '@mui/material/MenuItem'
 import Tune from '@mui/icons-material/Tune'
 
 // Set context objects
-import ThemeContext from '../utility/themeContext'
+import ThemeContext from '../../utility/themeContext'
 import { useTheme } from '@mui/material/styles'
 // THIS WILL CHANGE
-import userDataContext from '../utility/mockData/userDataContext'
+import userDataContext from '../../utility/mockData/userDataContext'
 
 const SettingsMenu = () => {
     // Set the anchor element for settings menu

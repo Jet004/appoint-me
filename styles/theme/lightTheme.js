@@ -3,7 +3,11 @@ import { createTheme } from '@mui/material/styles'
 const lightTheme = (mode) => createTheme({
     breakpoints: {
         values: {
-            sm: 620
+            xs: 0,
+            sm: 620,
+            md: 900,
+            lg: 1200,
+            xl: 1536
         }
     },
     palette: {
@@ -32,6 +36,14 @@ const lightTheme = (mode) => createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: "#1976d2"
+                }
+            }
+        },
+        MuiBottomNavigationAction: {
+            root: {
+                color: 'custom.action.hover',
+                '&:hover': {
+                    color: "#fff"
                 }
             }
         }

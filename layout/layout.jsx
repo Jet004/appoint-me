@@ -27,6 +27,7 @@ const Layout = ({ page, children }) => {
             </Head>
             <Header page={page} windowWidth={windowWidth} />
             { children }
+            {console.log("refreshed")}
             <NavMenu  windowWidth={windowWidth} />
         </>
     )

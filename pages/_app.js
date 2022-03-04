@@ -26,6 +26,7 @@ import '../styles/globals.css'
 // Initialise UI cache
 const clientSideEmotionCache = createEmotionCache()
 
+
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
     // Theme switch state to toggle dark/light mode
     const [themeMode, setThemeMode] = useState('dark')

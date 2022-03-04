@@ -26,7 +26,6 @@ const NavMenu = ({ windowWidth }) => {
 
     // Set navData based on user type
     const navLinkData = navData[user.type]
-    console.log(navLinkData)
 
     const [navValue, setNavValue] = useState(router.pathname)
 
@@ -39,7 +38,7 @@ const NavMenu = ({ windowWidth }) => {
                     value={navValue}
                     onChange={(e, newValue) => setNavValue(newValue)}
                 >
-            
+        
                     {navLinkData.map((link) => (
                         <BottomNavigationAction
                             sx={styles.action}
