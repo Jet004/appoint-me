@@ -1,8 +1,6 @@
 // This is dummy user data to simulate fetching user data from the backend
 
-
-
-const users = [
+export const users = [
     {
         id: 1,
         fname: "John",

@@ -13,8 +13,8 @@ const Calendar = () => {
         <Head>
             <title>AppointMe: Calendar</title>
         </Head>
-        <Layout page="Home">
-        <Typography variant="h3">Index Page</Typography>
+        <Layout page="Calendar">
+        <Typography variant="h3">Calendar Page</Typography>
         <div>{}</div>
         </Layout>
         

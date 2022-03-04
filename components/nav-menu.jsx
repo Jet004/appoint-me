@@ -30,24 +30,21 @@ const NavMenu = ({ windowWidth }) => {
             { windowWidth < theme.breakpoints.values.sm && (
                 <BottomNavigation
                     sx={styles.navMenu}
-                    showLabels
                     value={navValue}
                     onChange={(e, newValue) => setNavValue(newValue)}
                 >
-                    <BottomNavigationAction 
-                            label={navLinkData[0].text}
-                            icon={navLinkData[0].icon}
-                            href={navLinkData[0].path}
-                            component={Link}
-                        />
-                    {navLinkData.map((link) => {
-                        <BottomNavigationAction 
+            
+                    {navLinkData.map((link) => (
+                        <BottomNavigationAction
+                            sx={styles.action}
                             label={link.text}
                             icon={link.icon}
                             href={link.path}
+                            value={link.path}
                             component={Link}
+                            key={link.text}
                         />
-                    })}
+                    ))}
                 </BottomNavigation>
             )}
         </>
@@ -60,11 +57,16 @@ const styles = {
     navMenu: {
         width: 100/100,
         position: "fixed",
-        backgroundColor: (theme) => (theme.palette.backgroundColor),
-        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))",
         left: 0,
         bottom: 0,
         display: { xs: 'flex', sm: 'none'},
         borderTop: (theme) => (`2px solid ${theme.palette.text.custom.red}`),
+    },
+    action: {
+        color: "custom.contrastText",
+        '&.Mui-selected': (theme) => ({...theme.palette.custom.action.selected}),
+        '&:hover': {
+            color: 'custom.action.hover'
+        },
     }
 }

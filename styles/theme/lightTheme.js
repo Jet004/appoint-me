@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 
-const darkTheme = (mode) => createTheme({
+const lightTheme = (mode) => createTheme({
     breakpoints: {
         values: {
             sm: 620
@@ -8,26 +8,21 @@ const darkTheme = (mode) => createTheme({
     },
     palette: {
         mode: mode,
-        background: {
-            default: '#2b262c',
-            paper: '#2b262c'
-        },
         text: {
             custom: {
                 red: "#9A030D"
             }
         },
-        gradients: {
-            lightWhite: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))"
-        },
         custom: {
-            contrastText: "#bbb",
+            contrastText: "#ddd",
             action: {
                 selected: {
                     color: '#fff',
+                    fontWeight: "bold"
                 },
                 hover: '#fff'
             }
+        
         },
         contrastThreshold: 3,
         tonalOffset: 0.2,
@@ -36,19 +31,11 @@ const darkTheme = (mode) => createTheme({
         MuiBottomNavigation: {
             styleOverrides: {
                 root: {
-                    backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))"
-                }
-            }
-        },
-        MuiBottomNavigationAction: {
-            root: {
-                color: 'custom.action.hover',
-                '&:hover': {
-                    color: "#bbb"
+                    backgroundColor: "#1976d2"
                 }
             }
         }
     }
 })
 
-export default darkTheme
+export default lightTheme

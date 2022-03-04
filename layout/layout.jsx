@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 
 // Theme and UI imports
-import { Container } from '@mui/material'
+
 
 // Components
 import Header from '../components/header/header'

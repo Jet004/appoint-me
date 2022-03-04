@@ -13,7 +13,7 @@ const BusinessProfile = () => {
         <Head>
             <title>AppointMe: Business Profile</title>
         </Head>
-        <Layout page="Business Profile">
+        <Layout page="Services">
         <Typography variant="h3">Business Profile Page</Typography>
         <div>{}</div>
         </Layout>

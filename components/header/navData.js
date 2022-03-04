@@ -20,7 +20,7 @@ const navData = {
             icon: <CalendarTodayRoundedIcon />,
             path: '/calendar'
         },{
-            text: 'Business Profile',
+            text: 'Services',
             icon: <WorkIcon />,
             path: '/business-profile'
         },

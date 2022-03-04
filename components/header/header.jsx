@@ -67,7 +67,7 @@ const Header = ({ page, windowWidth }) => {
                 )}
 
   
-                <Typography sx={styles.header.pageTitle} variant="h5">
+                <Typography sx={styles.header.pageTitle} variant="h6">
                     {page}
                 </Typography>
                 <SettingsMenu />
@@ -93,6 +93,7 @@ const styles = {
         },
         pageTitle: {
             flexGrow: 1,
+            color: 'custom.contrastText',
             display: {
                 xs: 'flex',
                 sm: 'none'

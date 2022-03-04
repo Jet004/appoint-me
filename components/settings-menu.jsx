@@ -10,6 +10,8 @@ import Tune from '@mui/icons-material/Tune'
 // Set context objects
 import ThemeContext from '../utility/themeContext'
 import { useTheme } from '@mui/material/styles'
+// THIS WILL CHANGE
+import userDataContext from '../utility/mockData/userDataContext'
 
 const SettingsMenu = () => {
     // Set the anchor element for settings menu
@@ -17,6 +19,8 @@ const SettingsMenu = () => {
 
     // Pass theme toggler function to variable
     const colourMode = useContext(ThemeContext)
+    // THIS WILL CHANGE
+    const userData = useContext(userDataContext)
 
     // Get theme values
     const theme = useTheme()
@@ -28,6 +32,10 @@ const SettingsMenu = () => {
 
     const toggleTheme = () => {
         colourMode.toggleColourMode()
+    }
+
+    const toggleUserType = () => {
+        userData.toggleUserType()
     }
 
     // THIS COMPONENT SHOULD USE MUI DRAWER AND LIST
@@ -44,9 +52,13 @@ const SettingsMenu = () => {
                 onClose={toggleSettingsMenu}
             >
                 <MenuItem onClick={() => {toggleTheme(); toggleSettingsMenu()}}>
-                {theme.palette.mode === 'dark' ? "Light" : "Dark"} Theme
+                    {theme.palette.mode === 'dark' ? "Light" : "Dark"} Theme
+                </MenuItem>
+                <MenuItem onClick={() => {toggleUserType(); toggleSettingsMenu()}}>
+                    Toggle User Type
                 </MenuItem>
             </Menu>
+            
         </Box>
     )
 }
