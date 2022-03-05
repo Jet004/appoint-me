@@ -12,11 +12,11 @@
         - client list
         - settings
         
-
+ - Auth:
+    - implement auth checking and limiting routes/functionality
 
     - components:
         - Layout
-            - Head - assign title in each page
 
 ## Improvements:
  - Change settingsMenu to use drawer rather than menu

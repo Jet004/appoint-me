@@ -8,7 +8,9 @@ const userDataContext = createContext({
     getUserByID: () => {},
     createUser: () => {},
     updateUser: () => {},
-    toggleUserType: () => {}
+    toggleUserType: () => {},
+    login: () => {},
+    logout: () => {}
 })
 
 export default userDataContext

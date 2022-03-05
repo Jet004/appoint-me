@@ -39,10 +39,12 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
 
     // Set up user context - THIS WILL CHANGE IN NEXT ITERATION
     const [userType, setUserType] = useState('user')
+    const [loggedIn, setLoggedIn] = useState(false)
 
     const userMode = useMemo(() => {
         const User = userType === 'user' ? user : businessUser
         return {
+        loggedIn: loggedIn,
         type: userType,
         user: User.users[0],
         getUsers: User.getUsers,
@@ -51,9 +53,14 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
         updateUser: User.updateUser,
         toggleUserType: () => {
             setUserType(prev => prev === 'user' ? 'business' : 'user')
+        },
+        login: () => {
+            setLoggedIn(true)
+        },
+        logout: () => {
+            setLoggedIn(false)
         }
-    }}, [userType])
-
+    }}, [userType, loggedIn])
 
     // This code will change the theme colours any time themeMode changes
     let theme = useMemo(() => themeMode === 'dark' ? darkTheme(themeMode) : lightTheme(themeMode), [themeMode])

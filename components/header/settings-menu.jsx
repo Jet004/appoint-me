@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useRouter } from 'next/router'
 
 // Style and UX
 import IconButton from '@mui/material/IconButton'
@@ -16,6 +17,9 @@ import userDataContext from '../../utility/mockData/userDataContext'
 const SettingsMenu = () => {
     // Set the anchor element for settings menu
     const [anchorElem, setAnchorElem] = useState(null)
+
+    // Set up router for redirecting after logout
+    const router = useRouter()
 
     // Pass theme toggler function to variable
     const colourMode = useContext(ThemeContext)
@@ -38,6 +42,11 @@ const SettingsMenu = () => {
         userData.toggleUserType()
     }
 
+    const logout = () => {
+        userData.logout()
+        router.push('/login')
+    }
+
     // THIS COMPONENT SHOULD USE MUI DRAWER AND LIST
 
     // {theme.palette.mode.toUpperCase()} Theme
@@ -57,6 +66,11 @@ const SettingsMenu = () => {
                 <MenuItem onClick={() => {toggleUserType(); toggleSettingsMenu()}}>
                     Toggle User Type
                 </MenuItem>
+                {userData.loggedIn && (
+                    <MenuItem onClick={() => {logout(); toggleSettingsMenu()}}>
+                        Log Out
+                    </MenuItem>
+                )}
             </Menu>
             
         </Box>
@@ -68,7 +82,7 @@ export default SettingsMenu
 
 const styles = {
     settingsMenu: {
-        color: "custom.contrastText",
+        color: "custom.primaryContrastText",
         '&:hover': {
             color: 'custom.action.hover'
         }

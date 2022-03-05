@@ -19,12 +19,13 @@ export default ServiceCard
 
 const styles = {
     card: {
-        backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))",
+        backgroundImage: (theme)=> (theme.palette.custom.gradient.light),
         color: "custom.contrastText",
         border: `1px solid`,
         borderColor: "custom.contrastText",
         p: {xs: "0px 16px", md: "10px 20px"},
         mb: 2,
+        "&:hover": (theme) => ({...theme.palette.custom.action.cardHover})
     },
     cardContent: {
         p: {xs: "14px 4px", md: "8px 10px"},

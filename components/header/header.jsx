@@ -39,14 +39,16 @@ const Header = ({ page, windowWidth }) => {
     // Control the link highlighting for page links
     const [tabValue, setTabValue] = useState(router.pathname)
 
+    const displayHeader = (windowWidth > theme.breakpoints.values.sm && userData.loggedIn)
 
     return (
         <AppBar position="sticky" sx={styles.header}>
             <Toolbar>
-                <MuiLink sx={styles.header.backLink} onClick={() => router.back()}>
+                <MuiLink  sx={styles.header.backLink} onClick={() => router.back()}>
                     <ArrowBackIosNewIcon />
                 </MuiLink>
-                {windowWidth > theme.breakpoints.values.sm && (
+
+                {displayHeader && (
                 <Box sx={styles.header.appMenu}>
                     <Tabs 
                         value={tabValue} 
@@ -69,11 +71,18 @@ const Header = ({ page, windowWidth }) => {
                     </Tabs>
                 </Box>
                 )}
-
-  
+                
                 <Typography sx={styles.header.pageTitle} variant="h6">
                     {page}
                 </Typography>
+
+                {!userData.loggedIn && (
+                    <Box sx={styles.header.links}>
+                        <Link href="/login" sx={styles.header.authButtons}>Login</Link>
+                        <Link href="/register" sx={styles.header.authButtons}>Register</Link>
+                    </Box>
+                )}
+  
                 <SettingsMenu />
             </Toolbar>
         </AppBar>
@@ -88,7 +97,7 @@ const styles = {
         backLink: {
             pr: 1,
             lineHeight: 1,
-            color: "custom.contrastText",
+            color: "custom.primaryContrastText",
             display: "flex",
             alignItems: "center",
             '&:hover': {
@@ -97,7 +106,7 @@ const styles = {
         },
         pageTitle: {
             flexGrow: 1,
-            color: 'custom.contrastText',
+            color: 'custom.primaryContrastText',
             display: {
                 xs: 'flex',
                 sm: 'none'
@@ -106,12 +115,25 @@ const styles = {
         appMenu: {
             flexGrow: 1,
             justifyContent: 'center',
+        },
+        links: {
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "end"
+        },
+        authButtons: {
+            color: "custom.primaryContrastText",
+            textDecoration: "none",
+            mr: 2,
+            "&:hover": {
+                color: "custom.action.hover"
+            }
         }
     },
     tabs: {
         tab: {
             borderRadius: "20px",
-            color: "custom.contrastText",
+            color: "custom.primaryContrastText",
             '&.Mui-selected': (theme) => ({...theme.palette.custom.action.selected}),
             '&:hover': {
                 color: 'custom.action.hover'

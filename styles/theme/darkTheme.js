@@ -21,16 +21,22 @@ const darkTheme = (mode) => createTheme({
                 red: "#9A030D"
             }
         },
-        gradients: {
-            lightWhite: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))"
-        },
         custom: {
             contrastText: "#bbb",
+            primaryContrastText: "#bbb",
+            gradient: {
+                light: "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))"
+            },
             action: {
                 selected: {
                     color: '#fff',
                 },
-                hover: '#fff'
+                hover: '#fff',
+                cardHover: {
+                    color: '#fff',
+                    borderColor: '#fff',
+                    backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))",
+                },
             }
         },
         contrastThreshold: 3,

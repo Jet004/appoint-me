@@ -12,19 +12,32 @@ const lightTheme = (mode) => createTheme({
     },
     palette: {
         mode: mode,
+        background: {
+            default: "#eee",
+            paper: "#eee"
+        },
         text: {
             custom: {
                 red: "#9A030D"
             }
         },
         custom: {
-            contrastText: "#ddd",
+            contrastText: "#555",
+            primaryContrastText: "#ddd",
+            gradient: {
+                light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))"
+            },
             action: {
                 selected: {
                     color: '#fff',
                     fontWeight: "bold"
                 },
-                hover: '#fff'
+                hover: '#fff',
+                cardHover: {
+                    color: '#333',
+                    borderColor: '#333',
+                    backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))",
+                },
             }
         
         },
