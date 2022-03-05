@@ -14,7 +14,7 @@ export const serviceData = [
         title: "appointment",
         icon: (sx) => (<InsertInvitationRoundedIcon sx={sx} />),
         text: "View available appointments",
-        path: "/appointment"
+        path: "/appointments"
     },
     {
         title: "makeAppointment",

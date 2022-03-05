@@ -1,8 +1,6 @@
 import { useState, useContext } from 'react'
 import userDataContext from '../utility/mockData/userDataContext'
 
-// Next.js imports
-
 // Styles, UI, UX
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'

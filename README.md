@@ -18,6 +18,8 @@
     - components:
         - Layout
 
+ - Use Dialog for popup forms...
+
 ## Improvements:
  - Change settingsMenu to use drawer rather than menu
  - logo as SVG
