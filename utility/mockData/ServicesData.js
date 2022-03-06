@@ -1,12 +1,14 @@
 const services = [
     {
-        service: "Individual",
+        title: "Individual",
         duration: 50,
         cost: 50,
     },
     {
-        service: "Pronunciation",
+        title: "Pronunciation",
         duration: 45,
         cost: 50,
     }
 ]
+
+export default services

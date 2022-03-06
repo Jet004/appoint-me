@@ -3,15 +3,12 @@ import React, { useMemo, useState } from 'react'
 // Theme and UI imports
 import { CacheProvider, cacheProvider } from '@emotion/react'
 import { ThemeProvider, CssBaseline } from '@mui/material'
-import { createTheme, responsiveFontSizes } from '@mui/material/styles'
-
+import { responsiveFontSizes } from '@mui/material/styles'
 import createEmotionCache from '../utility/emotionCache'
 // Get the global context for theme switch - This allows any child component
 // to access the theme switch via React.useContext() and avoids the need to
 // pass values through props
 import ThemeContext from '../utility/themeContext'
-// Design tokens are the custom declaration of theme values for the light and
-// dark themes
 import darkTheme from '../styles/theme/darkTheme'
 import lightTheme from '../styles/theme/lightTheme'
 
@@ -19,6 +16,10 @@ import lightTheme from '../styles/theme/lightTheme'
 import userDataContext from '../utility/mockData/userDataContext'
 import * as user from '../utility/mockData/userContext'
 import * as businessUser from '../utility/mockData/businessContext'
+
+// Set up date adapter to allow localisation and date functions
+import DateAdapter from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 // Global stylesheet imports
 import '../styles/globals.css'
@@ -64,7 +65,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
 
     // This code will change the theme colours any time themeMode changes
     let theme = useMemo(() => themeMode === 'dark' ? darkTheme(themeMode) : lightTheme(themeMode), [themeMode])
-    // createTheme(getDesignTokens(themeMode))
+
     // Automatically adjust font sizes for text elements based on viewport width
     theme = responsiveFontSizes(theme)
 
@@ -73,9 +74,11 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
             <ThemeContext.Provider value={colourMode}>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <userDataContext.Provider value={userMode}>
-                        <Component {...pageProps} />
-                    </userDataContext.Provider>
+                    <LocalizationProvider dateAdapter={DateAdapter}>
+                        <userDataContext.Provider value={userMode}>
+                            <Component {...pageProps} />
+                        </userDataContext.Provider>
+                    </LocalizationProvider>
                 </ThemeProvider>
             </ThemeContext.Provider>
         </CacheProvider>
