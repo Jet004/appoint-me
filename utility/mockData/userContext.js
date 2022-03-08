@@ -31,6 +31,13 @@ export const users = [
             },
             {
                 service: 'Individual',
+                datetime: new Date(2022, 2, 8, 23, 59),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 13),
+                paymentStatus: "unpaid"
+            },
+            {
+                service: 'Individual',
                 datetime: new Date(2022, 2, 10, 15),
                 fee: "50",
                 feeDueDate: new Date(2022, 2, 15),
@@ -39,14 +46,37 @@ export const users = [
             {
                 service: 'Pronunciation',
                 datetime: new Date(2022, 2, 10, 16),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 15),
+                paymentStatus: "unpaid"
             },
             {
                 service: 'Individual',
                 datetime: new Date(2022, 2, 11, 11),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 15),
+                paymentStatus: "unpaid"
             },
             {
                 service: 'Individual',
                 datetime: new Date(2022, 2, 15, 13),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 15),
+                paymentStatus: "unpaid"
+            },
+            {
+                service: 'Individual',
+                datetime: new Date(2022, 2, 16, 13),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 22),
+                paymentStatus: "unpaid"
+            },
+            {
+                service: 'Individual',
+                datetime: new Date(2022, 2, 18, 13),
+                fee: "50",
+                feeDueDate: new Date(2022, 2, 23),
+                paymentStatus: "unpaid"
             },
         ]
     },

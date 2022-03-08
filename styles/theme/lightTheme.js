@@ -27,7 +27,8 @@ const lightTheme = (mode) => createTheme({
             contrastTextStrong: "#000",
             gradient: {
                 lighter: "linear-gradient(rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025))",
-                light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))"
+                light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))",
+                medium: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))"
             },
             action: {
                 selected: {
