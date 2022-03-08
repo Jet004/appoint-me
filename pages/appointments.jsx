@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Next.js imports
 import Head from 'next/head'
@@ -14,10 +14,18 @@ import MenuItem from '@mui/material/MenuItem'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Box from '@mui/material/Box'
 import DatePicker from '@mui/lab/DatePicker'
+import TextField from '@mui/material/TextField'
+import List from '@mui/material/List'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import ListSubheader from '@mui/material/ListSubheader'
 
 // Data
 import servicesData from '../utility/mockData/ServicesData'
-import { TextField } from '@mui/material'
+import availability from '../utility/mockData/availability'
+import isSameDay from 'date-fns/isSameDay'
+import isWeekend from 'date-fns/isWeekend'
+import format from 'date-fns/format'
 
 
 export default function Appointments() {
@@ -26,9 +34,8 @@ export default function Appointments() {
 
     const handleChangeService = (e) => {
         setService(e.target.value)
-        console.log("Value: ", e.target.value)
     }
-    console.log("Service: ", service)
+
   return (
     <>
         <Head>
@@ -41,11 +48,11 @@ export default function Appointments() {
                     <Box sx={styles.innerBox}>
                         <Box  sx={styles.calendarHead}>
                             <FormControl sx={{width: "45%"}}>
-                                <InputLabel id="services-select-label">Services</InputLabel>
+                                <InputLabel sx={styles.servicesInputLabel} id="services-select-label">Services</InputLabel>
                                 <Select 
                                     labelId="services-select-label" 
                                     sx={styles.services} 
-                                    autoWidth="true" 
+                                    autoWidth={true}
                                     value={service}
                                     onChange={handleChangeService}
                                     input={<OutlinedInput label="Services" />}
@@ -58,12 +65,25 @@ export default function Appointments() {
                             </FormControl>
                             <DatePicker
                                 label="Date"
+                                shouldDisableDate={isWeekend}
                                 value={pickedDate}
                                 onChange={(newDate) => {
                                     setPickedDate(newDate)
                                 }}
                                 renderInput={(params) => <TextField {...params} sx={styles.datePickerInput} />}
                             />
+                        </Box>
+                        <Box sx={styles.appointmentListBox}>
+                            <Typography variant="h5">{(service && pickedDate) ? service : "Choose a service and a date..."}</Typography>
+                            <Typography sx={{pl: 2}} variant="caption"> *You need to be logged in to make an appointment</Typography>
+                            {service && (<List sx={styles.availabilityList}>
+                                {availability[service]?.map(date => {
+                                    if(isSameDay(pickedDate, date.datetime)) return (
+                                    <ListItemButton><ListItemText>{format(date.datetime, "hh:mm aaa")} - {service} Session</ListItemText></ListItemButton>
+                                    )
+                                })}
+                                {availability[service]?.filter(date => isSameDay(pickedDate, date.datetime)).length <= 0 && ("Oops... It seems we are booked out")}
+                            </List>)}
                         </Box>
                     </Box>
                 </Box>
@@ -111,6 +131,9 @@ const styles = {
         justifyContent: "space-between",
         padding: "20px",
     },
+    servicesInputLabel: {
+        color: 'custom.contrastTextStrong'
+    },
     services: {
         width: "100%",
 
@@ -118,4 +141,9 @@ const styles = {
     datePickerInput: {
         width: {xs: "50%"}
     },
+    appointmentListBox: {
+        width: "100%",
+        minHeight: "300px",
+        p: 2,
+    }
 }

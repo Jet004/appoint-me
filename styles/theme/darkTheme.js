@@ -24,6 +24,7 @@ const darkTheme = (mode) => createTheme({
         custom: {
             contrastText: "#bbb",
             primaryContrastText: "#bbb",
+            contrastTextStrong: "#fff",
             gradient: {
                 lighter: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
                 light: "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))"
