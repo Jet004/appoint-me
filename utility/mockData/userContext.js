@@ -1,11 +1,16 @@
 // This is dummy user data to simulate fetching user data from the backend
 
+// Images
+import profile2 from '../../public/images/mock-profile/profile-2.jpeg'
+
+
 export const users = [
     {
         id: 1,
-        fname: "John",
-        lname: "Willow",
+        fname: "Eric",
+        lname: "Tanner",
         email: "jwillow@gmail.com",
+        profile: profile2,
         appointments: [
             {
                 service: 'Individual',

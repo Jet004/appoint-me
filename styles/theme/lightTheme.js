@@ -18,7 +18,8 @@ const lightTheme = (mode) => createTheme({
         },
         text: {
             custom: {
-                red: "#9A030D"
+                red: "#9A030D",
+                icon: "#ddd",
             }
         },
         custom: {
@@ -28,7 +29,8 @@ const lightTheme = (mode) => createTheme({
             gradient: {
                 lighter: "linear-gradient(rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025))",
                 light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))",
-                medium: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))"
+                medium: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))",
+                iconBackground: "linear-gradient(rgba(150, 150, 150, 0.8), rgba(150, 150, 150, 0.8))",
             },
             action: {
                 selected: {

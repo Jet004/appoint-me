@@ -48,6 +48,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
         loggedIn: loggedIn,
         type: userType,
         user: User.users[0],
+        profile: User.users[0].profile,
         appointments: User.users[0].appointments,
         getUsers: User.getUsers,
         getUserByID: User.getUserById,

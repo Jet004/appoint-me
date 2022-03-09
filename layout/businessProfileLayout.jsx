@@ -33,7 +33,7 @@ export default function BusinessProfileLayout({ logo, title, children }) {
 
             <Box>
                 <Link sx={styles.logoBox} href="/">
-                    <CustomImage style={logoAvatar} src={imgSrc} alt="Logo" />
+                    <CustomImage variant="square" style={logoAvatar} src={imgSrc} alt="Logo" />
                 </Link>
             </Box>
             <Box sx={styles.contentBox}>
