@@ -23,6 +23,7 @@
 ## Improvements:
  - Change settingsMenu to use drawer rather than menu
  - logo as SVG
+ - highlight upcoming appointments on the current day
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body
