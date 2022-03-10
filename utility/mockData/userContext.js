@@ -9,7 +9,9 @@ export const users = [
         id: 1,
         fname: "Eric",
         lname: "Tanner",
-        email: "jwillow@gmail.com",
+        email: "e.tanner@gmail.com",
+        phone: "0444 982 749",
+        address: "34 Milton Pde, Milstone, Briskvegan",
         profile: profile2,
         appointments: [
             {

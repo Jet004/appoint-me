@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Icon from '@mui/material/Icon'
+import SvgIcon from '@mui/material/SvgIcon'
 import IconButton from '@mui/material/IconButton'
 
 
@@ -20,24 +21,24 @@ const FeatureBox = ({children, title, iconLeft, iconRight, sx, headerbg}) => {
     <>
         <Box sx={{...styles.innerBox(theme), ...sx}}>
             <Box sx={{...styles.innerBoxHeader(theme), ...headerbg}}>
-                <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
-                    {iconLeft && (
-                        <Icon  sx={styles.titleIcon}>
-                            {iconLeft}
-                        </Icon>
-                    )}
-                    {title}
-                    {iconRight && (
-                        <Icon  sx={styles.editIcon}>
-                            {iconRight}
-                        </Icon>
-                    )}
+                <Box sx={styles.headerContent}>
+                    <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
+                        {iconLeft && (
+                            <Icon  sx={styles.titleIcon}>
+                                {iconLeft}
+                            </Icon>
+                        )}
+                        {title}
                     </Typography>
+                    {iconRight && (
+                        <IconButton sx={styles.editIcon}>
+                            {iconRight}
+                        </IconButton>
+                    )}
+                </Box>
                 <Divider sx={styles.innerBoxHeaderDivider} />
             </Box>
-            <Box sx={styles.innerBoxBody}>
-                { children }
-            </Box>
+            { children }
         </Box>
     </>
   )
@@ -54,7 +55,6 @@ const styles = {
         width: {xs: "90%", md: "80%", lg: "60%"},
         minWidth: "300px",
         maxWidth: "600px",
-        maxHeight: "40vh",
         mt: 2,
         borderRadius: "25px",
         overflow: "hidden",
@@ -77,28 +77,29 @@ const styles = {
         // Light theme
         pt: 2,
         px: 3,
+        pb: 2,
         borderRadius: "25px 25px 0px 0px",
+        alignItems: "center",
+    },
+    headerContent: {
+        display: "flex",
     },
     innerBoxHeaderTitle: {
         color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'primary.main',
         pl: {xs: 3/2, sm: 3},
         display: "flex",
+        alignItems: "center",
+
+        flexGrow: 1,
     },
     titleIcon: {
         mr: 1
     },
     editIcon: {
-        justifySelf: "flex-end",
+        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'primary.main',
     },
     innerBoxHeaderDivider: {
         borderColor: (theme) => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.contrastText',
         pt: 1/2,
-    },
-    innerBoxBody: {
-        width: "100%",
-        maxHeight: "34vh",
-        overflow: "auto",
-        px: {xs: 3},
-        pb: 2
     },
 }

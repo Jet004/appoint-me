@@ -40,7 +40,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
 
     // Set up user context - THIS WILL CHANGE IN NEXT ITERATION
     const [userType, setUserType] = useState('user')
-    const [loggedIn, setLoggedIn] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(true)
 
     const userMode = useMemo(() => {
         const User = userType === 'user' ? user : businessUser
