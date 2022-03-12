@@ -25,6 +25,8 @@
  - logo as SVG
  - highlight upcoming appointments on the current day
  - deal with header indicator color...
+ - calendar day default to next business day if is weekend
+ - calendar date defaults to current day (or next business day) - choosing a date sets the fetch reference point, data will be fetched around that date. Auto load more data fetches from client side
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body
