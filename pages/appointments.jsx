@@ -7,6 +7,7 @@ import Head from 'next/head'
 import Layout from '../layout/layout'
 
 // MUI UI
+import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container'
@@ -24,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText'
 import MenuItem from '@mui/material/MenuItem'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Select from '@mui/material/Select'
+import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
@@ -48,6 +50,7 @@ export default function Appointments() {
     const [pickedDate, setPickedDate] = useState(new Date())
     const [dialogOpen, setDialogOpen] = useState(false)
     const [appointmentDetails, setAppointmentDetails] = useState({})
+    const [toastState, setToastState] = useState(false)
 
     const handleChangeService = (e) => {
         setService(e.target.value)
@@ -66,6 +69,7 @@ export default function Appointments() {
     const handleBookAppointment = () => {
         console.log("Appointment booked successfully")
         setDialogOpen(false)
+        setToastState(true)
     }
 
   return (
@@ -141,6 +145,9 @@ export default function Appointments() {
                         </Dialog>
                     </Box>
                 </Box>
+                <Snackbar sx={styles.toast} open={toastState} autoHideDuration={6000} onClose={() => setToastState(false)} TransitionComponent="Fade">
+                    <Alert severity="success" elevation={6} variant="filled">Your appointment has been booked!</Alert>
+                </Snackbar>
                 
             </Container>
         </Layout>
@@ -199,5 +206,8 @@ const styles = {
         width: "100%",
         minHeight: "300px",
         p: 2,
+    },
+    toast: {
+        mb: 8,
     }
 }

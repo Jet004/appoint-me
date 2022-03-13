@@ -1,22 +1,9 @@
 ## AppointMe
 
 ## TODO:
-
-- Set out site structure
-    - pages:
-        - index
-        - home
-        - calendar
-        - profile
-        - business profile
-        - client list
-        - settings
         
  - Auth:
     - implement auth checking and limiting routes/functionality
-
-    - components:
-        - Layout
 
  - Use Dialog for popup forms...
  - Chip/toast to confirm appointment booked
