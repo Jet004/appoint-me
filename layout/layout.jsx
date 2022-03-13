@@ -7,6 +7,7 @@ import Head from 'next/head'
 // Components
 import Header from '../components/header/header'
 import NavMenu from '../components/nav-menu'
+import Footer from '../components/footer'
 import userDataContext from '../utility/mockData/userDataContext'
 
 const Layout = ({ page, children }) => {
@@ -34,7 +35,7 @@ const Layout = ({ page, children }) => {
             {userData.loggedIn && (
                 <NavMenu  windowWidth={windowWidth} />
             )}
-            
+            <Footer />
         </>
     )
 }
