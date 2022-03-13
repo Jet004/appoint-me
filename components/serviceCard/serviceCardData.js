@@ -20,7 +20,7 @@ export const serviceData = [
         title: "makeAppointment",
         icon: (sx) => (<EventAvailableRoundedIcon sx={sx} />),
         text: "Make an appointment",
-        path: "/make-appointment"
+        path: "/appointments"
     },
     {
         title: "about",

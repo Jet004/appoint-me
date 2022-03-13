@@ -19,6 +19,7 @@
         - Layout
 
  - Use Dialog for popup forms...
+ - Chip/toast to confirm appointment booked
 
 ## Improvements:
  - Change settingsMenu to use drawer rather than menu

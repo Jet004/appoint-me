@@ -11,7 +11,7 @@ export default function Login() {
 
     return (
         <>
-            <BusinessProfileLayout logo="thumb" title="About">
+            <BusinessProfileLayout logo="thumb" title="Services" page="">
                 <Box sx={styles.innerBox}>
                     <Typography sx={styles.title} variant="h3">
                         Services We Offer

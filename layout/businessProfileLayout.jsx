@@ -17,7 +17,7 @@ import thumbDark from '../public/images/logo/thumbnail_dark.png'
 import thumbLight from '../public/images/logo/thumbnail.png'
 
 
-export default function BusinessProfileLayout({ logo, title, children }) {
+export default function BusinessProfileLayout({ logo, title, children, page }) {
     const theme = useTheme()
     let imgSrc
     if(logo === "full") theme.palette.mode === "dark" ? imgSrc = logoDark : imgSrc = logoLight
@@ -26,7 +26,7 @@ export default function BusinessProfileLayout({ logo, title, children }) {
 
     const headTitle = title === "" ? "" : `: ${title}`
     return (
-        <Layout page=" ">
+        <Layout page={page}>
             <Head>
                 <title>{`AppointMe${headTitle}`}</title>
             </Head>
