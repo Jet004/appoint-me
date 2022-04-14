@@ -18,17 +18,28 @@ const darkTheme = (mode) => createTheme({
         },
         text: {
             custom: {
-                red: "#9A030D"
+                red: "#9A030D",
+                secondary: "#026258",
+                warning: "#FA9F42",
+                theme: "#121212",
+                hightlight: "#2a2a2a"
             }
         },
         custom: {
             contrastText: "#bbb",
             primaryContrastText: "#bbb",
-            contrastTextStrong: "#fff",
+            contrastTextStrong: "#e1e1e1",
+            contrastTextLight: "#666",
+            red: "#9A030D",
+            secondary: "#026258",
+            warning: "#FA9F42",
+            theme: "#121212",
+            hightlight: "#2a2a2a",
             gradient: {
                 lighter: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
                 light: "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))",
                 medium: "linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))",
+                lift: "linear-gradient(rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08))",
                 iconBackground: "linear-gradient(rgba(120, 120, 120, 0.6), rgba(120, 120, 120, 0.6))",
             },
             action: {

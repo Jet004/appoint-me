@@ -19,11 +19,13 @@ export default ServiceCard
 
 const styles = {
     card: {
-        backgroundImage: (theme)=> (theme.palette.custom.gradient.light),
+        // backgroundColor: "custom.highlight",
+        backgroundImage: (theme) => (theme.palette.custom.gradient.lift),
         color: "custom.contrastText",
         border: `1px solid`,
-        borderColor: "custom.contrastText",
-        p: {xs: "0px 16px", md: "10px 20px"},
+        borderColor: "custom.contrastTextLight",
+        boxShadow: 4,
+        p: {xs: "0px 16px", md: "10px 16px"},
         mb: 2,
         "&:hover": (theme) => ({...theme.palette.custom.action.cardHover})
     },
@@ -33,11 +35,11 @@ const styles = {
         alignItems: "center"
     },
     divider: {
-        borderColor: "rgba(255, 255, 255, 0.25)",
+        borderColor: "custom.contrastTextLight",
         mx: 2,
-        height: {xs: 70, md: 80}
+        height: {xs: 50, md: 50}
     },
     icon: {
-        fontSize: 40
+        fontSize: {xs: 30, sm: 40}
     }
 }

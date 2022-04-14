@@ -13,24 +13,36 @@ const lightTheme = (mode) => createTheme({
     palette: {
         mode: mode,
         background: {
-            default: "#f5f5f5",
-            paper: "#f5f5f5",
+            default: "#eaeaea",
+            paper: "#eaeaea",
             transparent: "rgba(240, 240, 240, 0.7)",
         },
         text: {
             custom: {
                 red: "#9A030D",
+                secondary: "#026258",
+                warning: "#FA9F42",
+                theme: "#eaeaea",
+                highlight: "#dadada",
                 icon: "#ddd",
             }
         },
         custom: {
-            contrastText: "#666",
-            primaryContrastText: "#666",
-            contrastTextStrong: "#333",
+            contrastText: "#555",
+            primaryContrastText: "#555",
+            contrastTextStrong: "#2b2b2b",
+            contrastTextLight: "#999",
+            red: "#9A030D",
+            secondary: "#026258",
+            warning: "#FA9F42",
+            theme: "#eaeaea",
+            highlight: "#dadada",
+            icon: "#ddd",
             gradient: {
                 lighter: "linear-gradient(rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025))",
                 light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))",
                 medium: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))",
+                lift: "linear-gradient(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.15))",
                 iconBackground: "linear-gradient(rgba(150, 150, 150, 0.8), rgba(150, 150, 150, 0.8))",
             },
             action: {
