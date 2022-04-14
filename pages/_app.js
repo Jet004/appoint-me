@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 // Theme and UI imports
 import { CacheProvider, cacheProvider } from '@emotion/react'
@@ -27,16 +27,50 @@ import '../styles/globals.css'
 // Initialise UI cache
 const clientSideEmotionCache = createEmotionCache()
 
+const setLocalStorage = (key, value) => {
+    try {
+        window.localStorage.setItem(key, JSON.stringify(value))
+    } catch (error) {
+        // Let errors pass as the current session will have the desired theme
+    }
+}
 
+const getLocalStorage = (key) => {
+    try {
+        const value = window.localStorage.getItem(key)
+        return JSON.parse(value)
+    } catch (error) {
+        // If error, keep using initial value
+    }
+}
+
+
+
+// Root component
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
     // Theme switch state to toggle dark/light mode
-    const [themeMode, setThemeMode] = useState('dark')
+    const [themeMode, setThemeMode] = useState("dark")
+
     // Theme toggler logic
     const colourMode = {
         toggleColourMode: () => {
             setThemeMode(prev => prev === 'light' ? 'dark' : 'light')
         }
     }
+
+    // Get theme from local storage if available on first render
+    useEffect(() => {
+        const storedTheme = getLocalStorage('theme')
+        if(storedTheme) {
+            setThemeMode(storedTheme)
+        }
+    }, [])
+
+    // Persist theme mode to local storage
+    useEffect(() => {
+       setLocalStorage('theme', themeMode)
+    }, [themeMode])
+
 
     // Set up user context - THIS WILL CHANGE IN NEXT ITERATION
     const [userType, setUserType] = useState('user')
