@@ -14,7 +14,8 @@ const lightTheme = (mode) => createTheme({
         mode: mode,
         background: {
             default: "#f5f5f5",
-            paper: "#f5f5f5"
+            paper: "#f5f5f5",
+            transparent: "rgba(240, 240, 240, 0.7)",
         },
         text: {
             custom: {

@@ -95,7 +95,8 @@ export default Header
 const styles = {
     header: {
         backgroundImage: "none",
-        backgroundColor: "background.default",
+        backgroundColor: (theme) => theme.palette.mode === 'dark' ? "background.default" : "background.transparent",
+        backdropFilter: "blur(10px)",
         backLink: {
             pr: 1,
             lineHeight: 1,

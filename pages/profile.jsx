@@ -50,7 +50,6 @@ const Profile = () => {
 
         return (
             <>
-            <p>{console.log(userData.user)}</p>
                 <Head>
                     <title>AppointMe: Profile</title>
                 </Head>
