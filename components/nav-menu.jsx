@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import Link from './link'
+import Paper from '@mui/material/Paper'
 
 // THIS WILL CHANGE
 import userDataContext from '../utility/mockData/userDataContext'
@@ -33,24 +34,27 @@ const NavMenu = ({ windowWidth }) => {
     return (
         <>
             { windowWidth < theme.breakpoints.values.sm && (
-                <BottomNavigation
-                    sx={styles.navMenu}
-                    value={navValue}
-                    onChange={(e, newValue) => setNavValue(newValue)}
-                >
-        
-                    {navLinkData.map((link) => (
-                        <BottomNavigationAction
-                            sx={styles.action}
-                            label={link.text}
-                            icon={link.icon}
-                            href={link.path}
-                            value={link.path}
-                            component={Link}
-                            key={link.text}
-                        />
-                    ))}
-                </BottomNavigation>
+                <Paper elevation={3} sx={styles.bottomNav}>
+                    <BottomNavigation
+                        sx={styles.navMenu}
+                        value={navValue}
+                        onChange={(e, newValue) => setNavValue(newValue)}
+                    >
+            
+                        {navLinkData.map((link) => (
+                            <BottomNavigationAction
+                                sx={styles.action}
+                                label={link.text}
+                                icon={link.icon}
+                                href={link.path}
+                                value={link.path}
+                                component={Link}
+                                key={link.text}
+                                disableRipple
+                            />
+                        ))}
+                    </BottomNavigation>
+                </Paper>
             )}
         </>
     )
@@ -59,13 +63,26 @@ const NavMenu = ({ windowWidth }) => {
 export default NavMenu
 
 const styles = {
-    navMenu: {
-        width: 100/100,
+    bottomNav: {
         position: "fixed",
         left: 0,
         bottom: 0,
+        width: 100/100,
         display: { xs: 'flex', sm: 'none'},
-        borderTop: (theme) => (`2px solid ${theme.palette.text.custom.red}`),
+    },
+    navMenu: {
+        pt: 1,
+        px: 1,
+        width: 100/100,
+        "&:before": (theme) => theme.palette.mode === 'dark' ? {
+            content: "''",
+            position: "absolute",
+            top: 0,
+            left: "7.5%",
+            width: "85%",
+            height: "1px",
+            borderTop: (theme) => (`1.5px solid ${theme.palette.text.custom.red}`),
+        }: {}
     },
     action: {
         color: "custom.contrastText",

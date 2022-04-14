@@ -13,8 +13,8 @@ const lightTheme = (mode) => createTheme({
     palette: {
         mode: mode,
         background: {
-            default: "#eee",
-            paper: "#eee"
+            default: "#f5f5f5",
+            paper: "#f5f5f5"
         },
         text: {
             custom: {
@@ -23,9 +23,9 @@ const lightTheme = (mode) => createTheme({
             }
         },
         custom: {
-            contrastText: "#555",
-            primaryContrastText: "#ddd",
-            contrastTextStrong: "#000",
+            contrastText: "#666",
+            primaryContrastText: "#666",
+            contrastTextStrong: "#333",
             gradient: {
                 lighter: "linear-gradient(rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025))",
                 light: "linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05))",
@@ -34,10 +34,10 @@ const lightTheme = (mode) => createTheme({
             },
             action: {
                 selected: {
-                    color: '#fff',
-                    fontWeight: "bold"
+                    color: '#333',
+                    // fontWeight: "bold"
                 },
-                hover: '#fff',
+                hover: '#222',
                 cardHover: {
                     color: '#333',
                     borderColor: '#333',
@@ -50,21 +50,21 @@ const lightTheme = (mode) => createTheme({
         tonalOffset: 0.2,
     },
     components: {
-        MuiBottomNavigation: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: "#1976d2"
-                }
-            }
-        },
-        MuiBottomNavigationAction: {
-            root: {
-                color: 'custom.action.hover',
-                '&:hover': {
-                    color: "#fff"
-                }
-            }
-        }
+        // MuiBottomNavigation: {
+        //     styleOverrides: {
+        //         root: {
+        //             backgroundColor: "#1976d2"
+        //         }
+        //     }
+        // },
+        // MuiBottomNavigationAction: {
+        //     root: {
+        //         color: 'custom.action.hover',
+        //         '&:hover': {
+        //             color: "#fff"
+        //         }
+        //     }
+        // }
     }
 })
 

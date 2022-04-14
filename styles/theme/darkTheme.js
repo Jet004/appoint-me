@@ -47,21 +47,21 @@ const darkTheme = (mode) => createTheme({
         tonalOffset: 0.2,
     },
     components: {
-        MuiBottomNavigation: {
-            styleOverrides: {
-                root: {
-                    backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))"
-                }
-            }
-        },
-        MuiBottomNavigationAction: {
-            root: {
-                color: 'custom.action.hover',
-                '&:hover': {
-                    color: "#bbb"
-                }
-            }
-        }
+        // MuiBottomNavigation: {
+        //     styleOverrides: {
+        //         root: {
+        //             backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))"
+        //         }
+        //     }
+        // },
+        // MuiBottomNavigationAction: {
+        //     root: {
+        //         color: 'custom.action.hover',
+        //         '&:hover': {
+        //             color: "#bbb"
+        //         }
+        //     }
+        // }
     }
 })
 

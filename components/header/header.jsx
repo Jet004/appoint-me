@@ -66,6 +66,7 @@ const Header = ({ page, windowWidth }) => {
                             label={link.text} 
                             href={link.path}
                             component={Link}
+                            disableRipple
                         />
                     ))}
                     </Tabs>
@@ -93,20 +94,20 @@ export default Header
 
 const styles = {
     header: {
-        borderBottom: (theme) => (`2px solid ${theme.palette.text.custom.red}`),
+        backgroundImage: "none",
+        backgroundColor: "background.default",
         backLink: {
             pr: 1,
             lineHeight: 1,
             color: "custom.primaryContrastText",
             display: "flex",
-            alignItems: "center",
             '&:hover': {
                 color: 'custom.action.hover'
             },
         },
         pageTitle: {
             flexGrow: 1,
-            color: 'custom.primaryContrastText',
+            color: 'custom.contrastText',
             display: {
                 xs: 'flex',
                 sm: 'none'
@@ -138,7 +139,6 @@ const styles = {
             '&:hover': {
                 color: 'custom.action.hover'
             },
-            
         },
     }
 }
