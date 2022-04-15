@@ -1,17 +1,24 @@
 import { useState, useContext } from 'react'
-import userDataContext from '../utility/mockData/userDataContext'
-
-// Next.js imports
 import { useRouter } from 'next/router'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import userDataContext from '../utility/mockData/userDataContext'
+import subYears from 'date-fns/subYears'
+import isWeekend from 'date-fns/isWeekend'
 
 // Styles, UI, UX
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import Button from '@mui/material/Button'
+import DatePicker from '@mui/lab/DatePicker'
 import InputAdornment from '@mui/material/InputAdornment'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import TextField from '@mui/material/TextField'
 
+// Icons
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
 import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
@@ -23,21 +30,91 @@ import SignpostRoundedIcon from '@mui/icons-material/SignpostRounded'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded'
 
+// Define schema for form validation
+const validationSchema = yup.object().shape({
+    fname: yup.string()
+        .required('First name is required')
+        .matches(/^[a-zA-Z]+$/, 'First name must only contain letters')
+        .min(2, 'First name must have at least 2 characters')
+        .max(50, 'First name must have less than 50 characters'),
+    lname: yup.string()
+        .required('Last name is required')
+        .matches(/^[a-zA-Z]+$/, 'Last name must only contain letters')
+        .min(2, 'Last name must have at least 2 characters')
+        .max(50, 'Last name must have less than 50 characters'),
+    email: yup.string()
+        .required('Email is required')
+        .email('Email must be valid'),
+    password: yup.string()
+        .required('Password is required')
+        .matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/gm, 'Password must be at least 8 characters, contain at least one number, one uppercase letter, one lowercase letter, and one special character'),
+    confirmPassword: yup.string()
+        .required('Confirm password is required')
+        .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    phone: yup.string()
+        .required('Phone number is required')
+        .matches(/^[0-9]+$/, 'Phone number must only contain numbers')
+        .min(8, 'Phone number must have at least 8 digits')
+        .max(10, 'Phone number must have 10 digits or less'),
+    dob: yup.date()
+        .required('Date of birth is required')
+        .max(new Date(), 'Date of birth must be in the past')
+        .min(subYears(new Date(), 120), 'Date of birth must be within the last 120 years')
+        .typeError('Date of birth must be a valid date'),
+    unit: yup.string()
+        .optional()
+        .matches(/^[0-9]*$/, 'Unit must only contain numbers')
+        .min(0, 'Unit must have at least 1 digit')
+        .max(4, 'Unit must have 4 digits or less'),
+    streetNumber: yup.string()
+        .required('Street number is required')
+        .matches(/^[0-9]+$/, 'Street number must only contain numbers')
+        .min(1, 'Street number must have at least 1 digit')
+        .max(6, 'Street number must have 6 digits or less'),
+    streetName: yup.string()
+        .required('Street name is required')
+        .matches(/^[a-zA-Z0-9\s'-]+$/, 'Street name must only contain letters, numbers, spaces, hyphens, and apostrophes')
+        .min(2, 'Street name must have at least 2 characters')
+        .max(50, 'Street name must have less than 50 characters'),
+    city: yup.string()
+        .required('City is required')
+        .matches(/^[a-zA-Z\s'-]+$/, 'City must only contain letters, spaces, hyphens, and apostrophes')
+        .min(2, 'City must have at least 2 characters')
+        .max(50, 'City must have less than 50 characters'),
+    state: yup.string()
+        .required('State is required')
+        .matches(/^[a-zA-Z\s'-]+$/, 'State must only contain letters, spaces, hyphens, and apostrophes')
+        .min(2, 'State must have at least 2 characters')
+        .max(50, 'State must have less than 50 characters'),
+    postCode: yup.string()
+        .required('Post code is required')
+        .matches(/^[0-9-]+$/, 'Post code must only contain numbers and hyphens')
+        .min(2, 'Post code must have at least 2 digits')
+        .max(10, 'Post code must have 10 digits or less'),
+    country: yup.string()
+        .required('Country is required')
+        .matches(/^[a-zA-Z\s'-]+$/, 'Country must only contain letters, spaces, hyphens, and apostrophes')
+        .min(2, 'Country must have at least 2 characters')
+        .max(50, 'Country must have less than 50 characters'),
+
+
+
+})
 
 export default function Register() {
     // Set up router to redirect users on login
     const router = useRouter()
 
     const userData = useContext(userDataContext)
-    console.log(userData)
 
-    // Form control
+    // State management
+    const { handleSubmit, control, formState: { errors } } = useForm({ mode: "onChange", resolver: yupResolver(validationSchema) })
+    const [userType, setUserType] = useState("user")
     const [form, setForm] = useState({
         fname: "",
         lname: "",
         email: "",
         password: "",
-        confirmPassword: "",
         phone: "",
         address: {
             unit: "",
@@ -49,31 +126,30 @@ export default function Register() {
             country: "",
         },
         dob: "",
-        appointments: [],
     })
 
+    // Handle form changes
     const updateForm = ((value) =>  {
-        console.log("value: ", value)
         if(!value.address) {
+            
             setForm(prev => ({...prev, ...value}))
         } else {
             setForm(prev => ({...prev, ...value, address: {...prev.address, ...value.address}}))
         }
     })
-    console.log("form: ", form)
 
-
+    // Handle form submission
     const handleRegistration = (e) => {
-        e.preventDefault()
 
         // Check if passwords match
 
         // Check if email is already in use
 
-        // 
+        // Get user type
 
-        userData.createUser(form)
-        router.push('/login')
+        console.log("form: ", form)
+        // userData.createUser(form)
+        // router.push('/login')
     }
 
     return (
@@ -83,169 +159,287 @@ export default function Register() {
                     <Typography sx={styles.title} variant="h3" align="center">
                         Register
                     </Typography>
-                    <Box as="form" sx={styles.form} onSubmit={handleRegistration}>
-                        <TextField
-                            sx={styles.formItem}
-                            fullWidth
-                            name="fname" 
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AccountCircleIcon /></InputAdornment>)}}
-                            type="text"
-                            placeholder="First Name"
-                            required
-                            value={form.fname}
-                            onChange={(e) => updateForm({fname: e.target.value})} 
+                    <Box as="form" sx={styles.form} onSubmit={handleSubmit(handleRegistration)}>
+                        <Tabs 
+                            sx={styles.userToggle}
+                            variant="fullWidth"
+                            value={userType} 
+                            onChange={(e, newValue) => { setUserType(newValue) }}
+                        >
+                            <Tab label="User" value="user" />
+                            <Tab label="Business" value="business" />
+                        </Tabs>
+                        <Controller
+                            name="fname"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="fname" 
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AccountCircleIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="First Name"
+                                    { ...field }
+                                    value={form.fname}
+                                    onChange={(e) => {updateForm({fname: e.target.value}); field.onChange(e.target.value)}}
+                                    error={!!errors.fname}
+                                    helperText={errors.fname && errors?.fname?.message}
+                                />
+                            )}
                         />
-                        <TextField
-                            sx={styles.formItem}
-                            fullWidth
-                            name="lname" 
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AccountCircleIcon /></InputAdornment>)}}
-                            type="text"
-                            placeholder="Last Name"
-                            required
-                            value={form.lname}
-                            onChange={(e) => updateForm({lname: e.target.value})} 
+                        <Controller
+                            name="lname"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="lname" 
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AccountCircleIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Last Name"
+                                    {...field}
+                                    value={form.lname}
+                                    onChange={(e) => {updateForm({lname: e.target.value}); field.onChange(e.target.value)}}
+                                    error={!!errors.lname}
+                                    helperText={errors.lname && errors?.lname?.message}
+                                />
+                            )}
                         />
-                        <TextField
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="email"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AlternateEmailRoundedIcon /></InputAdornment>)}}
-                            type="email"
-                            placeholder="Email"
-                            required
-                            value={form.email}
-                            onChange={(e) => updateForm({email: e.target.value})} 
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="email"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><AlternateEmailRoundedIcon /></InputAdornment>)}}
+                                    type="email"
+                                    placeholder="Email"
+                                    {...field}
+                                    value={form.email}
+                                    onChange={(e) => {updateForm({email: e.target.value}); field.onChange(e.target.value)}}
+                                    error={!!errors.email}
+                                    helperText={errors.email && errors?.email?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="password"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LockRoundedIcon /></InputAdornment>)}}
-                            type="password"
-                            placeholder="Password"
-                            required
-                            value={form.password}
-                            onChange={(e) => updateForm({password: e.target.value})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="password"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LockRoundedIcon /></InputAdornment>)}}
+                                    type="password"
+                                    placeholder="Password"
+                                    {...field}
+                                    value={form.password}
+                                    onChange={(e) => {updateForm({password: e.target.value}); field.onChange(e.target.value)}}
+                                    error={!!errors.password}
+                                    helperText={errors.password ? errors?.password?.message : "Password must be at least 8 characters, contain at least one number, one uppercase letter, one lowercase letter, and one special character"}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="confirmPassword"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LockRoundedIcon /></InputAdornment>)}}
-                            type="password"
-                            placeholder="Confirm Password"
-                            required
-                            value={form.confirmPassword}
-                            onChange={(e) => updateForm({confirmPassword: e.target.value})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="confirmPassword"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LockRoundedIcon /></InputAdornment>)}}
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                    {...field}
+                                    error={!!errors.confirmPassword}
+                                    helperText={errors.confirmPassword && errors?.confirmPassword?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="phone"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocalPhoneRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[0-9]{8,10}"}}
-                            type="text"
-                            placeholder="Phone"
-                            required
-                            value={form.phone}
-                            onChange={(e) => updateForm({phone: e.target.value})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="phone"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocalPhoneRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Phone"
+                                    {...field}
+                                    value={form.phone}
+                                    onChange={(e) => {updateForm({phone: e.target.value}); field.onChange(e.target.value)}}
+                                    error={!!errors.phone}
+                                    helperText={errors.phone && errors?.phone?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={{ ...styles.formItem, mb: 1 }}
-                            fullWidth
+                        <Controller
                             name="dob"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><CakeRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[0-9]{8,10}"}}
-                            type="text"
-                            placeholder="Date of Birth"
-                            required
-                            value={form.dob}
-                            onChange={(e) => updateForm({dob: e.target.value})}
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    name="dob"
+                                    label="Date of Birth"
+                                    shouldDisableDate={isWeekend}
+                                    inputFormat="dd/MM/yyyy"
+                                    {...field}
+                                    value={form.dob}
+                                    onChange={(newDate) => {
+                                        updateForm({dob: newDate})
+                                        field.onChange(newDate)
+                                    }}
+                                    renderInput={(params) => <TextField 
+                                        {...params} ß
+                                        sx={{ ...styles.formItem, width: "100%", mb: 1 }}
+                                        error={!!errors.dob}
+                                        helperText={errors.dob && errors?.dob?.message}
+                                    />}
+                                />
+                            )}
                         />
+                        
                         <Typography sx={{ ...styles.formItem, width: "100%" }} variant="body1" align="left">Address:</Typography>
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="unit"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><ApartmentRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[0-9]{0,6}"}}
-                            type="text"
-                            placeholder="Unit"
-                            value={form.address.unit}
-                            onChange={(e) => updateForm({address: { unit: e.target.value}})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="unit"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><ApartmentRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Unit"
+                                    {...field}
+                                    value={form.address.unit}
+                                    onChange={(e) => {updateForm({address: { unit: e.target.value}}); field.onChange(e.target.value)}}
+                                    error={!!errors.unit}
+                                    helperText={errors.unit && errors?.unit?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="streetNumber"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><HomeRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[0-9]{0,10}"}}
-                            type="text"
-                            placeholder="Street Number"
-                            required
-                            value={form.address.streetNumber}
-                            onChange={(e) => updateForm({address: { streetNumber: e.target.value}})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="streetNumber"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><HomeRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Street Number"
+                                    {...field}
+                                    value={form.address.streetNumber}
+                                    onChange={(e) => {updateForm({address: { streetNumber: e.target.value}}); field.onChange(e.target.value)}}
+                                    error={!!errors.streetNumber}
+                                    helperText={errors.streetNumber && errors?.streetNumber?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="streetName"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><SignpostRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[A-Za-z]{1,30}"}}
-                            type="text"
-                            placeholder="Street Name"
-                            required
-                            value={form.address.streetName}
-                            onChange={(e) => updateForm({address: { streetName: e.target.value }})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="streetName"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><SignpostRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Street Name"
+                                    {...field}
+                                    value={form.address.streetName}
+                                    onChange={(e) => {updateForm({address: { streetName: e.target.value }}); field.onChange(e.target.value)}}
+                                    error={!!errors.streetName}
+                                    helperText={errors.streetName && errors?.streetName?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="city"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[A-Za-z]{1,50}"}}
-                            type="text"
-                            placeholder="City"
-                            required
-                            value={form.address.city}
-                            onChange={(e) => updateForm({ address: { city: e.target.value }})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="city"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="City"
+                                    {...field}
+                                    value={form.address.city}
+                                    onChange={(e) => {updateForm({ address: { city: e.target.value }}); field.onChange(e.target.value)}}
+                                    error={!!errors.city}
+                                    helperText={errors.city && errors?.city?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="state"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[A-Za-z]{1,10}"}}
-                            type="text"
-                            placeholder="State/Province"
-                            required
-                            value={form.address.state}
-                            onChange={(e) => updateForm({ address: { state: e.target.value }})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                sx={styles.formItem}
+                                fullWidth
+                                name="state"
+                                InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
+                                type="text"
+                                placeholder="State/Province"
+                                {...field}
+                                value={form.address.state}
+                                onChange={(e) => {updateForm({ address: { state: e.target.value }}); field.onChange(e.target.value)}}
+                                error={!!errors.state}
+                                helperText={errors.state && errors?.state?.message}
+                            />
+                            )}
                         />
-                        <TextField 
-                            sx={styles.formItem}
-                            fullWidth
+                        <Controller
                             name="postCode"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[0-9]{4,8}"}}
-                            type="text"
-                            placeholder="Postcode"
-                            required
-                            value={form.address.postCode}
-                            onChange={(e) => updateForm({ address: { postCode: e.target.value }})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={styles.formItem}
+                                    fullWidth
+                                    name="postCode"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><LocationOnRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Postcode"
+                                    {...field}
+                                    value={form.address.postCode}
+                                    onChange={(e) => {updateForm({ address: { postCode: e.target.value }}); field.onChange(e.target.value)}}
+                                    error={!!errors.postCode}
+                                    helperText={errors.postCode && errors?.postCode?.message}
+                                />
+                            )}
                         />
-                        <TextField 
-                            sx={{...styles.formItem, width: "100%", mb: 1 }}
+                        <Controller
                             name="country"
-                            InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><PublicRoundedIcon /></InputAdornment>)}}
-                            inputProps={{pattern: "[A-Za-z]{1,40}"}}
-                            type="text"
-                            placeholder="Country"
-                            required
-                            value={form.address.country}
-                            onChange={(e) => updateForm({ address: { country: e.target.value }})}
+                            control={control}
+                            render={({ field }) => (
+                                <TextField 
+                                    sx={{...styles.formItem, width: "100%", mb: 1 }}
+                                    name="country"
+                                    InputProps={{startAdornment: (<InputAdornment sx={styles.inputIcon} position="start"><PublicRoundedIcon /></InputAdornment>)}}
+                                    type="text"
+                                    placeholder="Country"
+                                    {...field}
+                                    value={form.address.country}
+                                    onChange={(e) => {updateForm({ address: { country: e.target.value }}); field.onChange(e.target.value)}}
+                                    error={!!errors.country}
+                                    helperText={errors.country && errors?.country?.message}
+                                />
+                            )}
                         />
+                        
                         <Button sx={styles.formItem}
                         fullWidth type="submit" variant="contained">Register</Button>
                     </Box>
@@ -269,6 +463,11 @@ const styles = {
         mt: 3,
         display: "flex",
         flexWrap: "wrap",
+    },
+    userToggle: {
+        width: "100%",
+        // display: "flex",
+        // justifyContent: "space-between",
     },
     formItem: {
         mt: 1,
