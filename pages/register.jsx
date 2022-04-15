@@ -9,11 +9,15 @@ import isWeekend from 'date-fns/isWeekend'
 
 // Styles, UI, UX
 import { Typography } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 import DatePicker from '@mui/lab/DatePicker'
+import Dialog from '@mui/material/Dialog'
 import InputAdornment from '@mui/material/InputAdornment'
+import Snackbar from '@mui/material/Snackbar'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import TextField from '@mui/material/TextField'
@@ -23,7 +27,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
 import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
 import LockRoundedIcon from '@mui/icons-material/LockRounded'
-import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
 import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded'
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import SignpostRoundedIcon from '@mui/icons-material/SignpostRounded'
@@ -89,16 +92,12 @@ const validationSchema = yup.object().shape({
     postCode: yup.string()
         .required('Post code is required')
         .matches(/^[0-9-]+$/, 'Post code must only contain numbers and hyphens')
-        .min(2, 'Post code must have at least 2 digits')
-        .max(10, 'Post code must have 10 digits or less'),
+        .length(4, 'Post code must be 4 digits long'),
     country: yup.string()
         .required('Country is required')
         .matches(/^[a-zA-Z\s'-]+$/, 'Country must only contain letters, spaces, hyphens, and apostrophes')
         .min(2, 'Country must have at least 2 characters')
         .max(50, 'Country must have less than 50 characters'),
-
-
-
 })
 
 export default function Register() {
@@ -109,6 +108,8 @@ export default function Register() {
 
     // State management
     const { handleSubmit, control, formState: { errors } } = useForm({ mode: "onChange", resolver: yupResolver(validationSchema) })
+    const [isLoading, setIsLoading] = useState(false)
+    const [responseMessage, setResponseMessage] = useState(null)
     const [userType, setUserType] = useState("user")
     const [form, setForm] = useState({
         fname: "",
@@ -131,7 +132,6 @@ export default function Register() {
     // Handle form changes
     const updateForm = ((value) =>  {
         if(!value.address) {
-            
             setForm(prev => ({...prev, ...value}))
         } else {
             setForm(prev => ({...prev, ...value, address: {...prev.address, ...value.address}}))
@@ -140,16 +140,51 @@ export default function Register() {
 
     // Handle form submission
     const handleRegistration = (e) => {
+        // No need to prevent default as that is handled by react-hook-form
+        // Start spinner
+        setIsLoading(true)
 
-        // Check if passwords match
+        // Send fetch request to server
+        fetch(`http://localhost:8200/api/auth/register/${userType}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(form)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Throw error if request failed
+            if(data.status !== "success") {
+                throw {
+                    status: data.status,
+                    message: data.message,
+                    severity: "error"
+                }
+            }
 
-        // Check if email is already in use
+            // Stop spinner
+            setIsLoading(false)
 
-        // Get user type
+            // Request was successful, inform the user
+            setResponseMessage({
+                status: data.status,
+                message: data.message,
+                severity: "success"
+            })
 
-        console.log("form: ", form)
-        // userData.createUser(form)
-        // router.push('/login')
+            // Redirect user to login page
+            setTimeout(() => {
+                router.push("/login")
+            }, 2000)
+        })
+        .catch(err => {
+            // Log the error to console then show user the error message
+            console.log(err)
+            // Stop spinner
+            setIsLoading(false)
+            setResponseMessage(err)  
+        })
     }
 
     return (
@@ -167,7 +202,7 @@ export default function Register() {
                             onChange={(e, newValue) => { setUserType(newValue) }}
                         >
                             <Tab label="User" value="user" />
-                            <Tab label="Business" value="business" />
+                            <Tab label="Business" value="businessRep" />
                         </Tabs>
                         <Controller
                             name="fname"
@@ -297,7 +332,7 @@ export default function Register() {
                                         field.onChange(newDate)
                                     }}
                                     renderInput={(params) => <TextField 
-                                        {...params} ß
+                                        {...params}
                                         sx={{ ...styles.formItem, width: "100%", mb: 1 }}
                                         error={!!errors.dob}
                                         helperText={errors.dob && errors?.dob?.message}
@@ -439,10 +474,20 @@ export default function Register() {
                                 />
                             )}
                         />
-                        
                         <Button sx={styles.formItem}
                         fullWidth type="submit" variant="contained">Register</Button>
                     </Box>
+                    {responseMessage && console.log("THIS IS THE RESPONSE MESSAGE", responseMessage)}
+                    {responseMessage && (
+                        <Snackbar open={responseMessage} autoHideDuration={6000} onClose={() => setResponseMessage(null)}>
+                            <Alert onClose={() => setResponseMessage(null)} severity={responseMessage.severity}>
+                                {responseMessage.message}
+                            </Alert>
+                        </Snackbar>
+                    )}
+                    <Dialog open={isLoading} onClose={() => setIsLoading(false)}>
+                        <CircularProgress size="5rem" />
+                    </Dialog>
                 </Box>
             </BusinessProfileLayout>
         </>
