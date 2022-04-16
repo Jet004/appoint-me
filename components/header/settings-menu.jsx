@@ -17,7 +17,7 @@ import Switch from '@mui/material/Switch'
 import ThemeContext from '../../utility/themeContext'
 import { useTheme } from '@mui/material/styles'
 // THIS WILL CHANGE
-import userDataContext from '../../utility/mockData/userDataContext'
+import userContext from '../../utility/mockData/userContext'
 
 const SettingsMenu = () => {
     // Set the anchor element for settings menu
@@ -29,7 +29,7 @@ const SettingsMenu = () => {
     // Pass theme toggler function to variable
     const colourMode = useContext(ThemeContext)
     // THIS WILL CHANGE
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
 
     // Get theme values
     const theme = useTheme()
@@ -51,10 +51,7 @@ const SettingsMenu = () => {
         userData.logout()
         router.push('/login')
     }
-console.log(userData)
-    // THIS COMPONENT SHOULD USE MUI DRAWER AND LIST
 
-    // {theme.palette.mode.toUpperCase()} Theme
     return (
         <Box>
             <IconButton type="button" onClick={toggleSettingsMenu} sx={styles.settingsMenu}>

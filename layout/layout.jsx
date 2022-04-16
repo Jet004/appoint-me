@@ -8,11 +8,11 @@ import Head from 'next/head'
 import Header from '../components/header/header'
 import NavMenu from '../components/nav-menu'
 import Footer from '../components/footer'
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 
 const Layout = ({ page, children }) => {
     // GET USER DATA FOR PROTOTYPE
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
 
     // Listen for screen resize to determine which components to render
     const [windowWidth, setWindowWidth] = useState(false)

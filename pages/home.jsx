@@ -22,7 +22,7 @@ import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 
 // Mock Data
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 import isToday from 'date-fns/isToday'
@@ -33,7 +33,8 @@ import isToday from 'date-fns/isToday'
 export default function Home() {
 
     // Allow access to user data
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
+    console.log(userData)
 
   return (
     <>
@@ -53,8 +54,9 @@ export default function Home() {
                             <Divider sx={styles.innerBoxHeaderDivider} />
                         </Box>
                         <Box sx={styles.innerBoxBody}>
+                            { console.log(userData.appointments)}
                             <List sx={styles.itemList}>
-                                {userData.appointments.map(appointment => {
+                                {userData.appointments !== undefined && userData.appointments.map(appointment => {
                                     if(!isPast(appointment.datetime)) return (
                                         <>
                                         {/* {console.log("Is Today: ", isToday(appointment.datetime))} */}
@@ -93,7 +95,7 @@ export default function Home() {
                         </Box>
                         <Box sx={styles.innerBoxBody}>
                             <List sx={styles.itemList}>
-                                {userData.appointments.map(appointment => {
+                                {userData.appointments !== undefined && userData.appointments.map(appointment => {
                                     if(appointment.paymentStatus !== "paid") return (
                                     <>
                                         <ListItemButton 

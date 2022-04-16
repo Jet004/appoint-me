@@ -13,8 +13,8 @@ import darkTheme from '../styles/theme/darkTheme'
 import lightTheme from '../styles/theme/lightTheme'
 
 // Import user context data - WILL CHANGE!!!
-import userDataContext from '../utility/mockData/userDataContext'
-import * as user from '../utility/mockData/userContext'
+import userContext from '../utility/mockData/userContext'
+import * as user from '../utility/mockData/userData'
 import * as businessUser from '../utility/mockData/businessContext'
 
 // Set up date adapter to allow localisation and date functions
@@ -27,14 +27,17 @@ import '../styles/globals.css'
 // Initialise UI cache
 const clientSideEmotionCache = createEmotionCache()
 
+// This function sets items into local storage
 const setLocalStorage = (key, value) => {
     try {
         window.localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
-        // Let errors pass as the current session will have the desired theme
+        // Let errors propogate if local storage failed to set
     }
 }
 
+// This function wraps useState initial values to load data from local storage if present
+// defaults to an initial value if no data is found in local storage
 const getLocalStorage = (key) => {
     try {
         const value = window.localStorage.getItem(key)
@@ -44,25 +47,55 @@ const getLocalStorage = (key) => {
     }
 }
 
-
-
 // Root component
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
     // Theme switch state to toggle dark/light mode
     const [themeMode, setThemeMode] = useState("dark")
-
     // Theme toggler logic
     const colourMode = {
         toggleColourMode: () => {
             setThemeMode(prev => prev === 'light' ? 'dark' : 'light')
         }
     }
+    
 
-    // Get theme from local storage if available on first render
+    // Set up user context - THIS WILL CHANGE IN NEXT ITERATION
+    const [userType, setUserType] = useState(null)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [user, setUser] = useState({})
+
+    // Set user context to draw from app level state
+    const UserContext = useMemo(() => {
+        return {
+        loggedIn: loggedIn,
+        userType: userType,
+        user: user,
+        login: (userData, userTypeData) => {
+            setUser(userData)
+            setUserType(userTypeData)
+            setLoggedIn(true)
+        },
+        logout: () => {
+            setUser({})
+            setUserType(null)
+            setLoggedIn(false)
+        }
+    }}, [user, userType, loggedIn])
+
+    // Get stored data from local storage if available on first render
     useEffect(() => {
+        // Get stored theme mode and set it in state manager
         const storedTheme = getLocalStorage('theme')
         if(storedTheme) {
             setThemeMode(storedTheme)
+        }
+
+        // Get stored user data and set it in state manager
+        const storedUser = JSON.parse(getLocalStorage('userData'))
+        if(storedUser) {
+            setUser(storedUser.user)
+            setUserType(storedUser.userType)
+            setLoggedIn(storedUser.loggedIn)
         }
     }, [])
 
@@ -71,35 +104,17 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
        setLocalStorage('theme', themeMode)
     }, [themeMode])
 
+    // Persist user data to local storage
+    useEffect(() => {
+        setLocalStorage('userData', JSON.stringify({
+            user: user,
+            userType: userType,
+            loggedIn: loggedIn
+        }))
+    }, [user, userType, loggedIn])
 
-    // Set up user context - THIS WILL CHANGE IN NEXT ITERATION
-    const [userType, setUserType] = useState('user')
-    const [loggedIn, setLoggedIn] = useState(false)
 
-    const userMode = useMemo(() => {
-        const User = userType === 'user' ? user : businessUser
-        return {
-        loggedIn: loggedIn,
-        type: userType,
-        user: User.users[0],
-        profile: User.users[0].profile,
-        appointments: User.users[0].appointments,
-        getUsers: User.getUsers,
-        getUserByID: User.getUserById,
-        createUser: User.createUser,
-        updateUser: User.updateUser,
-        toggleUserType: () => {
-            setUserType(prev => prev === 'user' ? 'business' : 'user')
-        },
-        login: () => {
-            setLoggedIn(true)
-        },
-        logout: () => {
-            setLoggedIn(false)
-        }
-    }}, [userType, loggedIn])
-
-    // This code will change the theme colours any time themeMode changes
+    // This code will change the theme any time themeMode changes
     let theme = useMemo(() => themeMode === 'dark' ? darkTheme(themeMode) : lightTheme(themeMode), [themeMode])
 
     // Automatically adjust font sizes for text elements based on viewport width
@@ -111,9 +126,9 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <LocalizationProvider dateAdapter={DateAdapter}>
-                        <userDataContext.Provider value={userMode}>
+                        <userContext.Provider value={UserContext}>
                             <Component {...pageProps} />
-                        </userDataContext.Provider>
+                        </userContext.Provider>
                     </LocalizationProvider>
                 </ThemeProvider>
             </ThemeContext.Provider>

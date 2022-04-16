@@ -25,7 +25,7 @@ const navData = {
             path: '/business-profile'
         },
     ],
-    business: [
+    businessRep: [
         {
             text: 'Home',
             icon: <HomeRoundedIcon />,

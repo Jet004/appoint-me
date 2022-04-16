@@ -23,7 +23,7 @@ import CalendarViewWeekRoundedIcon from '@mui/icons-material/CalendarViewWeekRou
 import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthRounded';
 
 // Data
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 import isSameDay from 'date-fns/isSameDay'
 import isWeekend from 'date-fns/isWeekend'
 import format from 'date-fns/format'
@@ -31,7 +31,7 @@ import format from 'date-fns/format'
 
 export default function Appointments() {
     // Get user data
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
 
     const [calendarState, setCalendarState] = useState("day")
     const [pickedDate, setPickedDate] = useState(new Date())

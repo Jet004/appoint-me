@@ -1,26 +1,23 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import userDataContext from '../utility/mockData/userDataContext'
 import subYears from 'date-fns/subYears'
 import isWeekend from 'date-fns/isWeekend'
 
 // Styles, UI, UX
-import { Typography } from '@mui/material'
-import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
 import DatePicker from '@mui/lab/DatePicker'
-import Dialog from '@mui/material/Dialog'
 import InputAdornment from '@mui/material/InputAdornment'
-import Snackbar from '@mui/material/Snackbar'
+import Spinner from '../components/spinner'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import TextField from '@mui/material/TextField'
+import Toast from '../components/toast'
+import Typography from '@mui/material/Typography'
 
 // Icons
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
@@ -32,6 +29,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import SignpostRoundedIcon from '@mui/icons-material/SignpostRounded'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded'
+
 
 // Define schema for form validation
 const validationSchema = yup.object().shape({
@@ -104,8 +102,6 @@ export default function Register() {
     // Set up router to redirect users on login
     const router = useRouter()
 
-    const userData = useContext(userDataContext)
-
     // State management
     const { handleSubmit, control, formState: { errors } } = useForm({ mode: "onChange", resolver: yupResolver(validationSchema) })
     const [isLoading, setIsLoading] = useState(false)
@@ -139,13 +135,12 @@ export default function Register() {
     })
 
     // Handle form submission
-    const handleRegistration = (e) => {
+    const handleRegistration = () => {
         // No need to prevent default as that is handled by react-hook-form
         // Start spinner
         setIsLoading(true)
-
         // Send fetch request to server
-        fetch(`http://localhost:8200/api/auth/register/${userType}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register/${userType}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -159,7 +154,6 @@ export default function Register() {
                 throw {
                     status: data.status,
                     message: data.message,
-                    severity: "error"
                 }
             }
 
@@ -181,9 +175,15 @@ export default function Register() {
         .catch(err => {
             // Log the error to console then show user the error message
             console.log(err)
+
             // Stop spinner
             setIsLoading(false)
-            setResponseMessage(err)  
+
+            setResponseMessage({
+                status: err.status, 
+                message: err.message, 
+                severity: "error"
+            })  
         })
     }
 
@@ -477,17 +477,8 @@ export default function Register() {
                         <Button sx={styles.formItem}
                         fullWidth type="submit" variant="contained">Register</Button>
                     </Box>
-                    {responseMessage && console.log("THIS IS THE RESPONSE MESSAGE", responseMessage)}
-                    {responseMessage && (
-                        <Snackbar open={responseMessage} autoHideDuration={6000} onClose={() => setResponseMessage(null)}>
-                            <Alert onClose={() => setResponseMessage(null)} severity={responseMessage.severity}>
-                                {responseMessage.message}
-                            </Alert>
-                        </Snackbar>
-                    )}
-                    <Dialog open={isLoading} onClose={() => setIsLoading(false)}>
-                        <CircularProgress size="5rem" />
-                    </Dialog>
+                    <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
+                    <Spinner open={isLoading} dialogStyle={styles.spinDialog} spinStyle={styles.spinStyle} />
                 </Box>
             </BusinessProfileLayout>
         </>
@@ -519,5 +510,11 @@ const styles = {
     },
     inputIcon: {
         color: "custom.contrastText",
+    },
+    spinDialog: {
+        backgroundImage: (theme) => theme.palette.custom.gradient.medium
+    },
+    spinStyle: {
+        m: 6,
     }
 }

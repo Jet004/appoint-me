@@ -9,7 +9,7 @@ import Link from './link'
 import Paper from '@mui/material/Paper'
 
 // THIS WILL CHANGE
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 
 // Navigation link data
 import navData from './header/navData'
@@ -21,12 +21,10 @@ const NavMenu = ({ windowWidth }) => {
     const router = useRouter()
 
     // THIS WILL CHANGE
-    const userData = useContext(userDataContext)
-    // Get user type -- THIS IS DUMMY CODE AND NEEDS TO BE UPDATED
-    const user = userData
+    const user = useContext(userContext)
 
     // Set navData based on user type
-    const navLinkData = navData[user.type]
+    const navLinkData = navData[user.userType]
 
     const [navValue, setNavValue] = useState(router.pathname)
 

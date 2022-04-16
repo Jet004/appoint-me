@@ -32,7 +32,7 @@ import Typography from '@mui/material/Typography'
 // Data
 import servicesData from '../utility/mockData/ServicesData'
 import availability from '../utility/mockData/availability'
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 
 // date-fns
 import isSameDay from 'date-fns/isSameDay'
@@ -42,7 +42,7 @@ import format from 'date-fns/format'
 
 export default function Appointments() {
     // Get user data
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
 
 
     //

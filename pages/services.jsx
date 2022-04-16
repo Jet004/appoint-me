@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 
 // Styles, UI, UX
 import Typography from '@mui/material/Typography'

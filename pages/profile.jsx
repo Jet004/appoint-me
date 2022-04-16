@@ -36,10 +36,10 @@ import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 
 // Mock data
-import userDataContext from '../utility/mockData/userDataContext'
+import userContext from '../utility/mockData/userContext'
 
 const Profile = () => {
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
 
     if(userData.type === 'user') {
         // User profile

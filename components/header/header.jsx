@@ -19,7 +19,7 @@ import { useTheme } from '@mui/material/styles'
 import navData from './navData'
 
 // THIS WILL CHANGE
-import userDataContext from '../../utility/mockData/userDataContext'
+import userContext from '../../utility/mockData/userContext'
 
 
 const Header = ({ page, windowWidth }) => {
@@ -29,7 +29,7 @@ const Header = ({ page, windowWidth }) => {
     const theme = useTheme()
 
     // THIS WILL CHANGE
-    const userData = useContext(userDataContext)
+    const userData = useContext(userContext)
     // Get user type -- THIS IS DUMMY CODE AND NEEDS TO BE UPDATED
     const user = userData
 

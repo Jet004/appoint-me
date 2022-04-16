@@ -4,6 +4,9 @@
         
  - Auth:
     - implement auth checking and limiting routes/functionality
+    - Check logged in status
+    - Manage token refresh
+    - Refresh token if access token expired but refresh token unexpired
 
  - Use Dialog for popup forms...
  - Chip/toast to confirm appointment booked
@@ -15,6 +18,7 @@
  - deal with header indicator color...
  - calendar day default to next business day if is weekend
  - calendar date defaults to current day (or next business day) - choosing a date sets the fetch reference point, data will be fetched around that date. Auto load more data fetches from client side
+ - modify logo home link to only work on image, not the containing div
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body
