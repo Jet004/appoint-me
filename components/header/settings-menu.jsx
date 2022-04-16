@@ -48,6 +48,8 @@ const SettingsMenu = () => {
     }
 
     const logout = () => {
+        sessionStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
         userData.logout()
         router.push('/login')
     }

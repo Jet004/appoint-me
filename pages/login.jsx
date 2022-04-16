@@ -54,8 +54,6 @@ export default function Login() {
     const updateForm = ((value) =>  {
         setForm(prev => ({...prev, ...value}))
     })
-    console.log("form: ", form)
-
 
     const handleLogin = () => {
         // No need to prevent default as that is handled by react-hook-form
@@ -86,9 +84,10 @@ export default function Login() {
 
             // Login was successful, set user data and tokens to local/session storage
             try {
-                // Set tokent to browser storage
+                // Set tokens and user data to browser storage
                 sessionStorage.setItem("accessToken", data.accessToken)
                 localStorage.setItem("refreshToken", data.refreshToken)
+
 
                 // Set user data to user context
                 userData.login(data.user, userType)
@@ -113,8 +112,6 @@ export default function Login() {
                     severity: "error"
                 })  
             }
-
-            
         })
         .catch(err => {
             // Log the error to console then show user the error message
