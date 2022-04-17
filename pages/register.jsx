@@ -48,7 +48,7 @@ const validationSchema = yup.object().shape({
         .email('Email must be valid'),
     password: yup.string()
         .required('Password is required')
-        .matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/gm, 'Password must be at least 8 characters, contain at least one number, one uppercase letter, one lowercase letter, and one special character'),
+        .matches(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.+[_])(?=.*[^\w\d\s:])([^\s]){8,50}$/gm, 'Password must be at least 8 characters, contain at least one number, one uppercase letter, one lowercase letter, and one special character'),
     confirmPassword: yup.string()
         .required('Confirm password is required')
         .oneOf([yup.ref('password'), null], 'Passwords must match'),

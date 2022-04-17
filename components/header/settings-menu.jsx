@@ -43,9 +43,10 @@ const SettingsMenu = () => {
         colourMode.toggleColourMode()
     }
 
-    const toggleUserType = () => {
-        userData.toggleUserType()
-    }
+    // This feature is disabled at the moment and may not be implemented in future versions
+    // const toggleUserType = () => {
+    //     userData.toggleUserType()
+    // }
 
     const logout = () => {
         sessionStorage.removeItem('accessToken')
@@ -81,6 +82,7 @@ const SettingsMenu = () => {
                             onChange={() => {toggleTheme()}}
                         />
                     </ListItem>
+                    {/* This feature is disabled at the moment and may not be implemented in future versions
                     <ListItem 
                         sx={styles.listText}
                         button disableRipple
@@ -93,7 +95,7 @@ const SettingsMenu = () => {
                             checked={userData.type === 'user'}
                             onChange={() => {toggleUserType()}}
                         />
-                    </ListItem>
+                    </ListItem> */}
                     {userData.loggedIn && (
                         <ListItem 
                             sx={styles.listText}

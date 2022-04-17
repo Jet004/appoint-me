@@ -20,9 +20,9 @@ const navData = {
             icon: <CalendarTodayRoundedIcon />,
             path: '/calendar'
         },{
-            text: 'Services',
+            text: 'Services', // This will change to business registry in a future iteration
             icon: <WorkIcon />,
-            path: '/business-profile'
+            path: '/business-profile/5ee9f9f8f9f9f9f9f9f9f9f9' // The business ID is currently hardcoded
         },
     ],
     businessRep: [
@@ -42,14 +42,14 @@ const navData = {
             path: '/calendar'
         },
         {
-            text: 'Business',
-            icon: <WorkIcon />,
-            path: '/business-profile'
-        },
-        {
             text: 'Clients',
             icon: <RecentActorsRoundedIcon />,
             path: '/client-list'
+        },
+        {
+            text: 'Business', // This will not change when the business registry is implemented
+            icon: <WorkIcon />,
+            path: '/business-profile/5ee9f9f8f9f9f9f9f9f9f9f9' // The business ID is currently hardcoded
         }
     ]
 }

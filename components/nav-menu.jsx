@@ -44,7 +44,7 @@ const NavMenu = ({ windowWidth }) => {
                                 sx={styles.action}
                                 label={link.text}
                                 icon={link.icon}
-                                href={link.path}
+                                href={link.path} // The business ID is currently hardcoded and will be made dynamic when the business registry is implemented
                                 value={link.path}
                                 component={Link}
                                 key={link.text}

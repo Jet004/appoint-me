@@ -3,29 +3,59 @@ import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded'; // Serv
 import InsertInvitationRoundedIcon from '@mui/icons-material/InsertInvitationRounded'; // View calendar
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'; // Make apointment
 
-export const serviceData = [
-    {
-        title: "services",
-        icon: (sx) => (<InventoryRoundedIcon sx={sx} />),
-        text: "Learn about our services",
-        path: "/services"
-    },
-    {
-        title: "appointment",
-        icon: (sx) => (<InsertInvitationRoundedIcon sx={sx} />),
-        text: "View available appointments",
-        path: "/appointments"
-    },
-    {
-        title: "makeAppointment",
-        icon: (sx) => (<EventAvailableRoundedIcon sx={sx} />),
-        text: "Make an appointment",
-        path: "/appointments"
-    },
-    {
-        title: "about",
-        icon: (sx) => (<WorkRoundedIcon sx={sx} />),
-        text: "Learn more about us",
-        path: "/about"
-    }
-]
+export const serviceData = {
+    unauthenticated: [
+        {
+            title: "services",
+            icon: (sx) => (<InventoryRoundedIcon sx={sx} />),
+            text: "Learn about our services",
+            path: "/business-profile/services/5ee9f9f8f9f9f9f9f9f9f9f9" // The business ID is currently hardcoded
+        },
+        {
+            title: "appointment",
+            icon: (sx) => (<InsertInvitationRoundedIcon sx={sx} />),
+            text: "View available appointments",
+            path: "/business-profile/appointments/5ee9f9f8f9f9f9f9f9f9f9f9" // The business ID is currently hardcoded
+        },
+        {
+            title: "about",
+            icon: (sx) => (<WorkRoundedIcon sx={sx} />),
+            text: "Learn more about us",
+            path: "/business-profile/about/5ee9f9f8f9f9f9f9f9f9f9f9" // The business ID is currently hardcoded
+        }
+    ],
+    user: [
+        {
+            title: "services",
+            icon: (sx) => (<InventoryRoundedIcon sx={sx} />),
+            text: "Learn about our services",
+            path: "/business-profile/services/5ee9f9f8f9f9f9f9f9f9f9f9" // The business ID is currently hardcoded
+        },
+        {
+            title: "makeAppointment",
+            icon: (sx) => (<EventAvailableRoundedIcon sx={sx} />),
+            text: "Make an appointment",
+            path: "/appointments"
+        },
+        {
+            title: "about",
+            icon: (sx) => (<WorkRoundedIcon sx={sx} />),
+            text: "Learn more about us",
+            path: "/about"
+        }
+    ],
+    businessRep: [
+        {
+            title: "services",
+            icon: (sx) => (<InventoryRoundedIcon sx={sx} />),
+            text: "Manage services",
+            path: "/admin/services"
+        },
+        {
+            title: "business",
+            icon: (sx) => (<WorkRoundedIcon sx={sx} />),
+            text: "Manage business profile",
+            path: "/admin/business"
+        }
+    ]
+}

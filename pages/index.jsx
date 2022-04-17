@@ -2,12 +2,7 @@ import React from 'react'
 // ONLY NEEDED FOR PROTOTYPE
 import { useRouter } from 'next/router'
 
-// Next.js imports
-import Head from 'next/head'
-
 // Styles, UI, UX
-import { Typography } from '@mui/material'
-import CustomImage from '../components/custom-image'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import ServiceCard from '../components/serviceCard/serviceCard'
@@ -21,7 +16,7 @@ export default function Index() {
     const router = useRouter()
     // THIS WILL CHANGE IN NON-PROTOTYPE VERSION
     // Filter service card data based on login status
-    const data = serviceData.filter((item) => item.title !== 'makeAppointment' )
+    const data = serviceData.unauthenticated
 
     return (
         <>

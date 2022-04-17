@@ -4,7 +4,7 @@ import React, { useState, useContext } from 'react'
 import Head from 'next/head'
 
 // Components
-import Layout from '../layout/layout'
+import Layout from '../../../layout/layout'
 
 // MUI UI
 import Alert from '@mui/material/Alert'
@@ -30,9 +30,9 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
 // Data
-import servicesData from '../utility/mockData/ServicesData'
-import availability from '../utility/mockData/availability'
-import userContext from '../utility/mockData/userContext'
+import servicesData from '../../../utility/mockData/ServicesData'
+import availability from '../../../utility/mockData/availability'
+import userContext from '../../../utility/mockData/userContext'
 
 // date-fns
 import isSameDay from 'date-fns/isSameDay'
