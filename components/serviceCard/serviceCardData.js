@@ -35,13 +35,13 @@ export const serviceData = {
             title: "makeAppointment",
             icon: (sx) => (<EventAvailableRoundedIcon sx={sx} />),
             text: "Make an appointment",
-            path: "/appointments"
+            path: "/business-profile/appointments/5ee9f9f8f9f9f9f9f9f9f9f9" // The business ID is currently hardcoded
         },
         {
             title: "about",
             icon: (sx) => (<WorkRoundedIcon sx={sx} />),
             text: "Learn more about us",
-            path: "/about"
+            path: "/business-profile/about/5ee9f9f8f9f9f9f9f9f9f9f9"
         }
     ],
     businessRep: [
@@ -49,13 +49,13 @@ export const serviceData = {
             title: "services",
             icon: (sx) => (<InventoryRoundedIcon sx={sx} />),
             text: "Manage services",
-            path: "/admin/services"
+            path: "/admin/services/5ee9f9f8f9f9f9f9f9f9f9f9"
         },
         {
             title: "business",
             icon: (sx) => (<WorkRoundedIcon sx={sx} />),
             text: "Manage business profile",
-            path: "/admin/business"
+            path: "/admin/business/5ee9f9f8f9f9f9f9f9f9f9f9"
         }
     ]
 }

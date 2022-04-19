@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
-
-// Next.js imports
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 // Components
 import Layout from '../../../layout/layout'
@@ -41,11 +40,14 @@ import format from 'date-fns/format'
 
 
 export default function Appointments() {
+    // Initialise Next router so we can access the URL query object
+    const router = useRouter()
+    console.log(router.query)
     // Get user data
     const userData = useContext(userContext)
 
 
-    //
+    // State management
     const [service, setService] = useState("")
     const [pickedDate, setPickedDate] = useState(new Date())
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -79,7 +81,7 @@ export default function Appointments() {
         </Head>
         <Layout page=" ">
             <Container sx={styles.cont}>
-                <Typography variant="h3">Availability</Typography>
+                <Typography variant="h2">Availability</Typography>
                 <Box sx={styles.outerBox}>
                     <Box sx={styles.innerBox}>
                         <Box  sx={styles.calendarHead}>

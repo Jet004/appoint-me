@@ -1,12 +1,13 @@
 ## AppointMe
 
 ## TODO:
-        
+
  - Auth:
     - implement auth checking and limiting routes/functionality
     - Check logged in status
     - Manage token refresh
     - Refresh token if access token expired but refresh token unexpired
+    - Implement middleware to check for logged in status and redirect to appropriate resource
 
  - Use Dialog for popup forms...
  - Chip/toast to confirm appointment booked
@@ -18,6 +19,10 @@
 - profile page
     - implement display picture upload and edit with default image (frontend and backend)
 
+- ADMIN PANEL
+    - Services blurb - description to include on the services page
+    - create/update/delete services forms
+    - create/update/delete business forms
 
 
 ## Improvements:

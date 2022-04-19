@@ -55,22 +55,25 @@ export default function Login() {
         setForm(prev => ({...prev, ...value}))
     })
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         // No need to prevent default as that is handled by react-hook-form
-        // Start spinner
-        setIsLoading(true)
+        try {
+            // Start spinner
+            setIsLoading(true)
 
-        // Send login request to server
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login/${userType}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(form)
-        })
-        .then(res => res.json())
-        .then(data => {
+            // Send login request to server
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login/${userType}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(form)
+            })
+            const data = await response.json()
             
+            // Stop spinner
+            setIsLoading(false)
+                
             // Throw error if request failed
             if(data.status !== "success"){
                 throw {
@@ -79,9 +82,6 @@ export default function Login() {
                 }
             }
             
-            // Stop spinner
-            setIsLoading(false)
-
             // Login was successful, set user data and tokens to local/session storage
             try {
                 // Set tokens and user data to browser storage
@@ -112,8 +112,8 @@ export default function Login() {
                     severity: "error"
                 })  
             }
-        })
-        .catch(err => {
+
+        } catch(err){
             // Log the error to console then show user the error message
             console.log(err)
            
@@ -125,7 +125,7 @@ export default function Login() {
                 message: err.message, 
                 severity: "error"
             })  
-        })
+        }
     }
 
     return (
@@ -213,11 +213,5 @@ const styles = {
     },
     inputIcons: {
         color: "custom.contrastText",
-    },
-    spinDialog: {
-        backgroundImage: (theme) => theme.palette.custom.gradient.medium
-    },
-    spinStyle: {
-        m: 6,
     }
 }

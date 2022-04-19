@@ -26,8 +26,7 @@ const NavMenu = ({ windowWidth }) => {
     // Set navData based on user type
     const navLinkData = navData[user.userType]
 
-    const [navValue, setNavValue] = useState(router.pathname)
-
+    const [navValue, setNavValue] = useState(router.asPath)
 
     return (
         <>

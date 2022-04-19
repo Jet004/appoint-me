@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import Head from 'next/head'
+import { buildAddress } from '../utility/helperFunctions'
 
 // Style, UI and UX
 import Accordion from '@mui/material/Accordion'
@@ -17,13 +18,13 @@ import ListItemText from '@mui/material/ListItemText'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 
-import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded';
-import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded';
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded';
-import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded'
+import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
+import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
+import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
+import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import { FiEdit } from 'react-icons/fi'
 
 
@@ -35,18 +36,18 @@ import FeatureBox from '../components/featureBox'
 import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 
-// Mock data
+// User data
 import userContext from '../utility/mockData/userContext'
 
 const Profile = () => {
     const userData = useContext(userContext)
-
-    if(userData.type === 'user') {
+    // Handle sub-menu for account history links
+    const [appointmentHistoryEl, setAppointmentHistoryEl] = useState(null)
+    const [paymentHistoryEl, setPaymentHistoryEl] = useState(null)
+    console.log(userData)
+    if(userData.userType === 'user') {
         // User profile
 
-        // Handle sub-menu for account history links
-        const [appointmentHistoryEl, setAppointmentHistoryEl] = useState(null)
-        const [paymentHistoryEl, setPaymentHistoryEl] = useState(null)
 
         return (
             <>
@@ -66,7 +67,7 @@ const Profile = () => {
                                     </IconButton>
                                 }
                             >
-                                <CustomImage style={userStyles.profilePic} alt="Profile picture" src={userData.profile} />
+                                {/* <CustomImage style={userStyles.profilePic} alt="Profile picture" src={userData.profile} /> */}
                             </Badge>
                             <Typography variant="h4">
                                 {console.log(userData)}
@@ -83,7 +84,7 @@ const Profile = () => {
                                 <List>
                                     <ListItem key="address">
                                         <LocationOnRoundedIcon />
-                                        <ListItemText sx={userStyles.listItemText}>{userData.user.address}</ListItemText>
+                                        <ListItemText sx={userStyles.listItemText}>{buildAddress(userData.user.address)}</ListItemText>
                                     </ListItem>
                                     <ListItem key="phone">
                                         <LocalPhoneRoundedIcon />  
@@ -112,8 +113,9 @@ const Profile = () => {
                                     
                                 </AccordionSummary>  
                                 <AccordionDetails>
+                                    {!userData.user.appointments.length && (<List>No appointment history. Go to the <Link href={`/business-profile/5ee9f9f8f9f9f9f9f9f9f9f9`}>services</Link> page if you would like to make an appointment.</List>)}
                                     <List>
-                                        {userData.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
+                                        {userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
                                             if(isPast(appointment.datetime)) {
                                                 return (
                                                     <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
@@ -165,10 +167,9 @@ const Profile = () => {
                                     </IconButton>
                                 }
                             >
-                                <CustomImage style={userStyles.profilePic} alt="Profile picture" src={userData.profile} />
+                                {/* <CustomImage style={userStyles.profilePic} alt="Profile picture" src={userData.profile} /> */}
                             </Badge>
                             <Typography variant="h4">
-                                {console.log(userData)}
                                 {`${userData.user.fname} ${userData.user.lname}`}
                             </Typography>
                         </Box>
