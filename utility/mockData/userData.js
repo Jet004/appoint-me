@@ -1,7 +1,7 @@
 // This is dummy user data to simulate fetching user data from the backend
 
 // Images
-import profile2 from '../../public/images/mock-profile/profile-2.jpeg'
+import profile2 from '../../public/images/mock-profile/profile-2.jpg'
 
 
 export const users = [

@@ -45,7 +45,7 @@ export default function BusinessProfile() {
 const styles = {
     innerBox: {
         width: "90%",
-        minWidth: 360,
+        minWidth: 300,
         maxWidth: 500
     },
     link: {

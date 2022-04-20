@@ -88,7 +88,6 @@ export default function Login() {
                 sessionStorage.setItem("accessToken", data.accessToken)
                 localStorage.setItem("refreshToken", data.refreshToken)
 
-
                 // Set user data to user context
                 userData.login(data.user, userType)
 

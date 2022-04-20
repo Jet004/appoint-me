@@ -10,17 +10,14 @@ import SvgIcon from '@mui/material/SvgIcon'
 import IconButton from '@mui/material/IconButton'
 
 
-import EventRoundedIcon from '@mui/icons-material/EventRounded';
-
-const FeatureBox = ({children, title, iconLeft, iconRight, sx, headerbg}) => {
+const FeatureBox = ({children, title, iconLeft, iconRight, sx}) => {
     // Make theme accessable
     const theme = useTheme(ThemeContext)
 
-    headerbg = headerbg === true && theme.palette.mode === 'dark' ? {backgroundImage: (theme)=> (theme.palette.custom.gradient.light)} : ""
   return (
     <>
-        <Box sx={{...styles.innerBox(theme), ...sx}}>
-            <Box sx={{...styles.innerBoxHeader(theme), ...headerbg}}>
+        <Box sx={{...styles.innerBox, ...sx}}>
+            <Box sx={{...styles.innerBoxHeader(theme)}}>
                 <Box sx={styles.headerContent}>
                     <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
                         {iconLeft && (
@@ -49,57 +46,53 @@ export default FeatureBox
 
 
 const styles = {
-    innerBox: (theme) => theme.palette.mode === 'dark' ? {
+    innerBox: {
         // Dark Theme
-        backgroundImage: (theme)=> (theme.palette.custom.gradient.light),
+        backgroundImage: (theme) => theme.palette.mode === "dark" 
+            ? (theme.palette.custom.gradient.light)
+            : (theme.palette.custom.gradient.secondary.main),
         width: {xs: "90%", md: "80%", lg: "60%"},
         minWidth: "300px",
         maxWidth: "600px",
         mt: 2,
-        borderRadius: "25px",
+        borderRadius: "20px",
         overflow: "hidden",
-    } : {
-        // Light Theme
-        width: {xs: "100%", md: "80%", lg: "60%"},
-        minWidth: "300px",
-        maxWidth: "600px",
-        mt: 2,
-        borderRadius: "25px",
-        overflow: "hidden",
+        boxShadow: 14,
     },
     innerBoxHeader: (theme) => theme.palette.mode === 'dark' ? {
         // Dark Theme
         pt: 2,
         px: 3,
         pb: 2,
-        borderRadius: "25px 25px 0px 0px",
+        borderRadius: "15px 15px 0px 0px",
     } : {
         // Light theme
         pt: 2,
         px: 3,
         pb: 2,
-        borderRadius: "25px 25px 0px 0px",
         alignItems: "center",
     },
     headerContent: {
         display: "flex",
     },
     innerBoxHeaderTitle: {
-        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'primary.main',
-        pl: {xs: 3/2, sm: 3},
+        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'text.custom.highlight',
+        pl: {xs: 1, sm: 3},
         display: "flex",
         alignItems: "center",
-
         flexGrow: 1,
+        textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
     },
     titleIcon: {
         mr: 1
     },
     editIcon: {
-        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'primary.main',
+        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'text.custom.highlight',
+        textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
     },
     innerBoxHeaderDivider: {
-        borderColor: (theme) => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.contrastText',
+        borderColor: (theme) => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'text.custom.highlight',
         pt: 1/2,
+        boxShadow: 1
     },
 }

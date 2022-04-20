@@ -75,6 +75,9 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
             setUserType(userTypeData)
             setLoggedIn(true)
         },
+        update: (userData) => {
+            setUser((prev) => ({...prev, ...userData}))
+        },
         logout: () => {
             setUser({})
             setUserType(null)

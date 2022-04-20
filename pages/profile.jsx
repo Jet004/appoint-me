@@ -1,22 +1,25 @@
 import { useContext, useState } from 'react'
 import Head from 'next/head'
 import { buildAddress } from '../utility/helperFunctions'
+import UpdateUserForm from '../forms/UpdateUserForm'
+import UploadDpForm from '../forms/UploadDpForm'
 
 // Style, UI and UX
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
-import CustomImage from '../components/custom-image'
-import Box from '@mui/material/Box'
 import Badge from '@mui/material/Badge'
+import Box from '@mui/material/Box'
+import CustomImage from '../components/custom-image'
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
 import IconButton from '@mui/material/IconButton'
 import Link from '../components/link'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
+import Typography from '@mui/material/Typography'
 
 import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded'
 import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
@@ -25,6 +28,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
 import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
+import CloseIcon from '@mui/icons-material/Close'
 import { FiEdit } from 'react-icons/fi'
 
 
@@ -44,11 +48,14 @@ const Profile = () => {
     // Handle sub-menu for account history links
     const [appointmentHistoryEl, setAppointmentHistoryEl] = useState(null)
     const [paymentHistoryEl, setPaymentHistoryEl] = useState(null)
-    console.log(userData)
+    const [userFormDialog, setUserFormDialog] = useState(false)
+    const [uploadDpDialog, setUploadDpDialog] = useState(false)
+    const [avatar, setAvatar] = useState(false)
+    console.log(uploadDpDialog)
+
+
     if(userData.userType === 'user') {
         // User profile
-
-
         return (
             <>
                 <Head>
@@ -62,12 +69,13 @@ const Profile = () => {
                                 overlap="circular"
                                 anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                                 badgeContent={
-                                    <IconButton sx={userStyles.badgeIcon}>
+                                    <IconButton sx={userStyles.badgeIcon} onClick={() => {setUploadDpDialog(true); console.log("CLICKED!")}}>
                                         <ImageSearchRoundedIcon />
                                     </IconButton>
                                 }
+                                
                             >
-                                {/* <CustomImage style={userStyles.profilePic} alt="Profile picture" src={userData.profile} /> */}
+                                <CustomImage style={userStyles.profilePic} alt="Profile picture" src={avatar} width={90} height={90} noBlur="true" />
                             </Badge>
                             <Typography variant="h4">
                                 {console.log(userData)}
@@ -78,7 +86,7 @@ const Profile = () => {
                             sx={userStyles.profileDetailsBox}
                             title="Personal Details" 
                             iconLeft={<AssignmentIndRoundedIcon />}
-                            iconRight={<FiEdit fontSize="20px" />}
+                            iconRight={<FiEdit fontSize="20px" onClick={() => setUserFormDialog(true)} />}
                         >
                             <Box sx={userStyles.profileBoxBody} >
                                 <List>
@@ -105,7 +113,6 @@ const Profile = () => {
                             <Accordion sx={userStyles.historyAccordion} disableGutters>
                                 <AccordionSummary 
                                     sx={userStyles.historyItem} 
-                                    button 
                                     key="appointment-history"
                                     expandIcon={<ChevronRightRoundedIcon />}
                                 >
@@ -113,9 +120,9 @@ const Profile = () => {
                                     
                                 </AccordionSummary>  
                                 <AccordionDetails>
-                                    {!userData.user.appointments.length && (<List>No appointment history. Go to the <Link href={`/business-profile/5ee9f9f8f9f9f9f9f9f9f9f9`}>services</Link> page if you would like to make an appointment.</List>)}
+                                    {!userData?.user?.appointments?.length && (<List>You haven't attended any appointments yet...</List>)}
                                     <List>
-                                        {userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
+                                        {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
                                             if(isPast(appointment.datetime)) {
                                                 return (
                                                     <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
@@ -141,6 +148,36 @@ const Profile = () => {
                                 </AccordionDetails>
                             </Accordion>
                         </FeatureBox>
+                        <Dialog sx={userStyles.formDialog} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
+                            <DialogTitle>
+                                <Typography variant="h4" align="center" >Edit Profile</Typography>
+                                <IconButton
+                                    aria-label="close"
+                                    onClick={() => setUserFormDialog(false)}
+                                    sx={userStyles.closeButton}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </DialogTitle>
+                            <DialogContent>
+                                <UpdateUserForm closeDialog={() => setUserFormDialog(false)} />
+                            </DialogContent>
+                        </Dialog>
+                        <Dialog sx={userStyles.formDialog} open={uploadDpDialog} onClose={() => {setUploadDpDialog(false)}}>
+                            <DialogTitle>
+                            <Typography variant="h4" align="center" >Edit Profile Picture</Typography>
+                                <IconButton
+                                    aria-label="close"
+                                    onClick={() => setUserFormDialog(false)}
+                                    sx={userStyles.closeButton}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </DialogTitle>
+                            <DialogContent>
+                                <UploadDpForm closeDialog={() => setUploadDpDialog(false)} />
+                            </DialogContent>
+                        </Dialog>
                     </Box>
                 </Layout>
                 
@@ -216,14 +253,14 @@ const userStyles = {
         alignItems: "center",
     },
     profileBox: {
-        width: {xs: "100%", md: "80%", lg: "60%"},
+        width: {xs: "100%", sm: "80%", lg: "60%"},
         display: "flex",
         justifyContent: {xs: "center", sm: "flex-start"},
         alignItems: "center",
         mt: 3,
     },
     profileBoxBody: {
-        color: "custom.contrastText",
+        color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'text.custom.highlight',
         width: "100%",
         px: {xs: 3},
         pb: 2
@@ -236,7 +273,7 @@ const userStyles = {
     },
     profilePic: {
         width: 90,
-        height: "auto",
+        height: 90,
     },
     profileName: {
 
@@ -252,14 +289,26 @@ const userStyles = {
         pb: 2,
     },
     historyAccordion: {
-        color: "custom.contrastText",
+        color: (theme) => theme.palette.mode == 'dark' ? "custom.contrastText" : "custom.highlight",
         textDecoration: "none",
+        backgroundColor: "custom.secondary.main",
         '&:hover': {
-         backgroundImage: (theme) => theme.palette.custom.gradient.light   
+            backgroundImage: (theme) => theme.palette.custom.gradient.light,
+            textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
+        },
+        '&:hover .MuiSvgIcon-root': {
+            color: "common.white",
         },
         '&.Mui-expanded': {
             backgroundImage: (theme) => theme.palette.custom.gradient.medium,
             borderColor: "common.white",
+            color: "common.white",
+            textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
+        },
+        '.MuiSvgIcon-root': {
+            color: (theme) => theme.palette.mode == 'dark' ? "custom.contrastText" : "custom.highlight",
+        },
+        '.Mui-expanded .MuiSvgIcon-root': {
             color: "common.white",
         }
     },
@@ -280,4 +329,14 @@ const userStyles = {
             ml: 4,
         },
     },
+    formDialog: {
+        color: "custom.constrastText" 
+    },
+    closeButton: {
+        position: 'absolute',
+        right: 8,
+        top: 8,
+        color: "custom.constrastText",
+    }
+
 }

@@ -31,7 +31,7 @@ const NavMenu = ({ windowWidth }) => {
     return (
         <>
             { windowWidth < theme.breakpoints.values.sm && (
-                <Paper elevation={3} sx={styles.bottomNav}>
+                <Paper elevation={5} sx={styles.bottomNav}>
                     <BottomNavigation
                         sx={styles.navMenu}
                         value={navValue}
@@ -61,6 +61,7 @@ export default NavMenu
 
 const styles = {
     bottomNav: {
+        backgroundColor: "background.paper",
         position: "fixed",
         left: 0,
         bottom: 0,
@@ -71,6 +72,7 @@ const styles = {
         pt: 1,
         px: 1,
         width: 100/100,
+        backgroundImage: (theme) => theme.palette.custom.gradient.white,
         "&:before": (theme) => theme.palette.mode === 'dark' ? {
             content: "''",
             position: "absolute",

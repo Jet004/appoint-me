@@ -5,7 +5,7 @@ const Toast = ({ response, setResponse, hideIn}) => {
   return (
     <>
         {response && (
-            <Snackbar open={!!response} autoHideDuration={hideIn} onClose={() => setResponse(null)}>
+            <Snackbar sx={styles.position} open={!!response} autoHideDuration={hideIn} onClose={() => setResponse(null)}>
                 <Alert severity={response.severity}>
                     {response.message}
                 </Alert>
@@ -16,3 +16,9 @@ const Toast = ({ response, setResponse, hideIn}) => {
 }
 
 export default Toast
+
+const styles = {
+    position: {
+        bottom: {xs: 60, sm: 8}
+    }
+}

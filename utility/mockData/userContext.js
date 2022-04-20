@@ -7,6 +7,7 @@ const userContext = createContext({
     userType: null,
     user: {},
     login: () => {},
+    update: () => {},
     logout: () => {}
 })
 

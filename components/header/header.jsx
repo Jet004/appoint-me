@@ -34,7 +34,7 @@ const Header = ({ page, windowWidth }) => {
     const user = userData
 
     // Set navData based on user type
-    const navLinkData = navData[user.type]
+    const navLinkData = navData[user.userType]
 
     // Control the link highlighting for page links
     const [tabValue, setTabValue] = useState(router.pathname)
@@ -112,7 +112,8 @@ const styles = {
             display: {
                 xs: 'flex',
                 sm: 'none'
-            }
+            },
+            justifyContent: "center",
         },
         appMenu: {
             flexGrow: 1,
@@ -135,7 +136,7 @@ const styles = {
     tabs: {
         tab: {
             borderRadius: "20px",
-            color: "custom.primaryContrastText",
+            color: "custom.contrastText",
             '&.Mui-selected': (theme) => ({...theme.palette.custom.action.selected}),
             '&:hover': {
                 color: 'custom.action.hover'
