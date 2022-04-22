@@ -3,13 +3,17 @@ import { useRouter } from 'next/router'
 import userContext from '../../../utility/mockData/appContext'
 
 // Styles, UI, UX
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../../layout/businessProfileLayout'
-import Divider from '@mui/material/Divider'
+import FeatureBox from '../../../components/featureBox'
 import Link from '../../../components/link'
 import Spinner from '../../../components/spinner'
 import Toast from '../../../components/toast'
+import Typography from '@mui/material/Typography'
+
+// Import icons
+import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'
+import TodayRoundedIcon from '@mui/icons-material/TodayRounded'
 
 export default function Login() {
     // Set up router object so we can get url query params
@@ -23,6 +27,7 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(true)
     const [responseMessage, setResponseMessage] = useState(null)
     const [services, setServices] = useState(null)
+    
     console.log("SERVICES: ", services)
 
     // useEffect to get services data
@@ -74,17 +79,23 @@ export default function Login() {
                         We offer a variety of comprehensive tutoring services to meet your needs.
                     </Typography>
                     { services !== null && services.map((service) => (
-                        <Box sx={styles.service} key={service.name}>
-                            <Typography variant="h4">{ service.name }</Typography>
-                            <Divider sx={styles.divider} />
-                            <Typography variant="body1" component="div" gutterBottom>
+                        <FeatureBox 
+                            sx={styles.service} 
+                            title={service.name}    
+                        >
+                            <Typography sx={styles.service.content} variant="body1" component="div" gutterBottom>
                                 {service.description}
                                 <ul>
                                     <li>$50 - {service.duration + service.break} minute class</li>
-                                    <li><Link href={`/business-profile/appointments/${businessId}/?service=${service.name}`}>Check our available class times</Link></li>
                                 </ul>
+                                { userData.loggedIn && (
+                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}>Make an appointment! <EventAvailableRoundedIcon /></Link>
+                                )}
+                                { !userData.loggedIn && (
+                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}>Check our available class times <TodayRoundedIcon /></Link>
+                                )}
                             </Typography>
-                        </Box>
+                        </FeatureBox>
                     ))}
                     
                     <Typography variant="h4" gutterBottom>We&apos;re dedicated to your success!</Typography>
@@ -112,6 +123,15 @@ const styles = {
         mb: 2,
     },
     service: {
-        my: 5,
-    }
+        width: "100%",
+        my: 3,
+        content: {
+            color: theme => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.highlight',
+            py: 1,
+            px: 3
+        },
+        link: {
+            color: theme => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.highlight',
+        }
+    },
 }

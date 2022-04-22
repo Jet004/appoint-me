@@ -26,6 +26,9 @@
     - create/update/delete services forms
     - create/update/delete business forms
 
+- Services
+    - Fix alignment of icons in links
+
 
 ## Improvements:
  - logo as SVG

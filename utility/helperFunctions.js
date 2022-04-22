@@ -1,24 +1,24 @@
 export const buildAddress = (addressObject) => {
     let address = ''
-    if(addressObject.unit) {
+    if(addressObject?.unit) {
         address += `${addressObject.unit}/`
     }
-    if(addressObject.streetNumber) {
+    if(addressObject?.streetNumber) {
         address += `${addressObject.streetNumber}`
     }
-    if(addressObject.streetName) {
+    if(addressObject?.streetName) {
         address += ` ${addressObject.streetName}`
     }
-    if(addressObject.city) {
+    if(addressObject?.city) {
         address += `, ${addressObject.city}`
     }
-    if(addressObject.state) {
+    if(addressObject?.state) {
         address += `, ${addressObject.state}`
     }
-    if(addressObject.postCode) {
+    if(addressObject?.postCode) {
         address += `, ${addressObject.postCode}`
     }
-    if(addressObject.country) {
+    if(addressObject?.country) {
         address += `, ${addressObject.country}`
     }
     return address
