@@ -64,7 +64,7 @@ export default function Login() {
 
     return (
         <>
-            <BusinessProfileLayout logo="thumb" title="Services" page="">
+            <BusinessProfileLayout logo="thumb" title="Services" page="Services">
                 <Box sx={styles.innerBox}>
                     <Typography sx={styles.title} gutterBottom variant="h2">
                         Services We Offer

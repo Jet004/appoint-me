@@ -79,8 +79,8 @@ const Header = ({ page, windowWidth }) => {
 
                 {!userData.loggedIn && (
                     <Box sx={styles.header.links}>
-                        <Link href="/login" sx={styles.header.authButtons}>Login</Link>
-                        <Link href="/register" sx={styles.header.authButtons}>Register</Link>
+                        <Link { ...(router.asPath === "/login") && ({className: "selected"})} href="/login" sx={styles.header.authButtons}>Login</Link>
+                        <Link { ...(router.asPath === "/register") && ({className: "selected"})} href="/register" sx={styles.header.authButtons}>Register</Link>
                     </Box>
                 )}
   
@@ -125,11 +125,14 @@ const styles = {
             justifyContent: "end"
         },
         authButtons: {
-            color: "custom.primaryContrastText",
+            color: "custom.contrastText",
             textDecoration: "none",
             mr: 2,
             "&:hover": {
                 color: "custom.action.hover"
+            },
+            '&.selected': {
+                color: 'primary.main',
             }
         }
     },

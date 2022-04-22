@@ -20,7 +20,7 @@ export default function Index() {
 
     return (
         <>
-            <BusinessProfileLayout logo="full" title="" page="">
+            <BusinessProfileLayout logo="full" title="" page=" ">
                 <Box sx={styles.innerBox}>
                     { data.map(item => (
                         <Link sx={styles.link} href={item.path} key={item.title} >

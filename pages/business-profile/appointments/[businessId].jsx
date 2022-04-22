@@ -79,7 +79,7 @@ export default function Appointments() {
         <Head>
             <title>AppointMe: Appointments</title>
         </Head>
-        <Layout page=" ">
+        <Layout page="Appointments">
             <Container sx={styles.cont}>
                 <Typography variant="h2">Availability</Typography>
                 <Box sx={styles.outerBox}>

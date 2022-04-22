@@ -19,8 +19,7 @@
     - think of a few more features to implement - account settings with password reset etc perhaps
 
 - profile page
-    - implement display picture upload and edit with default image (frontend and backend)
-    - Finish display of appointment history
+    - Finish display of appointment / payment history
 
 - ADMIN PANEL
     - Services blurb - description to include on the services page

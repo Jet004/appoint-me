@@ -10,7 +10,7 @@ export default function Login() {
 
     return (
         <>
-            <BusinessProfileLayout logo="thumb" title="About" page="">
+            <BusinessProfileLayout logo="thumb" title="About" page="About">
                 <Box sx={styles.innerBox}>
                     <Typography sx={styles.title} variant="h3">
                         About Us
