@@ -13,7 +13,7 @@ import darkTheme from '../styles/theme/darkTheme'
 import lightTheme from '../styles/theme/lightTheme'
 
 // Import user context data - WILL CHANGE!!!
-import userContext from '../utility/mockData/userContext'
+import userContext from '../utility/mockData/appContext'
 import * as user from '../utility/mockData/userData'
 import * as businessUser from '../utility/mockData/businessContext'
 

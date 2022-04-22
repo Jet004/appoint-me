@@ -23,7 +23,7 @@ import CalendarViewWeekRoundedIcon from '@mui/icons-material/CalendarViewWeekRou
 import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthRounded';
 
 // Data
-import userContext from '../utility/mockData/userContext'
+import userContext from '../utility/mockData/appContext'
 import isSameDay from 'date-fns/isSameDay'
 import isWeekend from 'date-fns/isWeekend'
 import format from 'date-fns/format'

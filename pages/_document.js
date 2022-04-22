@@ -39,8 +39,9 @@ CustomDocument.getInitialProps = async (ctx) => {
     const initialProps = await Document.getInitialProps(ctx)
     // Prevent emotion from rendering invalid HTML
     const emotionStyles = extractCriticalToChunks(initialProps.html)
-    const emotionStyleTags = emotionStyles.styles.map(style => (
+    const emotionStyleTags = emotionStyles.styles.map((style, index) => (
         <style
+        key={index}
             data-emotion={`${style.key} ${style.ids.join(' ')}`}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: style.css }}

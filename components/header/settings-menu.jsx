@@ -17,7 +17,7 @@ import Switch from '@mui/material/Switch'
 import ThemeContext from '../../utility/themeContext'
 import { useTheme } from '@mui/material/styles'
 // THIS WILL CHANGE
-import userContext from '../../utility/mockData/userContext'
+import userContext from '../../utility/mockData/appContext'
 
 const SettingsMenu = () => {
     // Set the anchor element for settings menu

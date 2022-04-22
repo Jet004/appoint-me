@@ -10,7 +10,7 @@ import SvgIcon from '@mui/material/SvgIcon'
 import IconButton from '@mui/material/IconButton'
 
 
-const FeatureBox = ({children, title, iconLeft, iconRight, sx}) => {
+const FeatureBox = ({children, title, iconLeft, iconRight, clickRightIcon, sx}) => {
     // Make theme accessable
     const theme = useTheme(ThemeContext)
 
@@ -28,7 +28,7 @@ const FeatureBox = ({children, title, iconLeft, iconRight, sx}) => {
                         {title}
                     </Typography>
                     {iconRight && (
-                        <IconButton sx={styles.editIcon}>
+                        <IconButton sx={styles.editIcon} onClick={clickRightIcon}>
                             {iconRight}
                         </IconButton>
                     )}

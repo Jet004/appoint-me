@@ -11,7 +11,7 @@ import BusinessProfileLayout from '../../layout/businessProfileLayout'
 import ServiceCard from '../../components/serviceCard/serviceCard'
 import Link from '../../components/link'
 
-import userContext from '../../utility/mockData/userContext'
+import userContext from '../../utility/mockData/appContext'
 import { serviceData } from '../../components/serviceCard/serviceCardData'
 
 

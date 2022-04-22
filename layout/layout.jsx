@@ -8,7 +8,7 @@ import Head from 'next/head'
 import Header from '../components/header/header'
 import NavMenu from '../components/nav-menu'
 import Footer from '../components/footer'
-import userContext from '../utility/mockData/userContext'
+import userContext from '../utility/mockData/appContext'
 
 const Layout = ({ page, children }) => {
     // GET USER DATA FOR PROTOTYPE

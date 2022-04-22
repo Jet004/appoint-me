@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import userContext from '../../../utility/mockData/userContext'
+import userContext from '../../../utility/mockData/appContext'
 
 // Styles, UI, UX
 import Typography from '@mui/material/Typography'
@@ -26,9 +26,8 @@ export default function Login() {
     console.log("SERVICES: ", services)
 
     // useEffect to get services data
-    useEffect(async () => {
-        // Prevent fetch if businessId has not yet been set by Next.js
-        if(businessId) {
+    useEffect(() => {
+        const getServicesData = async () => {
             try {
                 // Get services data
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses/services/${businessId}`)
@@ -55,6 +54,11 @@ export default function Login() {
                     severity: "error"
                 })
             }
+        }
+
+        // Prevent fetch if businessId has not yet been set by Next.js
+        if(businessId) {
+            getServicesData()
         }
     }, [businessId])
 
@@ -83,7 +87,7 @@ export default function Login() {
                         </Box>
                     ))}
                     
-                    <Typography variant="h4" gutterBottom>We're dedicated to your success!</Typography>
+                    <Typography variant="h4" gutterBottom>We&apos;re dedicated to your success!</Typography>
                     <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
                     <Spinner open={isLoading} />
                 </Box>

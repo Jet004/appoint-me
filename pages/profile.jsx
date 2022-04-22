@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Head from 'next/head'
 import { buildAddress } from '../utility/helperFunctions'
 import UpdateUserForm from '../forms/UpdateUserForm'
@@ -21,6 +21,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 
+import AccountCircle from '@mui/icons-material/AccountCircle'
 import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded'
 import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
@@ -41,18 +42,42 @@ import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 
 // User data
-import userContext from '../utility/mockData/userContext'
+import userContext from '../utility/mockData/appContext'
 
 const Profile = () => {
+    // Access user context
     const userData = useContext(userContext)
     // Handle sub-menu for account history links
     const [appointmentHistoryEl, setAppointmentHistoryEl] = useState(null)
     const [paymentHistoryEl, setPaymentHistoryEl] = useState(null)
     const [userFormDialog, setUserFormDialog] = useState(false)
     const [uploadDpDialog, setUploadDpDialog] = useState(false)
-    const [avatar, setAvatar] = useState(false)
-    console.log(uploadDpDialog)
+    const [avatar, setAvatar] = useState(null)
 
+    // Get user profile picture on first client side render
+    useEffect(() => {
+      const getDp = async () => {
+        // Send fetch request to get user profile picture
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile-picture/${userData.user._id}`, {
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        })
+        // Get image blob
+        const blob = await response.blob()
+        // Convert the blob to base64
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => {
+            const base64Image = reader.result
+            setAvatar(base64Image)            
+        }
+      }
+      
+      if(userData.user._id) getDp()
+    
+    }, [userData, avatar])
+    
 
     if(userData.userType === 'user') {
         // User profile
@@ -75,7 +100,7 @@ const Profile = () => {
                                 }
                                 
                             >
-                                <CustomImage style={userStyles.profilePic} alt="Profile picture" src={avatar} width={90} height={90} noBlur="true" />
+                                <CustomImage style={userStyles.profilePic} alt="Profile picture" src={avatar} fallBack={<AccountCircle />} width={90} height={90} noBlur="true" />
                             </Badge>
                             <Typography variant="h4">
                                 {console.log(userData)}
@@ -86,7 +111,8 @@ const Profile = () => {
                             sx={userStyles.profileDetailsBox}
                             title="Personal Details" 
                             iconLeft={<AssignmentIndRoundedIcon />}
-                            iconRight={<FiEdit fontSize="20px" onClick={() => setUserFormDialog(true)} />}
+                            iconRight={<FiEdit fontSize="20px" />}
+                            clickRightIcon={() => setUserFormDialog(true)}
                         >
                             <Box sx={userStyles.profileBoxBody} >
                                 <List>
@@ -120,7 +146,7 @@ const Profile = () => {
                                     
                                 </AccordionSummary>  
                                 <AccordionDetails>
-                                    {!userData?.user?.appointments?.length && (<List>You haven't attended any appointments yet...</List>)}
+                                    {!userData?.user?.appointments?.length && (<List>You haven&apos;t attended any appointments yet...</List>)}
                                     <List>
                                         {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
                                             if(isPast(appointment.datetime)) {
@@ -136,8 +162,7 @@ const Profile = () => {
                             </Accordion>
                             <Accordion sx={userStyles.historyAccordion} disableGutters>
                                 <AccordionSummary 
-                                    sx={userStyles.historyItem} 
-                                    button 
+                                    sx={userStyles.historyItem}  
                                     key="payment-history"
                                     expandIcon={<ChevronRightRoundedIcon />}
                                 >
@@ -149,8 +174,8 @@ const Profile = () => {
                             </Accordion>
                         </FeatureBox>
                         <Dialog sx={userStyles.formDialog} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
-                            <DialogTitle>
-                                <Typography variant="h4" align="center" >Edit Profile</Typography>
+                            <DialogTitle variant="h4" align="center">
+                                Edit Profile
                                 <IconButton
                                     aria-label="close"
                                     onClick={() => setUserFormDialog(false)}
@@ -164,18 +189,18 @@ const Profile = () => {
                             </DialogContent>
                         </Dialog>
                         <Dialog sx={userStyles.formDialog} open={uploadDpDialog} onClose={() => {setUploadDpDialog(false)}}>
-                            <DialogTitle>
-                            <Typography variant="h4" align="center" >Edit Profile Picture</Typography>
+                            <DialogTitle variant="h4" align="center">
+                            Edit Profile Picture
                                 <IconButton
                                     aria-label="close"
-                                    onClick={() => setUserFormDialog(false)}
+                                    onClick={() => setUploadDpDialog(false)}
                                     sx={userStyles.closeButton}
                                 >
                                     <CloseIcon />
                                 </IconButton>
                             </DialogTitle>
                             <DialogContent>
-                                <UploadDpForm closeDialog={() => setUploadDpDialog(false)} />
+                                <UploadDpForm reload={setAvatar} closeDialog={() => setUploadDpDialog(false)} />
                             </DialogContent>
                         </Dialog>
                     </Box>
@@ -274,6 +299,7 @@ const userStyles = {
     profilePic: {
         width: 90,
         height: 90,
+        color: "custom.contrastText"
     },
     profileName: {
 

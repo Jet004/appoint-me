@@ -31,7 +31,7 @@ import Typography from '@mui/material/Typography'
 // Data
 import servicesData from '../../../utility/mockData/ServicesData'
 import availability from '../../../utility/mockData/availability'
-import userContext from '../../../utility/mockData/userContext'
+import userContext from '../../../utility/mockData/appContext'
 
 // date-fns
 import isSameDay from 'date-fns/isSameDay'
