@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from 'react'
-import Head from 'next/head'
+import { useState, useEffect } from 'react'
 import { buildAddress } from '../utility/helperFunctions'
 import UpdateUserForm from '../forms/UpdateUserForm'
+import UpdateTempUserForm from '../forms/UpdateTempUserForm'
 import UploadDpForm from '../forms/UploadDpForm'
 
 // Style, UI and UX
@@ -15,7 +15,6 @@ import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import IconButton from '@mui/material/IconButton'
-import Link from '../components/link'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
@@ -34,25 +33,21 @@ import { FiEdit } from 'react-icons/fi'
 
 
 // Components
-import Layout from '../layout/layout'
 import FeatureBox from '../components/featureBox'
 
 // date-fns
 import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 
-// User data
-import userContext from '../utility/mockData/appContext'
 
-const Profile = () => {
-    // Access user context
-    const userData = useContext(userContext)
+const ProfileLayout = ({ userData }) => {
+    // Determine if this is a temp user or not
+    const isTempUser = !!userData.tempFlag
+
     // Handle sub-menu for account history links
-    const [appointmentHistoryEl, setAppointmentHistoryEl] = useState(null)
-    const [paymentHistoryEl, setPaymentHistoryEl] = useState(null)
-    const [userFormDialog, setUserFormDialog] = useState(false)
-    const [uploadDpDialog, setUploadDpDialog] = useState(false)
-    const [avatar, setAvatar] = useState(null)
+    const [userFormDialog, setUserFormDialog] = useState(false) // Dialog for user update form
+    const [uploadDpDialog, setUploadDpDialog] = useState(false) // Dialog for uploading a new profile picture
+    const [avatar, setAvatar] = useState(null) // Profile picture
 
     // Get user profile picture on first client side render
     useEffect(() => {
@@ -86,20 +81,20 @@ const Profile = () => {
         }
       }
       
-      if(userData.user._id) getDp()
+      // Wait until user data loaded before getting profile picture
+      // Only get the profile picture if the user is not a temp user
+      if(userData.user._id && !isTempUser) getDp()
     
     }, [userData, avatar])
     
 
-
     return (
         <>
-            <Head>
-                <title>AppointMe: Profile</title>
-            </Head>
-            <Layout page="Profile">
-                <Box sx={userStyles.cont}>
-                    <Box sx={userStyles.profileBox}>
+            <Box sx={userStyles.cont}>
+                <Box sx={userStyles.profileBox}>
+
+                    {/* Don't show the edit profile picture button for temp users */}
+                    {!isTempUser && (
                         <Badge
                         sx={userStyles.badge}
                             overlap="circular"
@@ -109,96 +104,110 @@ const Profile = () => {
                                     <ImageSearchRoundedIcon />
                                 </IconButton>
                             }
-                            
                         >
                             <CustomImage style={userStyles.profilePic} alt="Profile picture" src={avatar} fallBack={<AccountCircle />} width={90} height={90} noBlur="true" />
                         </Badge>
-                        <Typography variant="h4">
-                            {console.log(userData)}
-                            {`${userData.user.fname} ${userData.user.lname}`}
-                        </Typography>
-                    </Box>
-                    <FeatureBox
-                        sx={userStyles.profileDetailsBox}
-                        title="Personal Details" 
-                        iconLeft={<AssignmentIndRoundedIcon />}
-                        iconRight={<FiEdit fontSize="20px" />}
-                        clickRightIcon={() => setUserFormDialog(true)}
-                    >
-                        <Box sx={userStyles.profileBoxBody} >
-                            <List>
+                    )}
+
+                    {/* Allow image placeholder to be rendered for temp users */}
+                    {isTempUser && (
+                        <CustomImage style={userStyles.profilePic} alt="Profile picture" src={avatar} fallBack={<AccountCircle />} width={90} height={90} noBlur="true" />
+                    )}
+
+                    <Typography variant="h4">
+                        {`${userData.user.fname} ${userData.user.lname}`}
+                    </Typography>
+                </Box>
+
+                <FeatureBox
+                    sx={userStyles.profileDetailsBox}
+                    title="Personal Details" 
+                    iconLeft={<AssignmentIndRoundedIcon />}
+                    iconRight={<FiEdit fontSize="20px" />}
+                    clickRightIcon={() => setUserFormDialog(true)}
+                >
+                    <Box sx={userStyles.profileBoxBody} >
+                        <List>
+                            {/* Address is optional for temp users. Only display it if the data exists */}
+                            {(!isTempUser || (isTempUser && userData.user.address)) && (
                                 <ListItem key="address">
                                     <LocationOnRoundedIcon />
                                     <ListItemText sx={userStyles.listItemText}>{buildAddress(userData.user.address)}</ListItemText>
                                 </ListItem>
-                                <ListItem key="phone">
-                                    <LocalPhoneRoundedIcon />  
-                                    <ListItemText sx={userStyles.listItemText}>{userData.user.phone}</ListItemText>
-                                </ListItem>
-                                <ListItem key="email">
-                                    <AlternateEmailRoundedIcon />
-                                    <ListItemText sx={userStyles.listItemText}>{userData.user.email}</ListItemText>
-                                </ListItem>
+                            )}
+                            <ListItem key="phone">
+                                <LocalPhoneRoundedIcon />  
+                                <ListItemText sx={userStyles.listItemText}>{userData.user.phone}</ListItemText>
+                            </ListItem>
+                            <ListItem key="email">
+                                <AlternateEmailRoundedIcon />
+                                <ListItemText sx={userStyles.listItemText}>{userData.user.email}</ListItemText>
+                            </ListItem>
+                        </List>
+                    </Box>
+                </FeatureBox>
+                <FeatureBox
+                    sx={userStyles.accountHistoryBox}
+                    title="Account History" 
+                    iconLeft={<HistoryRoundedIcon />}
+                >
+                    <Accordion sx={userStyles.historyAccordion} disableGutters>
+                        <AccordionSummary 
+                            sx={userStyles.historyItem} 
+                            key="appointment-history"
+                            expandIcon={<ChevronRightRoundedIcon />}
+                        >
+                            <Typography variant="body1">View Appointment History</Typography>
+                            
+                        </AccordionSummary>  
+                        <AccordionDetails>
+                            {!userData?.user?.appointments?.length && (<List>You haven&apos;t attended any appointments yet...</List>)}
+                            <List>
+                                {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
+                                    if(isPast(appointment.datetime)) {
+                                        return (
+                                            <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
+                                                {format(appointment.datetime, "dd MMM yyyy")}
+                                            </ListItem>
+                                        )
+                                    } else return
+                                })}
                             </List>
-                        </Box>
-                    </FeatureBox>
-                    <FeatureBox
-                        sx={userStyles.accountHistoryBox}
-                        title="Account History" 
-                        iconLeft={<HistoryRoundedIcon />}
-                    >
-                        <Accordion sx={userStyles.historyAccordion} disableGutters>
-                            <AccordionSummary 
-                                sx={userStyles.historyItem} 
-                                key="appointment-history"
-                                expandIcon={<ChevronRightRoundedIcon />}
-                            >
-                                <Typography variant="body1">View Appointment History</Typography>
-                                
-                            </AccordionSummary>  
-                            <AccordionDetails>
-                                {!userData?.user?.appointments?.length && (<List>You haven&apos;t attended any appointments yet...</List>)}
-                                <List>
-                                    {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
-                                        if(isPast(appointment.datetime)) {
-                                            return (
-                                                <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
-                                                    {format(appointment.datetime, "dd MMM yyyy")}
-                                                </ListItem>
-                                            )
-                                        } else return
-                                    })}
-                                </List>
-                            </AccordionDetails>  
-                        </Accordion>
-                        <Accordion sx={userStyles.historyAccordion} disableGutters>
-                            <AccordionSummary 
-                                sx={userStyles.historyItem}  
-                                key="payment-history"
-                                expandIcon={<ChevronRightRoundedIcon />}
-                            >
-                                <Typography variant="body1">View Payment History</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                Content
-                            </AccordionDetails>
-                        </Accordion>
-                    </FeatureBox>
-                    <Dialog sx={userStyles.formDialog} fullScreen={true} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
-                        <DialogTitle variant="h4" align="center">
-                            Edit Profile
-                            <IconButton
-                                aria-label="close"
-                                onClick={() => setUserFormDialog(false)}
-                                sx={userStyles.closeButton}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </DialogTitle>
-                        <DialogContent>
-                            <UpdateUserForm closeDialog={() => setUserFormDialog(false)} />
-                        </DialogContent>
-                    </Dialog>
+                        </AccordionDetails>  
+                    </Accordion>
+                    <Accordion sx={userStyles.historyAccordion} disableGutters>
+                        <AccordionSummary 
+                            sx={userStyles.historyItem}  
+                            key="payment-history"
+                            expandIcon={<ChevronRightRoundedIcon />}
+                        >
+                            <Typography variant="body1">View Payment History</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            Content
+                        </AccordionDetails>
+                    </Accordion>
+                </FeatureBox>
+
+                <Dialog sx={userStyles.formDialog} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
+                    <DialogTitle variant="h4" align="center">
+                        Edit Profile
+                        <IconButton
+                            aria-label="close"
+                            onClick={() => setUserFormDialog(false)}
+                            sx={userStyles.closeButton}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
+                    <DialogContent>
+                        {/* Display the correct form for temp users vs other user types */}
+                        {!isTempUser && ( <UpdateUserForm closeDialog={() => setUserFormDialog(false)} /> )}
+                        {isTempUser && ( <UpdateTempUserForm closeDialog={() => setUserFormDialog(false)} /> )}
+                    </DialogContent>
+                </Dialog>
+                {/* Only allow dialog to be displayed for non temp users */}
+                {!isTempUser && (
                     <Dialog sx={userStyles.formDialog} open={uploadDpDialog} onClose={() => {setUploadDpDialog(false)}}>
                         <DialogTitle variant="h4" align="center">
                         Edit Profile Picture
@@ -214,14 +223,13 @@ const Profile = () => {
                             <UploadDpForm reload={setAvatar} closeDialog={() => setUploadDpDialog(false)} />
                         </DialogContent>
                     </Dialog>
-                </Box>
-            </Layout>
-            
+                )}
+            </Box>            
         </>
     )  
 }
 
-export default Profile
+export default ProfileLayout
 
 
 const userStyles = {

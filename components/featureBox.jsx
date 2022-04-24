@@ -56,7 +56,6 @@ const styles = {
         maxWidth: "600px",
         mt: 2,
         borderRadius: "20px",
-        overflow: "hidden",
         boxShadow: 14,
     },
     innerBoxHeader: (theme) => theme.palette.mode === 'dark' ? {
