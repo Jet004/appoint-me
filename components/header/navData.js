@@ -44,7 +44,7 @@ const navData = {
         {
             text: 'Clients',
             icon: <RecentActorsRoundedIcon />,
-            path: '/client-list'
+            path: '/business-profile/client-list/5ee9f9f8f9f9f9f9f9f9f9f9' // The business ID is currently hardcoded
         },
         {
             text: 'Business', // This will not change when the business registry is implemented
