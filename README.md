@@ -20,6 +20,7 @@
 
 - profile page
     - Finish display of appointment / payment history
+    - Check that edit and delete buttons only visible on temp/own accounts. businessRep can not see buttons for "user"
 
 - ADMIN PANEL
     - Services blurb - description to include on the services page

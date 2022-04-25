@@ -1,9 +1,15 @@
 import ProfileLayout from '../layout/profileLayout'
 
-const ClientProfile = ({ userData }) => {
-    console.log("CLIENT PROFILE DATA: ", userData)
+const ClientProfile = ({ userData, businessId, refreshClientList, setResponseMessage, closeDialog }) => {
+
     return (
-        <ProfileLayout userData={userData} />
+        <ProfileLayout
+            userData={userData} 
+            businessId={businessId} 
+            refreshClientList={refreshClientList} 
+            setResponseMessage={setResponseMessage}
+            closeDialog={closeDialog}
+        />
     )
 }
 

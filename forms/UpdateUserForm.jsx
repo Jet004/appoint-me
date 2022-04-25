@@ -127,7 +127,14 @@ export default function UpdateUserForm({ closeDialog }) {
 
         // Send fetch request to server's update user route
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${userData.user._id}`, {
+            // This function will only run if the user is of type "user" or "businessRep"
+            // This means we can expect that userType will exist in userData without error
+            // We can use this to form the url so we hit the correct API endpoint
+            let userRoute
+            if(userData.userType === 'user') userRoute = 'users'
+            if(userData.userType === 'businessRep') userRoute = 'business-reps'
+            
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/${userRoute}/${userData.user._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -394,7 +401,7 @@ export default function UpdateUserForm({ closeDialog }) {
                     type="submit" 
                     variant="contained"
                 >
-                    Register
+                    Update
                 </Button>
             </Box>
             <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />

@@ -46,9 +46,7 @@ const ClientList = () => {
     const [clientList, setClientList] = useState(null)
     const [refreshList, setRefreshList] = useState(true)
     const [responseMessage, setResponseMessage] = useState(null)
-    console.log("CLIENTLIST: ", clientList)
-    console.log(businessId, refreshList)
-
+console.log("CLIENTLISE", clientList)
     // Get client list
     useEffect(() => {
         const requestHandler = async () => {
@@ -77,6 +75,10 @@ const ClientList = () => {
 
                 // Set client list
                 setClientList(data.clients)
+                // If the client modal is open then update modal data
+                if(clientModalData) {
+                    setClientModalData(data.clients.filter(client => client._id === clientModalData._id)[0])
+                }
 
                // Don't set a response message as loading the client list is expected to be successful on page load
                 
@@ -162,7 +164,14 @@ const ClientList = () => {
                     />
                 </DialogContent>
             </Dialog>
-            <Dialog PaperProps={{sx: styles.clientDialog}} fullScreen={fullScreen} fullWidth={!fullScreen} scroll="paper" open={clientModalOpen} onClose={() => {setClientModalOpen(false); setClientModalData(null)}}>
+            <Dialog 
+                PaperProps={{sx: styles.clientDialog}} 
+                fullScreen={fullScreen} 
+                fullWidth={!fullScreen} 
+                scroll="paper" 
+                open={clientModalOpen} 
+                onClose={() => {setClientModalOpen(false); setClientModalData(null)}}
+            >
                 <IconButton
                     aria-label="close"
                     onClick={() => setClientModalOpen(false)}
@@ -170,7 +179,13 @@ const ClientList = () => {
                 >
                     <CloseIcon />
                 </IconButton>
-                <ClientProfile userData={clientModalData} />
+                <ClientProfile 
+                    userData={clientModalData} 
+                    refreshClientList={() => setRefreshList(true)} 
+                    businessId={businessId}
+                    setResponseMessage={setResponseMessage}
+                    closeDialog={() => setClientModalOpen(false)}
+                />
             </Dialog>
         </Layout>
     </>

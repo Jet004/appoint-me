@@ -88,24 +88,25 @@ const validationSchema = yup.object().shape({
         .max(50, 'Country must have less than 50 characters'),
 })
 
-export default function UpdateUserForm({ refreshClientList, closeDialog, businessId, setResponseMessage }) {
+export default function UpdateUserForm({ refreshClientList, closeDialog, businessId, setResponseMessage, userData }) {
+    const user = userData.user
     // State management
     const { handleSubmit, control, formState: { errors }, getValues } = useForm({ 
         mode: "onChange", 
         resolver: yupResolver(validationSchema),
         defaultValues: {
-            fname: "",
-            lname: "",
-            email: "",
-            phone: "",
-            dob: "1970-00-00",
-            unit: "",
-            streetNumber: "",
-            streetName: "",
-            city: "",
-            state: "",
-            postCode: "",
-            country: ""
+            fname: user.fname,
+            lname: user.lname,
+            email: user.email,
+            phone: user.phone,
+            dob: user.dob,
+            unit: user.address?.unit,
+            streetNumber: user.address?.streetNumber,
+            streetName: user.address?.streetName,
+            city: user.address?.city,
+            state: user.address?.state,
+            postCode: user.address?.postCode,
+            country:  user.address?.country
         } 
     })
     const [isLoading, setIsLoading] = useState(false)
@@ -126,8 +127,8 @@ export default function UpdateUserForm({ refreshClientList, closeDialog, busines
 
             // Send fetch request to server's update user route
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/temp-users/create/${businessId}`, {
-                    method: "POST",
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/temp-users/${businessId}/${user._id}`, {
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
@@ -157,6 +158,7 @@ export default function UpdateUserForm({ refreshClientList, closeDialog, busines
 
                     // Force client list to refresh
                     refreshClientList()
+
                     // Close dialog
                     if(closeDialog) {
                         closeDialog()
@@ -176,7 +178,7 @@ export default function UpdateUserForm({ refreshClientList, closeDialog, busines
                 })  
             }
         }
-        
+        console.log(businessId)
         // Send request if businessId populated
         if(businessId) requestHandler()
     }
@@ -397,7 +399,7 @@ export default function UpdateUserForm({ refreshClientList, closeDialog, busines
                     type="submit" 
                     variant="contained"
                 >
-                    Add New Client
+                    Update
                 </Button>
             </Box>
             <Spinner open={isLoading} dialogStyle={styles.spinDialog} spinStyle={styles.spinStyle} />
