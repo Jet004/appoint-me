@@ -14,8 +14,6 @@ import lightTheme from '../styles/theme/lightTheme'
 
 // Import user context data - WILL CHANGE!!!
 import userContext from '../utility/mockData/appContext'
-import * as user from '../utility/mockData/userData'
-import * as businessUser from '../utility/mockData/businessContext'
 
 // Set up date adapter to allow localisation and date functions
 import DateAdapter from '@mui/lab/AdapterDateFns'

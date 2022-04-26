@@ -22,18 +22,20 @@ import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
+import ResponsiveDialog from '../components/ResponsiveDialog'
 import Typography from '@mui/material/Typography'
 
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded'
-import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
-import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
+import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import CloseIcon from '@mui/icons-material/Close'
 import { FiEdit } from 'react-icons/fi'
+import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded'
+import ImageSearchRoundedIcon from '@mui/icons-material/ImageSearchRounded'
+import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded'
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 
 // date-fns
 import format from 'date-fns/format'
@@ -55,8 +57,10 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
     // Handle sub-menu for account history links
     const [userFormDialog, setUserFormDialog] = useState(false) // Dialog for user update form
     const [uploadDpDialog, setUploadDpDialog] = useState(false) // Dialog for uploading a new profile picture
+    const [appointmentDialog, setAppointmentDialog] = useState(false) // Dialog for booking a new appointment
     const [deleteDialog, setDeleteDialog] = useState(false) // Dialog to confirm delete
     const [avatar, setAvatar] = useState(null) // Profile picture
+
 
     // Get user profile picture on first client side render
     useEffect(() => {
@@ -105,7 +109,6 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 message: 'You are not allowed to delete this user',
                 severity: 'error'
             })
-
             // Return to prevent deletion
             return
         }
@@ -116,7 +119,6 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 message: 'Unable to delete user. Please try again',
                 severity: 'error'
             })
-
             // Return to prevent deletion
             return
         }
@@ -154,7 +156,6 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 throw new Error(`[${response.status}] An unexpected error occurred. Could not delete user`)
             }
 
-            
             // Request was successful, close dialog and refresh client list if is a business client
             if(isTempUser) closeDialog()
             if(refreshClientList) refreshClientList()
@@ -164,7 +165,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 message: 'User deleted successfully',
                 severity: 'success'
             })
-            
+
             // Force logout if deleted own account
             if(userData.user._id === loggedInUser.user._id) {
                 // Set the user to null to force logout
@@ -173,7 +174,6 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 // Redirect to login page
                 router.push('/login')
             }
-
 
         } catch (error) {
             console.log(error)
@@ -185,6 +185,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
             })
         }
     }
+
 
     return (
         <>
@@ -198,7 +199,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                             overlap="circular"
                             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                             badgeContent={
-                                <IconButton sx={styles.badgeIcon} onClick={() => {setUploadDpDialog(true); console.log("CLICKED!")}}>
+                                <IconButton sx={styles.badgeIcon} onClick={() => setUploadDpDialog(true)}>
                                     <ImageSearchRoundedIcon />
                                 </IconButton>
                             }
@@ -216,6 +217,13 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         {`${userData.user.fname} ${userData.user.lname}`}
                     </Typography>
                 </Box>
+                
+                <Button sx={styles.appointmentButton} onClick={() => setAppointmentDialog(true)} >
+                    <AddRoundedIcon />
+                    <Typography variant="body2">
+                        New appointment
+                    </Typography>
+                </Button>
 
                 <FeatureBox
                     sx={styles.profileDetailsBox}
@@ -301,16 +309,9 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                     </Button>
                 )}
 
-                <Dialog sx={styles.formDialog} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
+                <ResponsiveDialog sx={styles.formDialog} open={userFormDialog} onClose={() => setUserFormDialog(false)}>
                     <DialogTitle variant="h4" align="center">
                         Edit Profile
-                        <IconButton
-                            aria-label="close"
-                            onClick={() => setUserFormDialog(false)}
-                            sx={styles.closeButton}
-                        >
-                            <CloseIcon />
-                        </IconButton>
                     </DialogTitle>
                     <DialogContent>
                         {/* Display the correct form for temp users vs other user types */}
@@ -325,7 +326,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                             /> 
                         )}
                     </DialogContent>
-                </Dialog>
+                </ResponsiveDialog>
                 {/* Only allow dialog to be displayed for non temp users */}
                 {!isTempUser && (
                     <Dialog sx={styles.formDialog} open={uploadDpDialog} onClose={() => {setUploadDpDialog(false)}}>
@@ -380,7 +381,7 @@ export default ProfileLayout
 const styles = {
     cont: {
         width: "100%",
-        height: "100%",
+        height: "auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -391,6 +392,7 @@ const styles = {
         justifyContent: {xs: "center", sm: "flex-start"},
         alignItems: "center",
         mt: 3,
+        mb: 2,
     },
     profileBoxBody: {
         color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : 'text.custom.highlight',
@@ -413,13 +415,22 @@ const styles = {
 
     },
     profileDetailsBox: {
-        mt: 5,
+        mt: 2,
+    },
+    appointmentButton: {
+        mr: 3,
+        display: "flex",
+        alignSelf: "flex-end",
+        "&:hover": {
+            color: "success.main"
+        },
+        textShadow: "rgba(0, 0, 0, 0.2) 1px 1px 4px"
     },
     listItemText: {
         ml: 2,
     },
     accountHistoryBox: {
-        mb: 10,
+        mb: 5,
         pb: 2,
     },
     historyAccordion: {
@@ -474,7 +485,8 @@ const styles = {
     },
     deleteButton: {
         py: 2,
-        px: 3
+        px: 3,
+        mb: 5
     }
 
 }

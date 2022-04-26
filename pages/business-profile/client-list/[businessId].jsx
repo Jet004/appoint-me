@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@mui/material/styles'
 
 // Styles, UI and UX imports
 import Box from '@mui/material/Box'
@@ -17,13 +15,13 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListSubheader from '@mui/material/ListSubheader'
+import ResponsiveDialog from '../../../components/ResponsiveDialog'
 import Spinner from '../../../components/spinner'
 import Toast from '../../../components/toast'
 import Typography from '@mui/material/Typography'
 
 // Import icons
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded'
-import CloseIcon from '@mui/icons-material/Close'
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
 import NewTempUserForm from '../../../forms/NewTempUserForm'
@@ -34,10 +32,6 @@ const ClientList = () => {
     const router = useRouter()
     const businessId = router.query.businessId
 
-    // Get access to the theme variables and set breakpoint for fullscreen modals
-    const theme = useTheme()
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-
     // State management
     const [modalState, setModalState] = useState(false)
     const [clientModalOpen, setClientModalOpen] = useState(false)
@@ -46,7 +40,7 @@ const ClientList = () => {
     const [clientList, setClientList] = useState(null)
     const [refreshList, setRefreshList] = useState(true)
     const [responseMessage, setResponseMessage] = useState(null)
-console.log("CLIENTLISE", clientList)
+console.log("CLIENTLIST", clientList)
     // Get client list
     useEffect(() => {
         const requestHandler = async () => {
@@ -144,49 +138,32 @@ console.log("CLIENTLISE", clientList)
             <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
             <Spinner open={isLoading} dialogStyle={styles.spinDialog} spinStyle={styles.spinStyle} />
 
-            <Dialog sx={styles.formDialog} fullScreen={fullScreen} fullWidth={!fullScreen} open={modalState} onClose={() => setModalState(false)}>
+            <ResponsiveDialog sx={styles.formDialog} open={modalState} onClose={() => setModalState(false)}>
                 <DialogTitle variant="h4" align="center">
-                Add New Client
-                    <IconButton
-                        aria-label="close"
-                        onClick={() => setModalState(false)}
-                        sx={styles.closeButton}
-                    >
-                        <CloseIcon />
-                    </IconButton>
+                    Add New Client
                 </DialogTitle>
                 <DialogContent>
-                    <NewTempUserForm 
+                    <NewTempUserForm
                         refreshClientList={() => setRefreshList(true)} 
                         closeDialog={() => setModalState(false)} 
                         businessId={businessId} 
                         setResponseMessage={setResponseMessage}    
                     />
                 </DialogContent>
-            </Dialog>
-            <Dialog 
-                PaperProps={{sx: styles.clientDialog}} 
-                fullScreen={fullScreen} 
-                fullWidth={!fullScreen} 
-                scroll="paper" 
-                open={clientModalOpen} 
-                onClose={() => {setClientModalOpen(false); setClientModalData(null)}}
+            </ResponsiveDialog>
+            <ResponsiveDialog
+                open={clientModalOpen}
+                onClose={() => {setClientModalOpen(false); setClientModalData(null);}}
+                onCloseButtonClick={() => {setClientModalOpen(false)}}
             >
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setClientModalOpen(false)}
-                    sx={styles.closeButton}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <ClientProfile 
+                <ClientProfile
                     userData={clientModalData} 
                     refreshClientList={() => setRefreshList(true)} 
                     businessId={businessId}
                     setResponseMessage={setResponseMessage}
                     closeDialog={() => setClientModalOpen(false)}
                 />
-            </Dialog>
+            </ResponsiveDialog>
         </Layout>
     </>
   )
@@ -233,19 +210,11 @@ const styles = {
     formDialog: {
         color: "custom.constrastText" 
     },
-    closeButton: {
-        position: 'absolute',
-        right: 8,
-        top: 8,
-        color: "custom.constrastText",
-    },
     spinDialog: {
         backgroundImage: (theme) => theme.palette.custom.gradient.medium
     },
     spinStyle: {
         m: 6,
     },
-    clientDialog: {
-        backgroundImage: "none",
-    }
+
 }

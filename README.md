@@ -4,6 +4,8 @@
 
 - REACT HOOK FORM to replace state on forms... refactor register form
 
+- Refactor Dialogs into component for consistent functionality
+
  - Auth:
     - implement auth checking and limiting routes/functionality
     - Check logged in status

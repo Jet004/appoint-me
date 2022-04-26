@@ -35,7 +35,7 @@ const darkTheme = (mode) => createTheme({
             warning: "#FA9F42",
             theme: "#121212",
             light: "rgba(255, 255, 255, 0.1)",
-            hightlight: "#2a2a2a",
+            highlight: "#2a2a2a",
             gradient: {
                 lighter: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
                 light: "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))",
