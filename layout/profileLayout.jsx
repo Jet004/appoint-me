@@ -4,6 +4,7 @@ import { buildAddress } from '../utility/helperFunctions'
 import UpdateUserForm from '../forms/UpdateUserForm'
 import UpdateTempUserForm from '../forms/UpdateTempUserForm'
 import UploadDpForm from '../forms/UploadDpForm'
+import NewAppointmentForm from '../forms/NewAppointmentForm'
 
 // Components
 import Accordion from '@mui/material/Accordion'
@@ -26,7 +27,7 @@ import ResponsiveDialog from '../components/ResponsiveDialog'
 import Typography from '@mui/material/Typography'
 
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
 import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
@@ -53,6 +54,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
     // Determine if this is a temp user or not
     const isTempUser = !!userData.tempFlag
     const canDeleteUser = (!!userData.tempFlag || userData.user._id === loggedInUser.user._id)
+    const canMakeAppointment = (userData.user._id !== loggedInUser.user._id)
 
     // Handle sub-menu for account history links
     const [userFormDialog, setUserFormDialog] = useState(false) // Dialog for user update form
@@ -217,13 +219,14 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         {`${userData.user.fname} ${userData.user.lname}`}
                     </Typography>
                 </Box>
-                
-                <Button sx={styles.appointmentButton} onClick={() => setAppointmentDialog(true)} >
-                    <AddRoundedIcon />
-                    <Typography variant="body2">
-                        New appointment
-                    </Typography>
-                </Button>
+                { canMakeAppointment && (
+                    <Button sx={styles.appointmentButton} onClick={() => setAppointmentDialog(true)} >
+                        <AddRoundedIcon />
+                        <Typography variant="body2">
+                            New appointment
+                        </Typography>
+                    </Button>
+                )}
 
                 <FeatureBox
                     sx={styles.profileDetailsBox}
@@ -327,6 +330,16 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         )}
                     </DialogContent>
                 </ResponsiveDialog>
+                {/* Only allow new appointment dialog to be displayed for clients of a business */}
+                <ResponsiveDialog open={appointmentDialog} onClose={() => setAppointmentDialog(false)} >
+                    <DialogTitle variant="h4" align="center">
+                        New Appointment
+                    </DialogTitle>
+                    
+                    <NewAppointmentForm />
+                    
+                </ResponsiveDialog>
+
                 {/* Only allow dialog to be displayed for non temp users */}
                 {!isTempUser && (
                     <Dialog sx={styles.formDialog} open={uploadDpDialog} onClose={() => {setUploadDpDialog(false)}}>

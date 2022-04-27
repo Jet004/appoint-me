@@ -52,7 +52,7 @@ const styles = {
             ? (theme.palette.custom.gradient.light)
             : (theme.palette.custom.gradient.secondary.main),
         width: {xs: "90%", md: "80%", lg: "60%"},
-        minWidth: "300px",
+        minWidth: "340px",
         maxWidth: "600px",
         mt: 2,
         borderRadius: "20px",
