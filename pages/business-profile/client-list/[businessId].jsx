@@ -153,7 +153,6 @@ console.log("CLIENTLIST", clientList)
             <ResponsiveDialog
                 open={clientModalOpen}
                 onClose={() => {setClientModalOpen(false); setClientModalData(null);}}
-                onCloseButtonClick={() => {setClientModalOpen(false)}}
             >
                 <ClientProfile
                     userData={clientModalData} 

@@ -37,11 +37,11 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import CloseIcon from '@mui/icons-material/Close'
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'
 
-
 // Import date functions
 import addMinutes from 'date-fns/addMinutes'
 import addMonths from 'date-fns/addMonths'
 import format from 'date-fns/format'
+import formatISO from 'date-fns/formatISO'
 import isWeekend from 'date-fns/isWeekend'
 
 // Define Yup validation schema
@@ -141,7 +141,8 @@ const NewAppointmentForm = ({ client }) => {
                 
                 // Get service id and date string
                 const serviceId = services.filter(service => service.name === watchService)[0]._id
-                const date = format(watchDate, 'yyyy-MM-dd')
+                // Date string explicitly sets time to 00:00:00 with ISO timezone to avoid timezone issues
+                const date = `${format(watchDate, "yyyy-MM-dd")}T00:00:00.000${watchDate.getTimezoneOffset() > 0 ? '-' : '+'}${Math.abs(watchDate.getTimezoneOffset()) / 60 * 100}`
 
                 // Request available appointment times
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments/appointment-times/${businessId}/${serviceId}/${date}`, {
@@ -366,29 +367,29 @@ const NewAppointmentForm = ({ client }) => {
         <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
 
         {/* Confirm create appointment dialog */}
-                {/* This will not be available if user is not logged in */}
-                {userData.loggedIn && (
-                    <Dialog fullWidth open={confirmDialog} onClose={() => {setConfirmDialog(false); setSelectedTime(null)}}>
-                        <DialogTitle variant="h4" align="center">
-                            Confirm Appointment
-                            <IconButton
-                                aria-label="close"
-                                onClick={() => {setConfirmDialog(false); setSelectedTime(null)}}
-                                sx={styles.closeButton}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </DialogTitle>
-                        <DialogContent>
-                            <Typography variant="body1">Please confirm that the details below are correct to book this appointment.</Typography>
-                            <Typography variant="caption"></Typography>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button variant="contained" color="primary" onClick={() => {handleSubmit(handleAddAppointment(selectedTime)); setConfirmDialog(false) }}>Confirm</Button>
-                            <Button variant="outlined" onClick={() => {setConfirmDialog(false); setSelectedTime(null)}}>Cancel</Button>
-                        </DialogActions>
-                    </Dialog>
-                )}
+        {/* This will not be available if user is not logged in */}
+        {userData.loggedIn && (
+            <Dialog fullWidth open={confirmDialog} onClose={() => {setConfirmDialog(false); setSelectedTime(null)}}>
+                <DialogTitle variant="h4" align="center">
+                    Confirm Appointment
+                    <IconButton
+                        aria-label="close"
+                        onClick={() => {setConfirmDialog(false); setSelectedTime(null)}}
+                        sx={styles.closeButton}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1">Please confirm that the details below are correct to book this appointment.</Typography>
+                    <Typography variant="caption"></Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" color="primary" onClick={() => {handleSubmit(handleAddAppointment(selectedTime)); setConfirmDialog(false) }}>Confirm</Button>
+                    <Button variant="outlined" onClick={() => {setConfirmDialog(false); setSelectedTime(null)}}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
+        )}
 
     </Box>
   )

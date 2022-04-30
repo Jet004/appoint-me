@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from '@mui/material/useMediaQuery'
 
-const ResponsiveDialog = ({ children, open, onClose, onCloseButtonClick, ...rest}) => {
+const ResponsiveDialog = ({ children, open, onClose, ...rest}) => {
 
     // Get access to the theme variables and set breakpoint for fullscreen modals
     const theme = useTheme()
