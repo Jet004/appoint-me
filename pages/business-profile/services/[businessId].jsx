@@ -78,7 +78,7 @@ export default function Login() {
                     <Typography variant="body1" gutterBottom>
                         We offer a variety of comprehensive tutoring services to meet your needs.
                     </Typography>
-                    { services !== null && services.map((service) => (
+                    { services && services.map((service) => (
                         <FeatureBox 
                             sx={styles.service} 
                             title={service.name}    
@@ -86,13 +86,14 @@ export default function Login() {
                             <Typography sx={styles.service.content} variant="body1" component="div" gutterBottom>
                                 {service.description}
                                 <ul>
-                                    <li>$50 - {service.duration + service.break} minute class</li>
+                                    <li><Typography variant="body2">Appointment Duration: {service.duration + service.break} minute class</Typography></li>
+                                    <li><Typography variant="body2">Appointment Fee: ${service.fee}</Typography></li>
                                 </ul>
                                 { userData.loggedIn && (
-                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}>Make an appointment! <EventAvailableRoundedIcon /></Link>
+                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}><EventAvailableRoundedIcon /> Make an appointment!</Link>
                                 )}
                                 { !userData.loggedIn && (
-                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}>Check our available class times <TodayRoundedIcon /></Link>
+                                    <Link sx={styles.service.link} href={`/business-profile/appointments/${businessId}/?service=${service.name}`}><TodayRoundedIcon /> Check our available class times</Link>
                                 )}
                             </Typography>
                         </FeatureBox>
@@ -118,20 +119,22 @@ const styles = {
     title: {
         mt: 2
     },
-    divider: {
-        borderColor: "custom.contrastTextLight",
-        mb: 2,
-    },
     service: {
         width: "100%",
         my: 3,
         content: {
             color: theme => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.highlight',
-            py: 1,
+            pt: 1,
+            pb: 3,
             px: 3
         },
         link: {
             color: theme => theme.palette.mode === 'dark' ? 'custom.contrastText' : 'custom.highlight',
+            display: "flex",
+            alignItems: "center",
+            "& svg": {
+                mr: 1,
+            }
         }
     },
 }
