@@ -336,7 +336,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         New Appointment
                     </DialogTitle>
                     
-                    <NewAppointmentForm />
+                    <NewAppointmentForm client={userData} />
                     
                 </ResponsiveDialog>
 

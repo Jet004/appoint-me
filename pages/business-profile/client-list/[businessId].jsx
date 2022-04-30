@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 // Styles, UI and UX imports
 import Box from '@mui/material/Box'
 import ClientProfile from '../../../components/ClientProfile'
-import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import Divider from '@mui/material/Divider'

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 // Next.js imports
 import Head from 'next/head'
@@ -7,15 +7,16 @@ import Head from 'next/head'
 import Layout from '../layout/layout'
 
 // Styles, UI, UX
-import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
-import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
+import FeatureBox from '../components/featureBox'
+import Icon from '@mui/material/Icon'
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import Icon from '@mui/material/Icon'
+import Typography from '@mui/material/Typography'
 
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
@@ -34,7 +35,19 @@ export default function Home() {
 
     // Allow access to user data
     const userData = useContext(userContext)
-    console.log(userData)
+
+    // State Management
+    const [appointments, setAppointments] = useState(null)
+
+    // Get appointments for the logged in user
+    useEffect(() => {
+        // Define a function to handle the request for user appointments
+        const requestHandler = async () => {
+            
+        }
+
+        requestHandler()
+    })
 
   return (
     <>
@@ -44,23 +57,16 @@ export default function Home() {
         <Layout page="Home">
             <Container sx={styles.cont}>
                 <Box sx={styles.outerBox}>
-                    <Alert sx={styles.errorAlert} variant="outlined" severity="error">You have overdue payments to attend to</Alert>
-                    <Box sx={styles.innerBox}>
-                        <Box sx={styles.innerBoxHeader}>
-                            <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
-                                <EventRoundedIcon sx={styles.titleIcon} />
-                                Upcoming Appointments
-                                </Typography>
-                            <Divider sx={styles.innerBoxHeaderDivider} />
-                        </Box>
-                        <Box sx={styles.innerBoxBody}>
-                            { console.log(userData.appointments)}
+                    {/* Not yet implemented - will be implemented with payment tracking */}
+                    {/* <Alert sx={styles.errorAlert} variant="outlined" severity="error">You have overdue payments to attend to</Alert> */}
+                    <FeatureBox title="Upcoming Appointments" iconLeft={<EventRoundedIcon />}>
+                    { console.log(appointments) }
                             <List sx={styles.itemList}>
-                                {userData.appointments !== undefined && userData.appointments.map(appointment => {
+                                { appointments && appointments.map(appointment => {
                                     if(!isPast(appointment.datetime)) return (
                                         <>
                                         {/* {console.log("Is Today: ", isToday(appointment.datetime))} */}
-                                            <ListItemButton sx={styles.listItem} key={appointment.datetime}>
+                                            <ListItemButton sx={styles.listItem} key={appointment.datetime} divider >
                                                 <Box sx={styles.appointmentsDateBox}>
                                                     <Typography variant="caption">
                                                         {format(appointment.datetime, "MMM")}
@@ -83,9 +89,10 @@ export default function Home() {
                                     )
                                 })}
                             </List>
-                        </Box>
-                    </Box>
-                    <Box sx={styles.innerBox}>
+                    </FeatureBox>
+
+                    {/* Not yet implemented - will be implemented with payment tracking */}
+                    {/* <Box sx={styles.innerBox}>
                         <Box sx={styles.innerBoxHeader}>
                             <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
                                 <PaymentsRoundedIcon sx={styles.titleIcon} />
@@ -128,7 +135,7 @@ export default function Home() {
                                 )})}
                             </List>
                         </Box>
-                    </Box>
+                    </Box> */}
                 </Box>
             </Container>
         </Layout>
@@ -204,6 +211,7 @@ const styles = {
         overflow: "auto",
     },
     itemList: {
+        height: 450,
         px: {xs: 0, sm: 2, md: 4},
         display: "flex",
         flexDirection: "column",
