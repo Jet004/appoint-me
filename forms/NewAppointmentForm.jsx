@@ -145,11 +145,7 @@ const NewAppointmentForm = ({ client }) => {
                 const date = `${format(watchDate, "yyyy-MM-dd")}T00:00:00.000${watchDate.getTimezoneOffset() > 0 ? '-' : '+'}${Math.abs(watchDate.getTimezoneOffset()) / 60 * 100}`
 
                 // Request available appointment times
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments/appointment-times/${businessId}/${serviceId}/${date}`, {
-                    headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
-                    }
-                })
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments/appointment-times/${businessId}/${serviceId}/${date}`)
                 const data = await response.json()
 
                 // Throw error if response failed
@@ -217,7 +213,7 @@ const NewAppointmentForm = ({ client }) => {
                         'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
                     },
                     body: JSON.stringify({
-                        crm: client._id,
+                        crm: client?._id || userData.user._id,
                         service: selectedService._id,
                         appointmentTime: timeSlot,
                         appointmentEnd: addMinutes(new Date(timeSlot), selectedService.duration + selectedService.break),

@@ -42,7 +42,8 @@ export default function Home() {
     const [appointments, setAppointments] = useState(null)
     // const [appointmentDetailDialog, setAppointmentDetailDialog] = useState(false) // This is not implemented at present - will be used to display appointment detail dialog
     const [deleteDialog, setDeleteDialog] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const [needRefresh, setNeedRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [responseMessage, setResponseMessage] = useState(null)
     console.log("APPOINTMENTS: ", appointments)
     console.log("CRM DATA: ", crmData)
@@ -101,7 +102,7 @@ export default function Home() {
 
     // Get appointments for the logged in user
     useEffect(() => {
-        console.log("getAppointments called")
+        console.log("getAppointments CALLED")
         // Define a function to handle the request for user appointments
         const requestHandler = async () => {
             console.log("getAppointments RAN")
@@ -181,7 +182,7 @@ export default function Home() {
         // Send request if user data is available
         if(userData.loggedIn) requestHandler()
 
-    }, [userData, businessId])
+    }, [userData, businessId, needRefresh])
 
 
     // Handle delete appointment
@@ -236,7 +237,7 @@ export default function Home() {
             }
 
             // Request was successful, force appointment list to reload
-
+            setNeedRefresh(!needRefresh)
 
             // Inform the user of the success
             setResponseMessage({
@@ -255,7 +256,6 @@ export default function Home() {
                 severity: "error"
             })
         }
-
     }
 
   return (
@@ -274,8 +274,6 @@ export default function Home() {
                             { appointments && appointments.map(appointment => {
                                 if(!isPast(new Date(appointment.appointmentTime))) return (
                                     <>
-                                    {/* {console.log("Is Today: ", isToday(appointment.appointmentTime))} */}
-                                    {/* {console.log("Is Past: ", isPast(appointment.appointmentTime))} */}
                                         <ListItem
                                             sx={styles.listItem} 
                                             key={appointment.appointmentTime}
@@ -314,6 +312,13 @@ export default function Home() {
                                     </>
                                 )
                             })}
+
+                            {/* If there are no appointments, display a message */}
+                            { (!appointments || appointments.length === 0) && (
+                                <ListItem sx={styles.listItem}>
+                                    <Typography variant="body1" align='center'>You have no upcoming appointments. Check the services tab to book an appointment.</Typography>
+                                </ListItem>
+                            )}
                         </List>
                     </FeatureBox>
 
