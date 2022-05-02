@@ -15,7 +15,6 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 // Import date functions
 import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
-import isToday from 'date-fns/isToday'
 import isSameDay from "date-fns/isSameDay"
 import isSameMonth from "date-fns/isSameMonth"
 
@@ -55,7 +54,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
     const [appointments, setAppointments] = useState(null)
     const [deleteDialog, setDeleteDialog] = useState([false, null])
     const [needRefresh, setNeedRefresh] = useState(false)
-console.log("APPOINTMENTS: ", appointments)
+
     // Flag appointment list for refresh if picked date changes
     useEffect(() => {
         if(pickedDate) {

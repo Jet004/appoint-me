@@ -13,16 +13,10 @@ import Container from '@mui/material/Container'
 import DatePicker from '@mui/lab/DatePicker'
 import FeatureBox from '../components/featureBox'
 import Layout from '../layout/layout'
-import List from '@mui/material/List'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
-import ListSubheader from '@mui/material/ListSubheader'
-import MonthCarosel from '../components/monthCarosel'
 import PickersDay from '@mui/lab/PickersDay'
 import Spinner from '../components/spinner'
 import TextField from '@mui/material/TextField'
 import Toast from '../components/toast'
-import Typography from '@mui/material/Typography'
 
 // Icons
 import CalendarViewDayRoundedIcon from '@mui/icons-material/CalendarViewDayRounded'
@@ -33,8 +27,6 @@ import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthR
 import userContext from '../utility/mockData/appContext'
 import isSameDay from 'date-fns/isSameDay'
 import isWeekend from 'date-fns/isWeekend'
-import format from 'date-fns/format'
-import parseISO from "date-fns/parseISO"
 
 
 export default function Appointments() {
@@ -176,8 +168,6 @@ export default function Appointments() {
                                     onChange={(newDate) => { setPickedDate(newDate); setViewState("day") }}
                                     shouldDisableDate={isWeekend}
                                     renderDay={(day, _value, PickersDayProps ) => {
-                                        // console.log("TYPE DAY: ", typeof day)
-                                        // console.log("TYPE APPT DATE: ", typeof new Date(appointmentDates[0]))
                                         const hasAppt = appointmentDates.some(date => isSameDay(new Date(date), day))
                                         if(hasAppt) PickersDayProps.sx=styles.dayHasAppt
 
