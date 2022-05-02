@@ -39,7 +39,7 @@ const ClientList = () => {
     const [clientList, setClientList] = useState(null)
     const [refreshList, setRefreshList] = useState(true)
     const [responseMessage, setResponseMessage] = useState(null)
-console.log("CLIENTLIST", clientList)
+
     // Get client list
     useEffect(() => {
         const requestHandler = async () => {

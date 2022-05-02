@@ -16,6 +16,9 @@ const darkTheme = (mode) => createTheme({
             // default: '#2b262c',
             // paper: '#2b262c'
         },
+        contrast: {
+            main: "#bbb",
+        },
         text: {
             custom: {
                 red: "#9A030D",

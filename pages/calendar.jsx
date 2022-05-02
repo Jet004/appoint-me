@@ -1,40 +1,116 @@
 import React, { useContext, useEffect, useState } from 'react'
-
-// Next.js imports
 import Head from 'next/head'
+import { useTheme } from '@mui/material/styles'
+import ThemeContext from '../utility/themeContext'
 
 // Components
-import Layout from '../layout/layout'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
+import AppointmentList from '../components/appointmentList'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
+import CalendarPicker from '@mui/lab/CalendarPicker'
+import Container from '@mui/material/Container'
 import DatePicker from '@mui/lab/DatePicker'
-import TextField from '@mui/material/TextField'
+import FeatureBox from '../components/featureBox'
+import Layout from '../layout/layout'
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListSubheader from '@mui/material/ListSubheader'
+import MonthCarosel from '../components/monthCarosel'
+import PickersDay from '@mui/lab/PickersDay'
+import Spinner from '../components/spinner'
+import TextField from '@mui/material/TextField'
+import Toast from '../components/toast'
+import Typography from '@mui/material/Typography'
 
 // Icons
-import CalendarViewDayRoundedIcon from '@mui/icons-material/CalendarViewDayRounded';
-import CalendarViewWeekRoundedIcon from '@mui/icons-material/CalendarViewWeekRounded';
-import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthRounded';
+import CalendarViewDayRoundedIcon from '@mui/icons-material/CalendarViewDayRounded'
+// import CalendarViewWeekRoundedIcon from '@mui/icons-material/CalendarViewWeekRounded' // Not implemented yet
+import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthRounded'
 
 // Data
 import userContext from '../utility/mockData/appContext'
 import isSameDay from 'date-fns/isSameDay'
 import isWeekend from 'date-fns/isWeekend'
 import format from 'date-fns/format'
+import parseISO from "date-fns/parseISO"
 
 
 export default function Appointments() {
     // Get user data
     const userData = useContext(userContext)
 
-    const [calendarState, setCalendarState] = useState("day")
+    // Access theme variables
+    const theme = useTheme(ThemeContext)
+
+    // Initialise view list
+    const views = [
+        {
+            type: 'day', 
+            icon: <CalendarViewDayRoundedIcon fontSize="small" />
+        }, 
+        {
+            type: 'month', 
+            icon: <CalendarViewMonthRoundedIcon fontSize="small" />
+        }
+    ]
+
+    const [viewState, setViewState] = useState("day")
     const [pickedDate, setPickedDate] = useState(new Date())
+    const [appointmentDates, setAppointmentDates] = useState(null)
+    const [businessId, setBusinessId] = useState(null)
+    const [responseMessage, setResponseMessage] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+
+    // Get businessId if user is of type businessRep
+    useEffect(() => {
+        const requestHandler = async () => {
+            try {
+                // Start spinner
+                setIsLoading(true)
+
+                // Request businessId
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/business-reps/business/${userData.user._id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                    }
+                })
+                const data = await response.json()
+
+                // Stop spinner
+                setIsLoading(false)
+    
+                // Throw error if request fails
+                if (response.status !== 200) {
+                    throw {
+                        status: data.status,
+                        message: data.message
+                    }
+                }
+    
+                // Request was successful, set businessId
+                // No need to inform the user as success is expected
+                setBusinessId(data.business._id)
+
+            } catch(error) {
+                console.log(error)
+
+                // Inform the user of the error
+                setResponseMessage({
+                    status: error.status,
+                    message: error.message,
+                    severity: "error"
+                })
+            }
+        }
+
+        // Only request businessId if user is of type businessRep
+        if(userData.loggedIn, userData.userType === "businessRep") requestHandler()
+
+    }, [userData])
+
 
   return (
     <>
@@ -43,40 +119,82 @@ export default function Appointments() {
         </Head>
         <Layout page="Calendar">
             <Container sx={styles.cont}>
-                <Typography variant="h3">My Appointments</Typography>
                 <Box sx={styles.outerBox}>
-                    <Box sx={styles.innerBox}>
-                        <Box  sx={styles.calendarHead}>
-                            <ButtonGroup size="small">
-                                <Button sx={calendarState === "day" ? {backgroundColor: "#444"} : ""} onClick={() => setCalendarState("day")}><CalendarViewDayRoundedIcon fontSize="small" /></Button>
-                                <Button sx={calendarState === "week" ? {backgroundColor: "#444"} : ""} onClick={() => setCalendarState("week")}><CalendarViewWeekRoundedIcon fontSize="small" /></Button>
-                                <Button sx={calendarState === "month" ? {backgroundColor: "#444"} : ""} onClick={() => setCalendarState("month")}><CalendarViewMonthRoundedIcon fontSize="small" /></Button>
-                            </ButtonGroup>
-                            <DatePicker
-                                label="Date"
-                                shouldDisableDate={isWeekend}
-                                value={pickedDate}
-                                onChange={(newDate) => {
-                                    setPickedDate(newDate)
-                                }}
-                                renderInput={(params) => <TextField variant="standard" {...params} sx={styles.datePickerInput} />}
-                            />
-                        </Box>
-                        {calendarState}
+                    <FeatureBox
+                        headerProps={styles.headerProps}
+                        noDivider
+                        title={(
+                            <Box  sx={styles.calendarHead}>
+                                <ButtonGroup sx={styles.viewGroup} size="small" color="contrast">
+                                    { views.map(view => (
+                                        <Button key={view.type} sx={styles.viewButton(viewState === view.type)} onClick={() => setViewState(view.type)}>
+                                            {view.icon}
+                                        </Button>
+                                    ))}
+                                </ButtonGroup>
+                                {/* Display date/month picker depending on the current view */}
+                                { viewState === "day" && (
+                                    <DatePicker
+                                        label="Date"
+                                        allowSameDateSelection
+                                        shouldDisableDate={isWeekend}
+                                        value={pickedDate}
+                                        onChange={(newDate) => {
+                                            setPickedDate(newDate)
+                                        }}
+                                        renderInput={(params) => <TextField variant="standard" {...params} sx={styles.datePickerInput} />}
+                                    />
+                                )}
+                                {/* { viewState === "month" && (
+                                    <MonthCarosel pickedDate={pickedDate} setPickedDate={setPickedDate} />
+                                )} */}
+                            </Box>
+                        )}
+                    >
                         <Box sx={styles.appointmentListBox}>
-                            <Typography variant="h5">Appointments</Typography>
-                            <List sx={styles.availabilityList}>
-                                {userData.appointments?.map(appointment => {
-                                    if(isSameDay(pickedDate, appointment.datetime)) return (
-                                    <ListItemButton><ListItemText>{format(appointment.datetime, "hh:mm aaa")} - {appointment.service} Session</ListItemText></ListItemButton>
-                                    )
-                                })}
-                                {userData.appointments?.filter(appointment => isSameDay(pickedDate, appointment.datetime)).length <= 0 && ("It seems that you don't have any appointments... yet")}
-                            </List>
+
+                            {/* Day view for calendar */}
+                            { viewState === "day" && (
+                                <AppointmentList
+                                    dataMode="sameDay"
+                                    userData={userData}
+                                    businessId={businessId}
+                                    pickedDate={pickedDate}
+                                    returnAppointmentDates={setAppointmentDates}
+                                    setIsLoading={setIsLoading}
+                                    setResponseMessage={setResponseMessage}
+                                    deletable={false}
+                                />
+                            )}
+
+                            {/* Month view for calendar */}
+                            { viewState === "month" && (
+                                <CalendarPicker
+                                    date={pickedDate}
+                                    value={pickedDate}
+                                    views={["day"]}
+                                    onChange={(newDate) => { setPickedDate(newDate); setViewState("day") }}
+                                    shouldDisableDate={isWeekend}
+                                    renderDay={(day, _value, PickersDayProps ) => {
+                                        // console.log("TYPE DAY: ", typeof day)
+                                        // console.log("TYPE APPT DATE: ", typeof new Date(appointmentDates[0]))
+                                        const hasAppt = appointmentDates.some(date => isSameDay(new Date(date), day))
+                                        if(hasAppt) PickersDayProps.sx=styles.dayHasAppt
+
+                                        return <PickersDay 
+                                            {...PickersDayProps}
+                                            allowSameDateSelection
+                                        />
+                                    }}
+                                />
+                            )}
                         </Box>
-                    </Box>
+                    </FeatureBox>
                 </Box>
-                
+
+                <Toast response={responseMessage} setResponse={setResponseMessage} />
+                <Spinner open={isLoading} />
+
             </Container>
         </Layout>
         
@@ -97,42 +215,61 @@ const styles = {
     outerBox: {
         width: "100%",
         display: "flex",
-        justifyContent: "Center",
+        flexDirection: "column",
+        alignItems: "center",
     },
-    innerBox: (theme) => theme.palette.mode === 'dark' ? {
-        backgroundImage: (theme)=> (theme.palette.custom.gradient.light),
-        width: {xs: "100%", md: "80%", lg: "60%"},
-        minWidth: "300px",
-        maxWidth: "600px",
-        mt: 2,
-        border: (theme) => (`1px solid ${theme.palette.custom.contrastText}`),
-        borderRadius: "25px",
-    } : {
-        width: {xs: "100%", md: "80%", lg: "60%"},
-        minWidth: "300px",
-        maxWidth: "600px",
-        mt: 2,
-        borderRadius: "25px",
+    headerProps: {
+        pb: 1,
     },
     calendarHead: {
         width: "100%",
+        minHeight: "55px",
         display: "flex",
         justifyContent: "space-between",
-        padding: "20px",
+        alignItems: "center",
+        pb: 1,
     },
-    servicesInputLabel: {
-        color: 'custom.contrastTextStrong'
+    viewGroup: {
+        height: 35,
+        mt: 1,
     },
-    services: {
-        width: "100%",
-
-    },
+    viewButton: (selected) => selected ? {
+        backgroundImage: (theme) => theme.palette.custom.gradient.lift,
+        // backgroundColor: (theme) => theme.palette.mode === 'dark' ? "#444" : theme.palette.custom.gradient.light,
+    } : {},
     datePickerInput: {
-        width: {xs: "50%"}
+        width: {xs: "50%"},
+        '& label, & input, & svg': {
+            color: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : "custom.highlight",
+        },
+        '& .Mui-focused, & input:focus, & .Mui-focused svg': {
+            color: "common.white",
+        },
+        '& .Mui-focused::before': {
+            borderColor: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : "custom.highlight",
+        },
+        '& .MuiInput-root::before': {
+            borderBottom: "1px solid",
+            borderColor: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : "custom.highlight",
+        },
+        '& .MuiInput-root:hover::before': {
+            borderBottom: "2px solid",
+            borderColor: (theme) => theme.palette.mode === 'dark' ? "custom.contrastText" : "custom.highlight",
+        },
     },
     appointmentListBox: {
         width: "100%",
-        minHeight: "300px",
-        p: 2,
-    }
+        '& .MuiCalendarPicker-root': {
+            backgroundColor: (theme) => theme.palette.mode === "dark" ? "" : "#fff",
+            mb:4,
+            '& .PrivatePickersSlideTransition-root': {
+                minHeight: 214,
+            },
+        },
+    },
+    dayHasAppt: {
+        color: "primary.main",
+        border: "1px solid",
+        borderColor: "primary.main",
+    },
 }

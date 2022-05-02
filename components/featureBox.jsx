@@ -10,14 +10,19 @@ import SvgIcon from '@mui/material/SvgIcon'
 import IconButton from '@mui/material/IconButton'
 
 
-const FeatureBox = ({children, title, iconLeft, iconRight, clickRightIcon, sx}) => {
+const FeatureBox = ({children, title, iconLeft, iconRight, clickRightIcon, sx, headerProps, noDivider }) => {
     // Make theme accessable
     const theme = useTheme(ThemeContext)
+    if(!noDivider || noDivider === null){
+        noDivider = false
+    } else {
+        noDivider = true
+    }
 
   return (
     <>
         <Box sx={{...styles.innerBox, ...sx}}>
-            <Box sx={{...styles.innerBoxHeader(theme)}}>
+            <Box sx={{...styles.innerBoxHeader(theme), ...headerProps}}>
                 <Box sx={styles.headerContent}>
                     <Typography sx={styles.innerBoxHeaderTitle} variant="h5">
                         {iconLeft && (
@@ -33,7 +38,7 @@ const FeatureBox = ({children, title, iconLeft, iconRight, clickRightIcon, sx}) 
                         </IconButton>
                     )}
                 </Box>
-                <Divider sx={styles.innerBoxHeaderDivider} />
+                { !noDivider && <Divider sx={styles.innerBoxHeaderDivider} /> }
             </Box>
             { children }
         </Box>

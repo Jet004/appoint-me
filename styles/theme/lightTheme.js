@@ -17,6 +17,9 @@ const lightTheme = (mode) => createTheme({
             paper: "#fff",
             transparent: "rgba(245, 245, 245, 0.6)",
         },
+        contrast: {
+            main: "#e4e4e4",
+        },
         text: {
             custom: {
                 red: "#9A030D",

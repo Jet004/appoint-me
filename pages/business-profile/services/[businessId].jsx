@@ -81,7 +81,8 @@ export default function Login() {
                     { services && services.map((service) => (
                         <FeatureBox 
                             sx={styles.service} 
-                            title={service.name}    
+                            title={service.name}
+                            key={service._id}   
                         >
                             <Typography sx={styles.service.content} variant="body1" component="div" gutterBottom>
                                 {service.description}

@@ -16,7 +16,8 @@ export default Spinner
 
 const styles = {
     dialogStyle: {
-        backgroundImage: (theme) => theme.palette.custom.gradient.medium
+        background: "transparent",
+        // backgroundImage: (theme) => theme.palette.custom.gradient.medium
     },
     spinStyle: {
         m: 6,
