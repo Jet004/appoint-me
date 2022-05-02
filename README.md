@@ -4,7 +4,17 @@
 
 - REACT HOOK FORM to replace state on forms... refactor register form
 
-- Refactor Dialogs into component for consistent functionality
+- Refactor all confirm Dialogs into component for consistent functionality
+
+- Add padding to confirm dialogs
+
+
+
+- Raise get businessId to app level -> add to user context
+
+- ensure that tokens are deleted on log out
+
+
 
  - Auth:
     - implement auth checking and limiting routes/functionality
@@ -13,9 +23,6 @@
     - Refresh token if access token expired but refresh token unexpired
     - Implement middleware to check for logged in status and redirect to appropriate resource
 
- - Use Dialog for popup forms...
- - Chip/toast to confirm appointment booked
-
  - settings-menu
     - Add a heading and close button to drawer
     - think of a few more features to implement - account settings with password reset etc perhaps
@@ -23,15 +30,16 @@
 - profile page
     - Finish display of appointment / payment history
     - Check that edit and delete buttons only visible on temp/own accounts. businessRep can not see buttons for "user"
+    - remove image edit button when business rep views user profile
 
 - ADMIN PANEL
     - Services blurb - description to include on the services page
     - create/update/delete services forms
     - create/update/delete business forms
 
-- Services
-    - Fix alignment of icons in links
+- SERVICEWORKERS
 
+- MANIFEST
 
 ## Improvements:
  - logo as SVG
