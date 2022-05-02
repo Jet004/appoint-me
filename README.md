@@ -7,8 +7,9 @@
  - Auth:
     - implement auth checking and limiting routes/functionality
     - Implement middleware to check for logged in status and redirect to appropriate resource
-    - Manage token refresh
-    - Refresh token if access token expired but refresh token unexpired
+
+    - check that token refresh working as expected
+    - May need to set check - if serviceworker says user is offline then allow them to continue with logged in status as they can only access already downloaded data. Normal checks apply if online. - Check with Shaun about possible security concerns with this approach
 
 - profile page
     - Finish display of appointment - CHECK THAT THIS IS WORKING AS INTENDED!
@@ -52,6 +53,7 @@
  - calendar date defaults to current day (or next business day) - choosing a date sets the fetch reference point, data will be fetched around that date. Auto load more data fetches from client side
  - modify logo home link to only work on image, not the containing div
  - Create user feedback context so I can implement a single success / error message handler at the application level. This will also make messages persist when they originate from a model and will display even if the modal closes.
+ - Start to perform token refresh in advance so there is no change of affecting user experience.
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body

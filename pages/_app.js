@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
 
 // Theme and UI imports
 import { CacheProvider, cacheProvider } from '@emotion/react'
@@ -45,8 +46,12 @@ const getLocalStorage = (key) => {
     }
 }
 
+
 // Root component
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
+    // Access next router so we can redirect user
+    const router = useRouter()
+
     // Theme switch state to toggle dark/light mode
     const [themeMode, setThemeMode] = useState("dark")
     // Theme toggler logic
@@ -122,6 +127,96 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
 
     // Automatically adjust font sizes for text elements based on viewport width
     theme = responsiveFontSizes(theme)
+
+    // Set up timer for periodically checking that the access token is still valid
+    useEffect(() => {
+        if(UserContext.loggedIn) {
+            const timer = setInterval(async () => {
+                // Get current timestamp
+                const now = Math.floor(Date.now()/1000)
+                
+                if(localStorage.getItem('refreshToken')) {
+                    // Get refresh token expiry from local storage
+                    const refreshToken = localStorage.getItem('refreshToken')
+                    const refreshTokenExpiry = JSON.parse(window.atob(refreshToken.split('.')[1])).exp
+
+                    // Check if refresh token is still valid
+                    if(now > refreshTokenExpiry){
+                        // Refresh token has expired, log user out and redirect to login page
+                        console.log('--> Refresh token expired, logging out')
+                        UserContext.logout()
+                        router.push('/login')
+                        // Return to prevent token refresh request
+                        return
+                    }
+
+                    // Refresh token is still valid, check the access token
+                    if(sessionStorage.getItem('accessToken')) {
+                        // Get access token expiry from session storage
+                        const accessToken = sessionStorage.getItem('accessToken')
+                        const accessTokenExpiry = JSON.parse(window.atob(accessToken.split('.')[1])).exp
+                        
+                        // Check if access token is still valid
+                        if((accessTokenExpiry - 60) > now){
+                            // Access token is still valid, return to prevent token refresh
+                            return
+                        }
+
+                        // Access token will expire but refresh token is still valid, perform token refresh
+                        try {
+                            console.log(`Attempting to refresh tokens at ${new Date()}`)
+                            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/token-refresh`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${accessToken}`
+                                },
+                                body: JSON.stringify({refreshToken: refreshToken})
+                            })
+                            const data = await response.json()
+                            
+                            // Check for 400 response
+                            if(response.status === 400) {
+                                // Either there was a validation error, the refresh token has expired 
+                                // or the refresh token is invalid. Log user out and redirect to login page\
+                                console.log("--> failed to refresh token with status [400]")
+                                UserContext.logout()
+                                router.push('/login')
+                            }
+
+                            // Throw error if response failed
+                            if(!response.ok) {
+                                throw {
+                                    status: response.status,
+                                    message: data.message,
+                                }
+                            }
+
+                            // Request was successful, persist new tokens in browser storage
+                            sessionStorage.setItem('accessToken', data.accessToken)
+                            localStorage.setItem('refreshToken', data.refreshToken)  
+                            console.log("--> Token refresh successful")
+                            // Return to prevent redirect
+                            return
+    
+                        } catch (error) {
+                            // Log error to console
+                            console.log(`[${error.status}] ${error.message}`)
+                        }
+                    }
+                    // No access token but refresh token is still valid. Suspicious activity, log user out
+                }
+
+                // No refresh token, log user out and redirect to login page
+                console.log("--> No refresh token found, user logged out")
+                UserContext.logout()
+                router.push('/login')
+            }, 5000)
+        }
+
+        // Remove the time when component unmounts to avoid memory leaks
+        return () => clearInterval(timer)
+    }, [UserContext])
 
     return (
         <CacheProvider value={emotionCache}>
