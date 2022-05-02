@@ -6,14 +6,12 @@
 
  - Auth:
     - implement auth checking and limiting routes/functionality
+    - Implement middleware to check for logged in status and redirect to appropriate resource
     - Manage token refresh
     - Refresh token if access token expired but refresh token unexpired
-    - Implement middleware to check for logged in status and redirect to appropriate resource
-    - ensure that tokens are deleted on log out
 
 - profile page
-    - Finish display of appointment / payment history
-    - remove image edit button when business rep views user profile
+    - Finish display of appointment - CHECK THAT THIS IS WORKING AS INTENDED!
 
 - SERVICEWORKERS
 
@@ -34,6 +32,7 @@
     - Add a heading and close button to drawer
     - think of a few more features to implement - account settings with password reset etc perhaps
 
+- Payment system inc. payment history
 
 ## ADMIN PANEL
 

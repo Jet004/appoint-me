@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton"
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
+import Spinner from './spinner'
 import Typography from '@mui/material/Typography'
 
 // Import icons
@@ -18,7 +19,7 @@ import isPast from 'date-fns/isPast'
 import isSameDay from "date-fns/isSameDay"
 import isSameMonth from "date-fns/isSameMonth"
 
-const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnAppointmentDates, setIsLoading, setResponseMessage, deletable }) => {
+const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnAppointmentDates, setResponseMessage, deletable }) => {
 
     // Initalise props
     const dataModes = ['upcoming', 'historical', 'sameDay']
@@ -54,8 +55,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
     const [appointments, setAppointments] = useState(null)
     const [deleteDialog, setDeleteDialog] = useState([false, null])
     const [needRefresh, setNeedRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
-    // Flag appointment list for refresh if picked date changes
+    // Flag appointment list for refresh if picked date changes (only applicable for calendar page)
     useEffect(() => {
         if(pickedDate) {
             setNeedRefresh(!needRefresh)
@@ -128,6 +130,8 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                     filteredAppointments = getAppointments.filter(appointment => (!isPast(new Date(appointment.appointmentTime))))
                 } else if(dataMode === 'sameDay') {
                     filteredAppointments = getAppointments.filter(appointment => isSameDay(new Date(appointment.appointmentTime), new Date(pickedDate)))
+                } else if(dataMode === 'historical') {
+                    filteredAppointments = getAppointments.filter(appointment => isPast(new Date(appointment.appointmentTime)))
                 }
 
                 // Sort appointments by date and time (ascending)
@@ -274,10 +278,22 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                 {/* If there are no appointments, display a message */}
                 { (!appointments || appointments.length === 0) && (
                     <ListItem sx={styles.listItem} key={"no-data"}>
-                        <Typography variant="body1" align='center'>You have no upcoming appointments. Check the services tab to book an appointment.</Typography>
+                        { dataMode === 'upcoming' && (
+                            <Typography variant="body1" align='center'>You have no upcoming appointments. Check the services tab to book an appointment.</Typography>
+                        )}
+
+                        { dataMode === 'sameDay' && (
+                            <Typography variant="body1" align='center'>You have no appointments on this day. Check the services tab to book an appointment.</Typography>
+                        )}
+
+                        { dataMode === 'historical' && (
+                            <Typography variant="body1" align='center'>You haven&apos;t attended any appointments yet. Check the services tab to book an appointment.</Typography>
+                        )}
                     </ListItem>
                 )}
             </List>
+
+            <Spinner open={isLoading} />
 
             <FloatingDialog 
                 open={deleteDialog[0]}

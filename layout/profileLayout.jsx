@@ -10,6 +10,7 @@ import NewAppointmentForm from '../forms/NewAppointmentForm'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
+import AppointmentList from '../components/appointmentList'
 import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -64,7 +65,8 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
     const [avatar, setAvatar] = useState(null) // Profile picture
 
     // Get userType - first case is for own profile, second is for client list profile
-    const userType = userData?.userType || userData.userModel.toLowerCase()
+    console.log("UD: ", userData)
+    const userType = userData?.userType || userData?.userModel?.toLowerCase()
 
 
     // Get user profile picture on first client side render
@@ -277,7 +279,13 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                             
                         </AccordionSummary>  
                         <AccordionDetails>
-                            {!userData?.user?.appointments?.length && (<List>You haven&apos;t attended any appointments yet...</List>)}
+                            <AppointmentList
+                                dataMode="historical"
+                                userData={userData}
+                                businessId={businessId}
+                                setResponseMessage={setResponseMessage}
+                                deletable={false}
+                            />
                             <List>
                                 {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
                                     if(isPast(appointment.datetime)) {
@@ -291,7 +299,8 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                             </List>
                         </AccordionDetails>  
                     </Accordion>
-                    <Accordion sx={styles.historyAccordion} disableGutters>
+                    {/* Payment history - not yet implemented */}
+                    {/* <Accordion sx={styles.historyAccordion} disableGutters>
                         <AccordionSummary 
                             sx={styles.historyItem}  
                             key="payment-history"
@@ -302,7 +311,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         <AccordionDetails>
                             Content
                         </AccordionDetails>
-                    </Accordion>
+                    </Accordion> */}
                 </FeatureBox>
                 {canDeleteUser && (
                     <Button 
