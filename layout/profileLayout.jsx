@@ -63,13 +63,16 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
     const [deleteDialog, setDeleteDialog] = useState(false) // Dialog to confirm delete
     const [avatar, setAvatar] = useState(null) // Profile picture
 
+    // Get userType - first case is for own profile, second is for client list profile
+    const userType = userData?.userType || userData.userModel.toLowerCase()
+
 
     // Get user profile picture on first client side render
     useEffect(() => {
       const getDp = async () => {
         try {
             // Send fetch request to get user profile picture
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile-picture/${userData.user._id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile-picture/${userType}/${userData.user._id}`, {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
                 }
@@ -194,8 +197,8 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
             <Box sx={styles.cont}>
                 <Box sx={styles.profileBox}>
 
-                    {/* Don't show the edit profile picture button for temp users */}
-                    {!isTempUser && (
+                    {/* Don't show the edit profile picture button for temp users or business reps viewing user profiles */}
+                    {(!isTempUser && !(userType === 'user' && loggedInUser.userType === 'businessRep')) && (
                         <Badge
                         sx={styles.badge}
                             overlap="circular"
@@ -211,7 +214,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                     )}
 
                     {/* Allow image placeholder to be rendered for temp users */}
-                    {isTempUser && (
+                    {(isTempUser || (userType === 'user' && loggedInUser.userType === 'businessRep')) && (
                         <CustomImage style={styles.profilePic} alt="Profile picture" src={avatar} fallBack={<AccountCircle />} width={90} height={90} noBlur="true" />
                     )}
 
@@ -420,6 +423,7 @@ const styles = {
         backgroundImage: (theme) => theme.palette.custom.gradient.iconBackground,
     },
     profilePic: {
+        mr: 1,
         width: 90,
         height: 90,
         color: "custom.contrastText"
