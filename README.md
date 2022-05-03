@@ -8,11 +8,7 @@
     - implement auth checking and limiting routes/functionality
     - Implement middleware to check for logged in status and redirect to appropriate resource
 
-    - check that token refresh working as expected
     - May need to set check - if serviceworker says user is offline then allow them to continue with logged in status as they can only access already downloaded data. Normal checks apply if online. - Check with Shaun about possible security concerns with this approach
-
-- profile page
-    - Finish display of appointment - CHECK THAT THIS IS WORKING AS INTENDED!
 
 - SERVICEWORKERS
 
@@ -56,6 +52,7 @@
  - Start to perform token refresh in advance so there is no change of affecting user experience.
  - For businessRep the associated business data is attached to the user object, this is not ideal. Separate it so it is its own object - or consider consolidating all user/business data into a single object to reduce the number of calls to localStorage.
  - Change appointment history to a button which opens in a new page. History should be searchable - possibly use calendar components.
+ - Refactor use of businessId to access the global user object if is businessRep (if not needed by user)
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body

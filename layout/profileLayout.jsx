@@ -65,7 +65,6 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
     const [avatar, setAvatar] = useState(null) // Profile picture
 
     // Get userType - first case is for own profile, second is for client list profile
-    console.log("UD: ", userData)
     const userType = userData?.userType || userData?.userModel?.toLowerCase()
 
 

@@ -27,8 +27,6 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(true)
     const [responseMessage, setResponseMessage] = useState(null)
     const [services, setServices] = useState(null)
-    
-    console.log("SERVICES: ", services)
 
     // useEffect to get services data
     useEffect(() => {

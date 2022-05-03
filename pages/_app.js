@@ -46,6 +46,54 @@ const getLocalStorage = (key) => {
     }
 }
 
+// This function checks login status and user type to restrict access to pages
+const restrictAccess = (router, loggedIn, userType) => {
+    console.log(router.pathname, loggedIn, userType)
+    const unauthenticatedUrls = [
+        '/',
+        '/login',
+        '/register',
+        '/business-profile/services/[businessId]',
+        '/business-profile/appointments/[businessId]',
+        '/business-profile/about/[businessId]'
+    ]
+
+    const authenticatedUrls = [
+        '/home',
+        '/calendar',
+        '/profile',
+        '/business-profile/[businessId]',
+        '/business-profile/services/[businessId]',
+        '/business-profile/appointments/[businessId]',
+        '/business-profile/about/[businessId]'
+    ]
+
+    const businessRepUrls = [
+        '/business-profile/client-list/[businessId]',
+    ]
+
+    // Get URL path from next router
+    const path = router.pathname
+
+    // Check if unauthenticated user trying to access a restricted path
+    if(!loggedIn && !unauthenticatedUrls.includes(path)) {
+        console.log("--> Unauthorised access to:", path)
+        router.push('/login')
+    }
+
+    // Check if authenticated userType 'user' trying to access a restricted path
+    if(loggedIn && userType === 'user' && !authenticatedUrls.includes(path)) {
+        console.log("--> Unauthorised access to:", path)
+        router.push('/home')
+    }
+
+    // Check if authenticated userType 'businessRep' trying to access a restricted path
+    if(loggedIn && userType === 'businessRep' && (!authenticatedUrls.includes(path) && !businessRepUrls.includes(path))) {
+        console.log("--> Unauthorised access to:", path)
+        router.push('/home')
+    }
+}
+
 
 // Root component
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
@@ -120,6 +168,12 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
             loggedIn: loggedIn
         }))
     }, [user, userType, loggedIn])
+
+
+    // Restrict access to pages based on login status and user type
+    useEffect(() => {
+        const redirect =  restrictAccess(router, loggedIn, userType)
+    })
 
 
     // This code will change the theme any time themeMode changes

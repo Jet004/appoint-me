@@ -40,7 +40,7 @@ export default function Login() {
     const router = useRouter()
     // Access user context
     const userData = useContext(userContext)
-    console.log("LOGGED IN: ", userData.loggedIn)
+
     // State Management
     const { control, handleSubmit, formState: { errors } } = useForm({ mode: "onChange",  resolver: yupResolver(validationSchema) })
     const [isLoading, setIsLoading] = useState(false)

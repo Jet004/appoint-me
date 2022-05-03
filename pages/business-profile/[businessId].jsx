@@ -19,7 +19,7 @@ export default function BusinessProfile() {
     // ROUTER FOR PROTOTYPE FILTER
     const router = useRouter()
     const userData = useContext(userContext)
-    console.log(userData)
+
     // THIS WILL CHANGE IN NON-PROTOTYPE VERSION
     // Filter service card data based on login status
      

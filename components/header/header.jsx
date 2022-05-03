@@ -37,7 +37,7 @@ const Header = ({ page, windowWidth }) => {
     const navLinkData = navData[user.userType]
 
     // Control the link highlighting for page links
-    const [tabValue, setTabValue] = useState(router.pathname)
+    const [tabValue, setTabValue] = useState(router.asPath)
 
     const displayHeader = (windowWidth > theme.breakpoints.values.sm && userData.loggedIn)
 
@@ -54,7 +54,7 @@ const Header = ({ page, windowWidth }) => {
                         value={tabValue} 
                         onChange={(e, newValue) => setTabValue(newValue)}
                         centered={true}
-                        indicatorColor=""
+                        TabIndicatorProps={{style: {display: 'none'}}}
                     >
                     {navLinkData.map(link => (
                         <Tab 
