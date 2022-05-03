@@ -54,6 +54,7 @@
  - modify logo home link to only work on image, not the containing div
  - Create user feedback context so I can implement a single success / error message handler at the application level. This will also make messages persist when they originate from a model and will display even if the modal closes.
  - Start to perform token refresh in advance so there is no change of affecting user experience.
+ - For businessRep the associated business data is attached to the user object, this is not ideal. Separate it so it is its own object - or consider consolidating all user/business data into a single object to reduce the number of calls to localStorage.
 
 ## Future Additions to site:
  - breadcrumbs - mobile view in header - desktop view above page body

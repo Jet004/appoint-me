@@ -71,9 +71,7 @@ export default function Login() {
             })
             const data = await response.json()
             
-            // Stop spinner
-            setIsLoading(false)
-                
+            
             // Throw error if request failed
             if(data.status !== "success"){
                 throw {
@@ -88,9 +86,40 @@ export default function Login() {
                 sessionStorage.setItem("accessToken", data.accessToken)
                 localStorage.setItem("refreshToken", data.refreshToken)
 
+                // Get businessId from backend if user is a businessRep
+                if(userType === "businessRep"){
+                    const userId = data.user._id
+                    console.log("LOGIN UID: ", userId)
+
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/business-reps/business/${userId}`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
+                        }
+                    })
+                    const businessData = await response.json()
+                    
+                    // Stop spinner
+                    setIsLoading(false)
+
+                    // Throw error if request failed
+                    if(response.status !== 200){
+                        throw {
+                            status: businessData.status,
+                            message: businessData.message
+                        }
+                    }
+
+                    // Attach business data to user object - this is not ideal but it will save time for now
+                    const business = businessData.business
+                    data.user.business = business
+
+                    console.log("USER: ", data.user)
+                }
+                
                 // Set user data to user context
                 userData.login(data.user, userType)
-
+                
                 // Inform the user
                 setResponseMessage({
                     status: data.status,

@@ -134,7 +134,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
             const timer = setInterval(async () => {
                 // Get current timestamp
                 const now = Math.floor(Date.now()/1000)
-                
+
                 if(localStorage.getItem('refreshToken')) {
                     // Get refresh token expiry from local storage
                     const refreshToken = localStorage.getItem('refreshToken')

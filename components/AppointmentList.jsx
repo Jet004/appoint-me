@@ -56,7 +56,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
     const [deleteDialog, setDeleteDialog] = useState([false, null])
     const [needRefresh, setNeedRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-
+    console.log("APPTS: ", appointments)
     // Flag appointment list for refresh if picked date changes (only applicable for calendar page)
     useEffect(() => {
         if(pickedDate) {
@@ -68,6 +68,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
     useEffect(() => {
         // Define a function to handle the request for user appointments
         const requestHandler = async () => {
+            console.log("Running Get Appts...", userData.userType, businessId)
             try {
                 // Prevent request if user is businessRep and no businessId is set
                 if(userData.userType === "businessRep" && !businessId) return
@@ -123,7 +124,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                     })
                     return crm.appointments
                 }).flat()
-                
+                console.log("GET APPTS: ", getAppointments)
                 // Filter appointments according to dataMode
                 let filteredAppointments
                 if(dataMode === 'upcoming') {

@@ -22,7 +22,7 @@ const Profile = () => {
                 <title>AppointMe: Profile</title>
             </Head>
             <Layout page="Profile">
-                <ProfileLayout userData={userData} setResponseMessage={setResponseMessage} />
+                <ProfileLayout userData={userData} setResponseMessage={setResponseMessage} businessId={userData.user?.business._id} />
                 <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
             </Layout>
         </>
