@@ -249,7 +249,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                         >
                             <ListItemButton
                                 disableGutters
-                                disabled={isPast(new Date(appointment.appointmentTime))}
+                                disabled={(dataMode !== "historical" && isPast(new Date(appointment.appointmentTime)))}
                                 key={`_${appointment._id}`}
                                 // onClick={() => setAppointmentDetailDialog(true)} // This feature is not yet implemented
                             >
