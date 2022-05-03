@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useTheme } from '@mui/material/styles'
 import ThemeContext from '../utility/themeContext'
+import localForage from 'localforage'
 
 // Components
 import AppointmentList from '../components/appointmentList'
@@ -66,7 +67,7 @@ export default function Appointments() {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/business-reps/business/${userData.user._id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     }
                 })
                 const data = await response.json()

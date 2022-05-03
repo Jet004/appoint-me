@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
+import localForage from 'localforage'
 
 // Style and UX
 import Box from '@mui/material/Box'
@@ -48,10 +49,10 @@ const SettingsMenu = () => {
     //     userData.toggleUserType()
     // }
 
-    const logout = () => {
-        sessionStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+    const logout = async () => {
         userData.logout()
+        await localForage.removeItem('accessToken')
+        await localForage.removeItem('refreshToken')
         router.push('/login')
     }
 

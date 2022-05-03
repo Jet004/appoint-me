@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import localForage from 'localforage'
 
 // Styles, UI and UX imports
 import Box from '@mui/material/Box'
@@ -50,7 +51,7 @@ const ClientList = () => {
                 // Request client list
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses/client-list/${businessId}`, {
                     headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     }
                 })
                 const data = await response.json()

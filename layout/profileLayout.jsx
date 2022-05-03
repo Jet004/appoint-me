@@ -5,6 +5,7 @@ import UpdateUserForm from '../forms/UpdateUserForm'
 import UpdateTempUserForm from '../forms/UpdateTempUserForm'
 import UploadDpForm from '../forms/UploadDpForm'
 import NewAppointmentForm from '../forms/NewAppointmentForm'
+import localForage from 'localforage'
 
 // Components
 import Accordion from '@mui/material/Accordion'
@@ -75,7 +76,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
             // Send fetch request to get user profile picture
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile-picture/${userType}/${userData.user._id}`, {
                 headers: {
-                    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                    'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                 }
             })
             
@@ -152,7 +153,7 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                    'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                 }
             })
             // The response doesn't have a body as it should return a 204. We can just check the status code

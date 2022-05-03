@@ -3,6 +3,7 @@ import userContext from "../utility/mockData/appContext"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import localForage from 'localforage'
 
 // Import Components
 import Box from '@mui/material/Box'
@@ -60,7 +61,7 @@ export default function UploadDpForm({ closeDialog, reload }) {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile-picture/${userData.user._id}`, {
                     method: "PUT",
                     headers: {
-                        "Authorization": `Bearer ${sessionStorage.getItem("accessToken")}`
+                        "Authorization": `Bearer ${await localForage.getItem("accessToken")}`
                     },
                     body: formData
                 })

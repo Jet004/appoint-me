@@ -7,6 +7,7 @@ import subYears from 'date-fns/subYears'
 import isWeekend from 'date-fns/isWeekend'
 import userContext from '../utility/mockData/appContext'
 import { buildUserForm } from '../utility/helperFunctions'
+import localForage from 'localforage'
 
 // Styles, UI, UX
 import Box from '@mui/material/Box'
@@ -138,7 +139,7 @@ export default function UpdateUserForm({ closeDialog }) {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
+                    "Authorization": `Bearer ${await localForage.getItem('accessToken')}`
                 },
                 body: JSON.stringify(form)
             })

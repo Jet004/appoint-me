@@ -2,9 +2,6 @@ import React, { useContext } from 'react'
 // ONLY NEEDED FOR PROTOTYPE
 import { useRouter } from 'next/router'
 
-// Next.js imports
-import Head from 'next/head'
-
 // Styles, UI, UX
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../layout/businessProfileLayout'

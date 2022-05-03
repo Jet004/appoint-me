@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../../layout/businessProfileLayout'
 
-export default function Login() {
+export default function About() {
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function Login() {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos et hic perferendis commodi exercitationem? Asperiores eos aliquid saepe, odit, vero accusantium voluptatum dicta cumque nam mollitia ex obcaecati aliquam dolore.
                     </Typography>
                     <Typography variant="body1">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae eius beatae, maxime porro voluptatum ab inventore nesciunt saepe quas minima quibusdam animi dolore esse error magnam cum eligendi amet sit?
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae eius beatae, maxime porro voluptatum ab inventore nesciunt saepe quas minima quibusdam animi dolore esse error magnam cum eligendi amet sit?
                     </Typography>
                 </Box>
             </BusinessProfileLayout>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
 import userContext from '../utility/mockData/appContext'
+import localForage from 'localforage'
 // import AppointmentDetail from '../components/AppointmentDetail' // This is not implmented yet
 
 // Components
@@ -43,7 +44,7 @@ export default function Home() {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/business-reps/business/${userData.user._id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     }
                 })
                 const data = await response.json()

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import localForage from 'localforage'
 
 // Import componenets
 import Box from '@mui/material/Box'
@@ -93,7 +94,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                 const response = await fetch(url, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     }
                 })
                 const data = await response.json()
@@ -197,7 +198,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                    'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                 }
             })
 

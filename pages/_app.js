@@ -27,22 +27,21 @@ import '../styles/globals.css'
 // Initialise UI cache
 const clientSideEmotionCache = createEmotionCache()
 
-// This function sets items into indexedDB
-const setLocalForage = async (key, value) => {
+// This function sets items into local storage
+const setLocalStorage = (key, value) => {
     try {
-        await localForage.setItem(key, value)
+        window.localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
         // Let errors propogate if local storage failed to set
     }
 }
 
-// This function is used in useEffect to override useState initial values 
-// by loading data from indexedDB if present defaults to the initial value 
-// if no data is found in local storage
-const getLocalForage = async (key) => {
+// This function wraps useState initial values to load data from local storage if present
+// defaults to an initial value if no data is found in local storage
+const getLocalStorage = (key) => {
     try {
-        const value = await localForage.getItem(key)
-        return value
+        const value = window.localStorage.getItem(key)
+        return JSON.parse(value)
     } catch (error) {
         // If error, keep using initial value
     }
@@ -141,40 +140,40 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     }}, [user, userType, loggedIn])
 
     // Get stored data from local storage if available on first render
-    useEffect(async () => {
-        // Get stored theme mode and set it in state manager
-        const storedTheme = await getLocalForage('theme')
-        if(storedTheme) {
-            setThemeMode(storedTheme)
-        }
-
+    useEffect(() => {
         // Get stored user data and set it in state manager
-        const storedUser = await getLocalForage('userData')
+        const storedUser = JSON.parse(getLocalStorage('userData'))
         if(storedUser) {
             setUser(storedUser.user)
             setUserType(storedUser.userType)
             setLoggedIn(storedUser.loggedIn)
         }
+
+        // Get stored theme mode and set it in state manager
+        const storedTheme = getLocalStorage('theme')
+        if(storedTheme) {
+            setThemeMode(storedTheme)
+        }
     }, [])
 
     // Persist theme mode to local storage
-    useEffect(async () => {
-       await setLocalForage('theme', themeMode)
+    useEffect(() => {
+       setLocalStorage('theme', themeMode)
     }, [themeMode])
 
     // Persist user data to local storage
-    useEffect(async () => {
-        await setLocalForage('userData', {
+    useEffect(() => {
+        setLocalStorage('userData', JSON.stringify({
             user: user,
             userType: userType,
             loggedIn: loggedIn
-        })
+        }))
     }, [user, userType, loggedIn])
 
 
     // Restrict access to pages based on login status and user type
     useEffect(() => {
-        const redirect =  restrictAccess(router, loggedIn, userType)
+        restrictAccess(router, loggedIn, userType)
     })
 
 
@@ -185,94 +184,101 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     theme = responsiveFontSizes(theme)
 
     // Set up timer for periodically checking that the access token is still valid
-    useEffect(() => {
-        if(UserContext.loggedIn) {
-            const timer = setInterval(async () => {
-                // Get current timestamp
-                const now = Math.floor(Date.now()/1000)
+    useEffect(async () => {
+        const timer = setInterval(async () => {
+                if(UserContext.loggedIn) {
+                try {
+                    // Get required variables
+                    const now = Math.floor(Date.now()/1000)
+                    const refreshToken = await localForage.getItem('refreshToken')
+                    const accessToken = await localForage.getItem('accessToken')
 
-                if(localStorage.getItem('refreshToken')) {
-                    // Get refresh token expiry from local storage
-                    const refreshToken = localStorage.getItem('refreshToken')
-                    const refreshTokenExpiry = JSON.parse(window.atob(refreshToken.split('.')[1])).exp
+                    if(refreshToken) {
+                        // Get refresh token expiry from local storage
+                        const refreshTokenExpiry = JSON.parse(window.atob(refreshToken.split('.')[1])).exp
 
-                    // Check if refresh token is still valid
-                    if(now > refreshTokenExpiry){
-                        // Refresh token has expired, log user out and redirect to login page
-                        console.log('--> Refresh token expired, logging out')
-                        UserContext.logout()
-                        router.push('/login')
-                        // Return to prevent token refresh request
-                        return
-                    }
-
-                    // Refresh token is still valid, check the access token
-                    if(sessionStorage.getItem('accessToken')) {
-                        // Get access token expiry from session storage
-                        const accessToken = sessionStorage.getItem('accessToken')
-                        const accessTokenExpiry = JSON.parse(window.atob(accessToken.split('.')[1])).exp
-                        
-                        // Check if access token is still valid
-                        if((accessTokenExpiry - 60) > now){
-                            // Access token is still valid, return to prevent token refresh
+                        // Check if refresh token is still valid
+                        if(now > refreshTokenExpiry){
+                            // Refresh token has expired, log user out and redirect to login page
+                            console.log('--> Refresh token expired, logging out')
+                            UserContext.logout()
+                            router.push('/login')
+                            // Return to prevent token refresh request
                             return
                         }
 
-                        // Access token will expire but refresh token is still valid, perform token refresh
-                        try {
-                            console.log(`Attempting to refresh tokens at ${new Date()}`)
-                            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/token-refresh`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${accessToken}`
-                                },
-                                body: JSON.stringify({refreshToken: refreshToken})
-                            })
-                            const data = await response.json()
+                        // Refresh token is still valid, check the access token
+                        if(accessToken) {
+                            // Get access token expiry from session storage
+                            const accessTokenExpiry = JSON.parse(window.atob(accessToken.split('.')[1])).exp
                             
-                            // Check for 400 response
-                            if(response.status === 400) {
-                                // Either there was a validation error, the refresh token has expired 
-                                // or the refresh token is invalid. Log user out and redirect to login page\
-                                console.log("--> failed to refresh token with status [400]")
-                                UserContext.logout()
-                                router.push('/login')
+                            // Check if access token is still valid
+                            if((accessTokenExpiry - 60) > now){
+                                // Access token is still valid, return to prevent token refresh
+                                return
                             }
 
-                            // Throw error if response failed
-                            if(!response.ok) {
-                                throw {
-                                    status: response.status,
-                                    message: data.message,
+                            // Access token will expire but refresh token is still valid, perform token refresh
+                            try {
+                                console.log(`Attempting to refresh tokens at ${new Date()}`)
+                                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/token-refresh`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${accessToken}`
+                                    },
+                                    body: JSON.stringify({refreshToken: refreshToken})
+                                })
+                                const data = await response.json()
+                                
+                                // Check for 400 response
+                                if(response.status === 400) {
+                                    // Either there was a validation error, the refresh token has expired 
+                                    // or the refresh token is invalid. Log user out and redirect to login page\
+                                    console.log("--> failed to refresh token with status [400]")
+                                    UserContext.logout()
+                                    clearInterval(timer)
+                                    router.push('/login')
                                 }
+
+                                // Throw error if response failed
+                                if(!response.ok) {
+                                    throw {
+                                        status: response.status,
+                                        message: data.message,
+                                    }
+                                }
+
+                                // Request was successful, persist new tokens in browser storage
+                                await localForage.setItem('accessToken', data.accessToken)
+                                await localForage.setItem('refreshToken', data.refreshToken)  
+                                console.log("--> Token refresh successful")
+                                // Return to prevent redirect
+                                return
+        
+                            } catch (error) {
+                                // Log error to console
+                                console.log(`[${error.status}] ${error.message}`)
                             }
-
-                            // Request was successful, persist new tokens in browser storage
-                            sessionStorage.setItem('accessToken', data.accessToken)
-                            localStorage.setItem('refreshToken', data.refreshToken)  
-                            console.log("--> Token refresh successful")
-                            // Return to prevent redirect
-                            return
-    
-                        } catch (error) {
-                            // Log error to console
-                            console.log(`[${error.status}] ${error.message}`)
                         }
+                        // No access token but refresh token is still valid. Suspicious activity, log user out
                     }
-                    // No access token but refresh token is still valid. Suspicious activity, log user out
-                }
 
-                // No refresh token, log user out and redirect to login page
-                console.log("--> No refresh token found, user logged out")
-                UserContext.logout()
-                router.push('/login')
-            }, 5000)
-        }
+                    // No refresh token, log user out and redirect to login page
+                    console.log("--> No refresh token found, user logged out")
+                    UserContext.logout()
+                    clearInterval(timer)
+                    router.push('/login')
+                } catch (error) {
+                    // Log error to console
+                    console.log(`[${error.status}] ${error.message}`)
+                }
+            }
+        }, 5000)
 
         // Remove the time when component unmounts to avoid memory leaks
         return () => clearInterval(timer)
-    }, [UserContext])
+    }, [UserContext, loggedIn])
 
     return (
         <CacheProvider value={emotionCache}>

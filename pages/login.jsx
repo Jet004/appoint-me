@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import localForage from 'localforage'
 
 // Styles, UI, UX
 import Box from '@mui/material/Box'
@@ -83,18 +84,17 @@ export default function Login() {
             // Login was successful, set user data and tokens to local/session storage
             try {
                 // Set tokens and user data to browser storage
-                sessionStorage.setItem("accessToken", data.accessToken)
-                localStorage.setItem("refreshToken", data.refreshToken)
+                await localForage.setItem("accessToken", data.accessToken)
+                await localForage.setItem("refreshToken", data.refreshToken)
 
                 // Get businessId from backend if user is a businessRep
                 if(userType === "businessRep"){
                     const userId = data.user._id
-                    console.log("LOGIN UID: ", userId)
 
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/business-reps/business/${userId}`, {
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
+                            "Authorization": `Bearer ${await localForage.getItem('accessToken')}`
                         }
                     })
                     const businessData = await response.json()
@@ -113,8 +113,6 @@ export default function Login() {
                     // Attach business data to user object - this is not ideal but it will save time for now
                     const business = businessData.business
                     data.user.business = business
-
-                    console.log("USER: ", data.user)
                 }
                 
                 // Set user data to user context
@@ -131,7 +129,7 @@ export default function Login() {
                 router.push("/home")
 
             } catch(err) {
-                console.log("Error setting tokens to local/session storage: ", err)
+                console.log("Error setting tokens to indexedDb: ", err)
 
                 // Inform the user
                 setResponseMessage({

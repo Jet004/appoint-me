@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import userContext from '../utility/mockData/appContext'
 import { useTheme } from '@mui/material/styles'
 import ThemeContext from '../utility/themeContext'
+import localForage from 'localforage'
 
 // Import components
 import Box from '@mui/material/Box'
@@ -99,7 +100,7 @@ const NewAppointmentForm = ({ client }) => {
                 // Request services
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses/services/${businessId}`, {
                     headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     }
                 })
                 const data = await response.json()
@@ -210,7 +211,7 @@ const NewAppointmentForm = ({ client }) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                        'Authorization': `Bearer ${await localForage.getItem('accessToken')}`
                     },
                     body: JSON.stringify({
                         crm: client?._id || userData.user._id,
@@ -309,7 +310,11 @@ const NewAppointmentForm = ({ client }) => {
                 />
 
             </Box>
-            <Typography sx={styles.loginMessage} variant="body2">*Log in to book an appointment</Typography>
+
+            { !userData.loggedIn && (
+                <Typography sx={styles.loginMessage} variant="body2">*Log in to book an appointment</Typography>
+            )}
+
             <FeatureBox
                 title="Available Times"
                 iconLeft={<EventAvailableRoundedIcon />}
