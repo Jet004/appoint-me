@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import localForage from 'localforage'
 
 // Theme and UI imports
 import { CacheProvider, cacheProvider } from '@emotion/react'
@@ -26,21 +27,22 @@ import '../styles/globals.css'
 // Initialise UI cache
 const clientSideEmotionCache = createEmotionCache()
 
-// This function sets items into local storage
-const setLocalStorage = (key, value) => {
+// This function sets items into indexedDB
+const setLocalForage = async (key, value) => {
     try {
-        window.localStorage.setItem(key, JSON.stringify(value))
+        await localForage.setItem(key, value)
     } catch (error) {
         // Let errors propogate if local storage failed to set
     }
 }
 
-// This function wraps useState initial values to load data from local storage if present
-// defaults to an initial value if no data is found in local storage
-const getLocalStorage = (key) => {
+// This function is used in useEffect to override useState initial values 
+// by loading data from indexedDB if present defaults to the initial value 
+// if no data is found in local storage
+const getLocalForage = async (key) => {
     try {
-        const value = window.localStorage.getItem(key)
-        return JSON.parse(value)
+        const value = await localForage.getItem(key)
+        return value
     } catch (error) {
         // If error, keep using initial value
     }
@@ -139,15 +141,15 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     }}, [user, userType, loggedIn])
 
     // Get stored data from local storage if available on first render
-    useEffect(() => {
+    useEffect(async () => {
         // Get stored theme mode and set it in state manager
-        const storedTheme = getLocalStorage('theme')
+        const storedTheme = await getLocalForage('theme')
         if(storedTheme) {
             setThemeMode(storedTheme)
         }
 
         // Get stored user data and set it in state manager
-        const storedUser = JSON.parse(getLocalStorage('userData'))
+        const storedUser = await getLocalForage('userData')
         if(storedUser) {
             setUser(storedUser.user)
             setUserType(storedUser.userType)
@@ -156,17 +158,17 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     }, [])
 
     // Persist theme mode to local storage
-    useEffect(() => {
-       setLocalStorage('theme', themeMode)
+    useEffect(async () => {
+       await setLocalForage('theme', themeMode)
     }, [themeMode])
 
     // Persist user data to local storage
-    useEffect(() => {
-        setLocalStorage('userData', JSON.stringify({
+    useEffect(async () => {
+        await setLocalForage('userData', {
             user: user,
             userType: userType,
             loggedIn: loggedIn
-        }))
+        })
     }, [user, userType, loggedIn])
 
 

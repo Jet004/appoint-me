@@ -5,9 +5,6 @@
 ### CRITICAL
 
  - Auth:
-    - implement auth checking and limiting routes/functionality
-    - Implement middleware to check for logged in status and redirect to appropriate resource
-
     - May need to set check - if serviceworker says user is offline then allow them to continue with logged in status as they can only access already downloaded data. Normal checks apply if online. - Check with Shaun about possible security concerns with this approach
 
 - SERVICEWORKERS
