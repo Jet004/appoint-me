@@ -21,7 +21,6 @@ import isSameDay from "date-fns/isSameDay"
 import isSameMonth from "date-fns/isSameMonth"
 
 const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnAppointmentDates, setResponseMessage, deletable }) => {
-
     // Initalise props
     const dataModes = ['upcoming', 'historical', 'sameDay']
     if(!dataMode) {
@@ -31,13 +30,13 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
     } else {
         throw new Error(`Invalid dataMode in AppointmentList component: ${dataMode}`)
     }
-
+    
     if(deletable === undefined) {
         deletable = true
     } else {
         deletable = !!deletable
     }
-
+    
     // Render method for delete icon
     const deleteIcon = (appointment) => {
         if(deletable) {
@@ -50,6 +49,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
             return null
         }
     }
+    
+    // Get userType - first case is for own profile, second is for client list profile
+    const userType = userData?.userType || userData?.userModel?.toLowerCase()
 
     // State Management
     const [crmData, setCrmData] = useState(null)
@@ -71,16 +73,16 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
         const requestHandler = async () => {
             try {
                 // Prevent request if user is businessRep and no businessId is set
-                if(userData.userType === "businessRep" && !businessId) return
+                if(userType === "businessRep" && !businessId) return
 
                 // Start spinner
                 setIsLoading(true)
                 
                 // Set the correct url for the request based on user type
                 let url = `${process.env.NEXT_PUBLIC_API_URL}/api/appointments`
-                if(userData.userType === "user"){
+                if(userType === "user"){
                     url += `/user-appointments`
-                } else if (userData.userType === "businessRep"){
+                } else if (userType === "businessRep"){
                     url += `/business-rep-appointments/${businessId}`
                 } else {
                     // Invalid user type, throw error
@@ -160,7 +162,7 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
         }
     
         // Send request if user data is available
-        if(userData.loggedIn) requestHandler()
+        if(userData.user._id) requestHandler()
 
     }, [userData, businessId, needRefresh])
 
@@ -181,9 +183,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
 
             // Define the url for the request based on user type
             let url = `${process.env.NEXT_PUBLIC_API_URL}/api/appointments`
-            if(userData.userType === "user"){
+            if(userType === "user"){
                 url += `/user/crud/${appointmentId}`
-            } else if (userData.userType === "businessRep"){
+            } else if (userType === "businessRep"){
                 url += `/business-rep/crud/${appointmentId}`
             } else {
                 // Invalid user type, throw error
@@ -263,9 +265,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
                                 </Box>
                                 <Box sx={styles.listItemText}>
                                     <Typography variant="body1">
-                                        {format(new Date(appointment.appointmentTime), "h:mm aaa")} - { userData.userType === 'user' ? appointment.businessName : appointment.service.name }
+                                        {format(new Date(appointment.appointmentTime), "h:mm aaa")} - { userType === 'user' ? appointment.businessName : appointment.service.name }
                                     </Typography>
-                                    { userData.userType === "businessRep" && (
+                                    { userType === "businessRep" && (
                                         <Typography variant="body1">
                                             Client: {appointment.clientName}
                                         </Typography>

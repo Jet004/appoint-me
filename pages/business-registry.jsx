@@ -1,6 +1,14 @@
 // // // // This file will change to become a business registry
 // // // // It will not be implemented in this iteration of the project
+import React from 'react'
 
+const BusinessRegistry = () => {
+  return (
+    <div>BusinessRegistry</div>
+  )
+}
+
+export default BusinessRegistry
 
 
 

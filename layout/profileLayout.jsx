@@ -267,55 +267,58 @@ const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMes
                         </List>
                     </Box>
                 </FeatureBox>
-                <FeatureBox
-                    sx={styles.accountHistoryBox}
-                    title="Account History" 
-                    iconLeft={<HistoryRoundedIcon />}
-                >
-                    <Accordion sx={styles.historyAccordion} disableGutters>
-                        <AccordionSummary 
-                            sx={styles.historyItem} 
-                            key="appointment-history"
-                            expandIcon={<ChevronRightRoundedIcon />}
-                        >
-                            <Typography variant="body1">View Appointment History</Typography>
-                            
-                        </AccordionSummary>  
-                        <AccordionDetails>
-                            <AppointmentList
-                                dataMode="historical"
-                                userData={userData}
-                                businessId={businessId}
-                                setResponseMessage={setResponseMessage}
-                                deletable={false}
-                            />
-                            <List>
-                                {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
-                                    if(isPast(appointment.datetime)) {
-                                        return (
-                                            <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
-                                                {format(appointment.datetime, "dd MMM yyyy")}
-                                            </ListItem>
-                                        )
-                                    } else return
-                                })}
-                            </List>
-                        </AccordionDetails>  
-                    </Accordion>
-                    {/* Payment history - not yet implemented */}
-                    {/* <Accordion sx={styles.historyAccordion} disableGutters>
-                        <AccordionSummary 
-                            sx={styles.historyItem}  
-                            key="payment-history"
-                            expandIcon={<ChevronRightRoundedIcon />}
-                        >
-                            <Typography variant="body1">View Payment History</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            Content
-                        </AccordionDetails>
-                    </Accordion> */}
-                </FeatureBox>
+                {/* At the moment, only display appointment history for own account */}
+                { userData.user._id === loggedInUser.user._id && (
+                    <FeatureBox
+                        sx={styles.accountHistoryBox}
+                        title="Account History" 
+                        iconLeft={<HistoryRoundedIcon />}
+                    >
+                        <Accordion sx={styles.historyAccordion} disableGutters>
+                            <AccordionSummary 
+                                sx={styles.historyItem} 
+                                key="appointment-history"
+                                expandIcon={<ChevronRightRoundedIcon />}
+                            >
+                                <Typography variant="body1">View Appointment History</Typography>
+                                
+                            </AccordionSummary>  
+                            <AccordionDetails>
+                                <AppointmentList
+                                    dataMode="historical"
+                                    userData={userData}
+                                    businessId={businessId}
+                                    setResponseMessage={setResponseMessage}
+                                    deletable={false}
+                                />
+                                <List>
+                                    {!!userData.user.appointments && userData.user.appointments.sort((a, b) => b.datetime - a.datetime).map(appointment => {
+                                        if(isPast(appointment.datetime)) {
+                                            return (
+                                                <ListItem key={format(appointment.datetime, "dd-MMM-yyy")}>
+                                                    {format(appointment.datetime, "dd MMM yyyy")}
+                                                </ListItem>
+                                            )
+                                        } else return
+                                    })}
+                                </List>
+                            </AccordionDetails>  
+                        </Accordion>
+                        {/* Payment history - not yet implemented */}
+                        {/* <Accordion sx={styles.historyAccordion} disableGutters>
+                            <AccordionSummary 
+                                sx={styles.historyItem}  
+                                key="payment-history"
+                                expandIcon={<ChevronRightRoundedIcon />}
+                            >
+                                <Typography variant="body1">View Payment History</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                Content
+                            </AccordionDetails>
+                        </Accordion> */}
+                    </FeatureBox>
+                )}
                 {canDeleteUser && (
                     <Button 
                         sx={styles.deleteButton} 

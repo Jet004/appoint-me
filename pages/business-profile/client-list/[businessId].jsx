@@ -157,7 +157,7 @@ const ClientList = () => {
                 onClose={() => {setClientModalOpen(false); setClientModalData(null);}}
             >
                 <ClientProfile
-                    userData={clientModalData} 
+                    userData={clientModalData}
                     refreshClientList={() => setRefreshList(true)} 
                     businessId={businessId}
                     setResponseMessage={setResponseMessage}
