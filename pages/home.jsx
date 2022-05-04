@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
-import userContext from '../utility/mockData/appContext'
+import userContext from '../utility/appContext'
 import localForage from 'localforage'
 // import AppointmentDetail from '../components/AppointmentDetail' // This is not implmented yet
 

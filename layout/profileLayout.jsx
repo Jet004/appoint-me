@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { buildAddress } from '../utility/helperFunctions'
+import userContext from '../utility/appContext'
+import localForage from 'localforage'
+
+// Import form components
 import UpdateUserForm from '../forms/UpdateUserForm'
 import UpdateTempUserForm from '../forms/UpdateTempUserForm'
 import UploadDpForm from '../forms/UploadDpForm'
 import NewAppointmentForm from '../forms/NewAppointmentForm'
-import localForage from 'localforage'
 
 // Components
 import Accordion from '@mui/material/Accordion'
@@ -28,6 +31,7 @@ import ListItemText from '@mui/material/ListItemText'
 import ResponsiveDialog from '../components/ResponsiveDialog'
 import Typography from '@mui/material/Typography'
 
+// Import icons
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
@@ -44,7 +48,6 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import format from 'date-fns/format'
 import isPast from 'date-fns/isPast'
 
-import userContext from '../utility/mockData/appContext'
 
 
 const ProfileLayout = ({ userData, businessId, refreshClientList, setResponseMessage, closeDialog }) => {

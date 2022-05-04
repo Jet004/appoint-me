@@ -3,7 +3,10 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import localForage from 'localforage'
 
-// Styles, UI and UX imports
+// Import form components
+import NewTempUserForm from '../../../forms/NewTempUserForm'
+
+// Import components
 import Box from '@mui/material/Box'
 import ClientProfile from '../../../components/ClientProfile'
 import DialogContent from '@mui/material/DialogContent'
@@ -23,8 +26,6 @@ import Typography from '@mui/material/Typography'
 // Import icons
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded'
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-
-import NewTempUserForm from '../../../forms/NewTempUserForm'
 
 
 const ClientList = () => {

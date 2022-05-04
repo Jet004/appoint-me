@@ -1,14 +1,12 @@
 import { useState, useContext } from 'react'
 import Head from 'next/head'
+import userContext from '../utility/appContext'
 
 // Import Components
 import Layout from '../layout/layout'
 import ProfileLayout from '../layout/profileLayout'
 import Toast from '../components/toast'
 
-
-// User data
-import userContext from '../utility/mockData/appContext'
 
 const Profile = () => {
     // Access user context

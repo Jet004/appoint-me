@@ -1,25 +1,21 @@
-import React, { useContext } from 'react'
-// ONLY NEEDED FOR PROTOTYPE
-import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import userContext from '../../utility/appContext'
 
-// Styles, UI, UX
+// Import components
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../layout/businessProfileLayout'
 import ServiceCard from '../../components/serviceCard/serviceCard'
 import Link from '../../components/link'
 
-import userContext from '../../utility/mockData/appContext'
+// Import data JSON
 import { serviceData } from '../../components/serviceCard/serviceCardData'
 
 
 export default function BusinessProfile() {
-    // ROUTER FOR PROTOTYPE FILTER
-    const router = useRouter()
+    // Access global user context
     const userData = useContext(userContext)
 
-    // THIS WILL CHANGE IN NON-PROTOTYPE VERSION
-    // Filter service card data based on login status
-     
+    // Filter service card data based on userType
     const data = userData.userType ? serviceData[userData.userType].filter((item) => item.title !== 'appointment' ) : null
 
     return (

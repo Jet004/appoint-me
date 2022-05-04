@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import userContext from '../utility/appContext'
 import localForage from 'localforage'
 
 // Theme and UI imports
-import { CacheProvider, cacheProvider } from '@emotion/react'
+import { CacheProvider } from '@emotion/react'
 import { ThemeProvider, CssBaseline } from '@mui/material'
 import { responsiveFontSizes } from '@mui/material/styles'
 import createEmotionCache from '../utility/emotionCache'
@@ -13,9 +14,6 @@ import createEmotionCache from '../utility/emotionCache'
 import ThemeContext from '../utility/themeContext'
 import darkTheme from '../styles/theme/darkTheme'
 import lightTheme from '../styles/theme/lightTheme'
-
-// Import user context data - WILL CHANGE!!!
-import userContext from '../utility/mockData/appContext'
 
 // Set up date adapter to allow localisation and date functions
 import DateAdapter from '@mui/lab/AdapterDateFns'

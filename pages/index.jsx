@@ -1,20 +1,16 @@
 import React from 'react'
-// ONLY NEEDED FOR PROTOTYPE
-import { useRouter } from 'next/router'
 
-// Styles, UI, UX
+// Import components
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import ServiceCard from '../components/serviceCard/serviceCard'
 import Link from '../components/link'
 
+// Import data JSON
 import { serviceData } from '../components/serviceCard/serviceCardData'
 
 
 export default function Index() {
-    // ROUTER FOR PROTOTYPE FILTER
-    const router = useRouter()
-    // THIS WILL CHANGE IN NON-PROTOTYPE VERSION
     // Filter service card data based on login status
     const data = serviceData.unauthenticated
 

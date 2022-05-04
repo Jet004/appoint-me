@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useTheme } from '@mui/material/styles'
 import ThemeContext from '../utility/themeContext'
+import userContext from '../utility/appContext'
 import localForage from 'localforage'
 
 // Components
@@ -24,8 +25,7 @@ import CalendarViewDayRoundedIcon from '@mui/icons-material/CalendarViewDayRound
 // import CalendarViewWeekRoundedIcon from '@mui/icons-material/CalendarViewWeekRounded' // Not implemented yet
 import CalendarViewMonthRoundedIcon from '@mui/icons-material/CalendarViewMonthRounded'
 
-// Data
-import userContext from '../utility/mockData/appContext'
+// Import date functions
 import isSameDay from 'date-fns/isSameDay'
 import isWeekend from 'date-fns/isWeekend'
 

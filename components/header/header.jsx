@@ -19,7 +19,7 @@ import { useTheme } from '@mui/material/styles'
 import navData from './navData'
 
 // THIS WILL CHANGE
-import userContext from '../../utility/mockData/appContext'
+import userContext from '../../utility/appContext'
 
 
 const Header = ({ page, windowWidth }) => {

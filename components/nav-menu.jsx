@@ -9,7 +9,7 @@ import Link from './link'
 import Paper from '@mui/material/Paper'
 
 // THIS WILL CHANGE
-import userContext from '../utility/mockData/appContext'
+import userContext from '../utility/appContext'
 
 // Navigation link data
 import navData from './header/navData'

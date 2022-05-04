@@ -3,10 +3,8 @@ import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import subYears from 'date-fns/subYears'
-import isWeekend from 'date-fns/isWeekend'
 
-// Styles, UI, UX
+// Import components
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../layout/businessProfileLayout'
 import Button from '@mui/material/Button'
@@ -30,6 +28,9 @@ import SignpostRoundedIcon from '@mui/icons-material/SignpostRounded'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded'
 
+// Import date functions
+import subYears from 'date-fns/subYears'
+import isWeekend from 'date-fns/isWeekend'
 
 // Define schema for form validation
 const validationSchema = yup.object().shape({

@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import userContext from '../../../utility/mockData/appContext'
+import userContext from '../../../utility/appContext'
 
-// Styles, UI, UX
+// Import components
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../../layout/businessProfileLayout'
 import FeatureBox from '../../../components/featureBox'

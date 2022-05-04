@@ -1,10 +1,8 @@
-import { useState, useContext } from 'react'
-import userContext from '../../../utility/mockData/appContext'
 
-// Styles, UI, UX
-import Typography from '@mui/material/Typography'
+// Import components
 import Box from '@mui/material/Box'
 import BusinessProfileLayout from '../../../layout/businessProfileLayout'
+import Typography from '@mui/material/Typography'
 
 export default function About() {
 

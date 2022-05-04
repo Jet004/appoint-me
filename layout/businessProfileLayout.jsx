@@ -1,16 +1,14 @@
 import React from 'react'
-
-// Next.js imports
 import Head from 'next/head'
-
-// Styles, UI, UX
 import { useTheme } from '@mui/material/styles'
-import CustomImage from '../components/custom-image'
+
+// Import components
 import Box from '@mui/material/Box'
+import CustomImage from '../components/custom-image'
 import Layout from './layout'
 import Link from '../components/link'
 
-// Images
+// Import images - Logos
 import logoDark from '../public/images/logo/logo_dark.png'
 import logoLight from '../public/images/logo/logo.png'
 import thumbDark from '../public/images/logo/thumbnail_dark.png'

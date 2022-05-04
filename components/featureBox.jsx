@@ -6,7 +6,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Icon from '@mui/material/Icon'
-import SvgIcon from '@mui/material/SvgIcon'
 import IconButton from '@mui/material/IconButton'
 
 
