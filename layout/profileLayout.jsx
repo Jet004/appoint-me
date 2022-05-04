@@ -462,7 +462,6 @@ const styles = {
         ml: 2,
     },
     accountHistoryBox: {
-        mb: 5,
         pb: 2,
     },
     historyAccordion: {
@@ -518,7 +517,7 @@ const styles = {
     deleteButton: {
         py: 2,
         px: 3,
-        mb: 5
+        my: 5,
     }
 
 }
