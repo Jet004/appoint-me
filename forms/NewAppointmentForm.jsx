@@ -137,7 +137,7 @@ const NewAppointmentForm = ({ client }) => {
         // Define function to get available appointment times
         const requestHandler = async () => {
             try {
-                    // Start spinner
+                // Start spinner
                 setIsLoading(true)
                 
                 // Get service id and date string
@@ -156,6 +156,9 @@ const NewAppointmentForm = ({ client }) => {
                         message: response.statusText
                     }
                 }
+
+                // Stop spinner
+                setIsLoading(false)
 
                 // Request was successful, set available appointment times
                 // Don't inform the user of success as success is assumed
@@ -201,7 +204,6 @@ const NewAppointmentForm = ({ client }) => {
                             status: "error",
                             message: "Error: No client selected"
                         }
-                        return // Return to prevent request from being sent
                     }
                     requestURL = `${process.env.NEXT_PUBLIC_API_URL}/api/appointments/business-rep/${businessId}/${client.user._id}`
                 }
@@ -248,6 +250,9 @@ const NewAppointmentForm = ({ client }) => {
             } catch(error) {
                 console.log(error)
 
+                // Stop spinner
+                setIsLoading(false)
+                
                 // Inform user of error
                 setResponseMessage({
                     status: error.status,

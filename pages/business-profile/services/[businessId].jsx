@@ -24,7 +24,7 @@ export default function Login() {
     const userData = useContext(userContext)
 
     // State Management
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [responseMessage, setResponseMessage] = useState(null)
     const [services, setServices] = useState(null)
 
@@ -32,6 +32,9 @@ export default function Login() {
     useEffect(() => {
         const getServicesData = async () => {
             try {
+                // Start spinner
+                setIsLoading(true)
+
                 // Get services data
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses/services/${businessId}`)
                 const data = await response.json()
@@ -51,6 +54,10 @@ export default function Login() {
                 setServices(data.services)
             } catch(e) {
                 console.log(e)
+                
+                // Stop spinner
+                setIsLoading(false)
+
                 setResponseMessage({
                     status: "error",
                     message:  `Error loading data ${e.message}`,

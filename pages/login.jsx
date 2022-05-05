@@ -98,9 +98,6 @@ export default function Login() {
                         }
                     })
                     const businessData = await response.json()
-                    
-                    // Stop spinner
-                    setIsLoading(false)
 
                     // Throw error if request failed
                     if(response.status !== 200){
@@ -118,6 +115,9 @@ export default function Login() {
                 // Set user data to user context
                 userData.login(data.user, userType)
                 
+                // Stop spinner
+                setIsLoading(false)
+
                 // Inform the user
                 setResponseMessage({
                     status: data.status,
@@ -131,6 +131,9 @@ export default function Login() {
             } catch(err) {
                 console.log("Error setting tokens to indexedDb: ", err)
 
+                // Stop spinner
+                setIsLoading(false)
+                
                 // Inform the user
                 setResponseMessage({
                     status: "error", 

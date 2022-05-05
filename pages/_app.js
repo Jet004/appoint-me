@@ -54,7 +54,8 @@ const restrictAccess = (router, loggedIn, userType) => {
         '/register',
         '/business-profile/services/[businessId]',
         '/business-profile/appointments/[businessId]',
-        '/business-profile/about/[businessId]'
+        '/business-profile/about/[businessId]',
+        '/_offline'
     ]
 
     const authenticatedUrls = [
@@ -64,7 +65,8 @@ const restrictAccess = (router, loggedIn, userType) => {
         '/business-profile/[businessId]',
         '/business-profile/services/[businessId]',
         '/business-profile/appointments/[businessId]',
-        '/business-profile/about/[businessId]'
+        '/business-profile/about/[businessId]',
+        '/_offline'
     ]
 
     const businessRepUrls = [
@@ -239,7 +241,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
                                     router.push('/login')
                                 }
 
-                                // Throw error if response failed
+                                // Throw error if request failed
                                 if(!response.ok) {
                                     throw {
                                         status: response.status,

@@ -90,6 +90,9 @@ export default function Appointments() {
             } catch(error) {
                 console.log(error)
 
+                // Stop spinner
+                setIsLoading(false)
+                
                 // Inform the user of the error
                 setResponseMessage({
                     status: error.status,

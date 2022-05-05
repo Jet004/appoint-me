@@ -152,6 +152,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
             } catch (error) {
                 console.log(error)
 
+                // Stop spinner
+                setIsLoading(false)
+
                 // Inform the user of the error
                 setResponseMessage({
                     status: error.status,
@@ -229,6 +232,9 @@ const AppointmentList = ({ dataMode, userData, businessId, pickedDate, returnApp
         } catch(error) {
             console.log(error)
 
+            // Stop spinner
+            setIsLoading(false)
+            
             // Inform the user of the error
             setResponseMessage({
                 status: error.status,

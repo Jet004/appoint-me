@@ -7,9 +7,8 @@
  - Auth:
     - May need to set check - if serviceworker says user is offline then allow them to continue with logged in status as they can only access already downloaded data. Normal checks apply if online. - Check with Shaun about possible security concerns with this approach
 
-- SERVICEWORKERS
-
-- MANIFEST
+ - Online fallbacks next-pwa:
+    - Provide a template 404 to display if serviceworker can't load a page
 
 
 ### NON CRITICAL
