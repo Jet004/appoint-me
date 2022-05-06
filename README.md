@@ -1,59 +1,63 @@
-## AppointMe
+# Appoint Me: frontend application
 
-## TODO:
+This project encompasses the Next.js frontend implementation for a progressive web application (PWA) called Appoint Me. The frontend application operates as a standalone static PWA running on Next.js and implements the backend web service API for data persistence and fetching dynamic data. Combined with the backend web service, this full-stack project represents a MERN stack PWA.
 
-### CRITICAL
+This project was prepared as part of the Web UX Cluster course at TAFE in 2022.
 
- - Auth:
-    - May need to set check - if serviceworker says user is offline then allow them to continue with logged in status as they can only access already downloaded data. Normal checks apply if online. - Check with Shaun about possible security concerns with this approach
+## Installation
 
- - Online fallbacks next-pwa:
-    - Provide a template 404 to display if serviceworker can't load a page
+Follow the steps below to install and configure this frontend application.
 
+### Clone the Github repository
 
-### NON CRITICAL
+In a terminal on your local machine, cd to the location where you want to save the web service and clone this repository:
 
-- REACT HOOK FORM to replace state on forms... refactor register form
+`git clone https://github.com/Jet004/appoint-me.git`
 
-- Refactor all confirm Dialogs into component for consistent functionality
+Once you have cloned the repository, cd into the root directory:
 
-- Add padding to confirm dialogs
+`cd appoint-me`
 
-- Raise get businessId to app level -> add to user context
+### Install dependencies
 
- - settings-menu
-    - Add a heading and close button to drawer
-    - think of a few more features to implement - account settings with password reset etc perhaps
+Install all of the project dependencies:
 
-- Payment system inc. payment history
+`npm install`
 
-## ADMIN PANEL
+## Configuration
 
-- ADMIN PANEL
-    - Services blurb - description to include on the services page
-    - create/update/delete services forms
-    - create/update/delete business forms
+This application is preconfigured to access the associated backend development web service built for this project.
+To change the web service address to access a deployed version of the web service simply change the URL in the .env.local environment file. The backend web service address is assigned to the `NEXT_PUBLIC_API_URL` variable.
 
+## Running the development server
 
+With all of the dependencies installed and environment configuration completed, you can now run the development server and access the application. To run the development server navigate to the project root directory and enter the following command in the terminal:
 
+`npm run dev`
 
-## Other Possible Improvements:
- - logo as SVG
- - highlight upcoming appointments on the current day
- - deal with header indicator color...
- - calendar day default to next business day if is weekend
- - calendar date defaults to current day (or next business day) - choosing a date sets the fetch reference point, data will be fetched around that date. Auto load more data fetches from client side
- - modify logo home link to only work on image, not the containing div
- - Create user feedback context so I can implement a single success / error message handler at the application level. This will also make messages persist when they originate from a model and will display even if the modal closes.
- - Start to perform token refresh in advance so there is no change of affecting user experience.
- - For businessRep the associated business data is attached to the user object, this is not ideal. Separate it so it is its own object - or consider consolidating all user/business data into a single object to reduce the number of calls to localStorage.
- - Change appointment history to a button which opens in a new page. History should be searchable - possibly use calendar components.
- - Refactor use of businessId to access the global user object if is businessRep (if not needed by user)
+This will instantiate a node http server and begin listening for requests to the localhost domain and port.
+In a web browser navigate to the address given in the terminal after running the above command. 
+Default Next.js development server address: *http://localhost:3000*
 
-## Future Additions to site:
- - breadcrumbs - mobile view in header - desktop view above page body
- - speed dial for quick access actions when logged in - for businessRep
- - User password reset
+That's it! You now have the frontend web service up and running on your local machine! You can download the PWA to your device and use it like a native application.
 
-## Future issues to solve:
- - better method for getting viewport width/user agent for useState in layout to prevent page from rendering twice. some nice user agent solutions to set initial values here:https://stackoverflow.com/questions/59494037/how-to-detect-the-device-on-react-ssr-app-with-next-js and here: https://stackoverflow.com/questions/63928337/css-style-is-not-correctly-being-applied-when-conditional-render-in-react
+To stop the development server press `control + c` (Mac).
+
+## Deployment
+
+### Building production version
+
+To build the project into a production version run the following command in a terminal:
+
+`npm run build`
+
+This command causes Next.js to run a number of optimisations, implement code-splitting and a number of other performance enhancing processes. After successful completion the build project will be in the .next file in the application root directory.
+
+### Running the production version
+
+After successfully building the project the production server can be run using the following command:
+
+`npm start`
+
+This will begin a Node http server and will serve a highly optimised version of the application.
+Running the application in the built production version loads significantly faster than the development version.
