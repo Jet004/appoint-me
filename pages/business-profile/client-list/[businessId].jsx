@@ -105,36 +105,38 @@ const ClientList = () => {
             <title>AppointMe: Client List</title>
         </Head>
         <Layout page="Clients">
-            <List>
-                <ListSubheader sx={styles.clientList.header} >
-                    <Box  sx={styles.clientList.header.detail}>
-                        <Box>Clients: {clientList ? clientList.length : 0}</Box>
-                        <IconButton variant="outlined" onClick={() => setModalState(true)}>
-                            <AddCircleOutlineRoundedIcon sx={styles.clientList.addIcon} />
-                        </IconButton>
-                    </Box>
-                    <Divider sx={styles.clientList.divider} flexItem />
-                </ListSubheader>
-                {clientList && clientList.map((client, index) => (
-                    <Box 
-                        sx={styles.clientList.link} 
-                        key={index}
-                        onClick={() => {setClientModalOpen(true); setClientModalData(client)}}
-                    >
-                        <ListItem sx={styles.clientList.listItem}>
-                            <ListItemText 
-                                primary={`${client.user.fname} ${client.user.lname}`} 
-                                secondary={client.user.email} 
-                                primaryTypographyProps={{variant: "h5"}}
-                                secondaryTypographyProps={{variant: "caption"}}
-                            />
-                            <ArrowForwardIosRoundedIcon />
-                        </ListItem>
-                        <Divider sx={styles.clientList.divider} flexItem variant='middle' />
-                    </Box>
-                ))}
-                <Typography sx={styles.clientList.caption} variant="caption" component='div' align="center">-- END OF LIST --</Typography>
-            </List>
+            <Box sx={styles.innerBox}>
+                <List>
+                    <ListSubheader sx={styles.clientList.header} >
+                        <Box  sx={styles.clientList.header.detail}>
+                            <Box>Clients: {clientList ? clientList.length : 0}</Box>
+                            <IconButton variant="outlined" onClick={() => setModalState(true)}>
+                                <AddCircleOutlineRoundedIcon sx={styles.clientList.addIcon} />
+                            </IconButton>
+                        </Box>
+                        <Divider sx={styles.clientList.divider} flexItem />
+                    </ListSubheader>
+                    {clientList && clientList.map((client, index) => (
+                        <Box 
+                            sx={styles.clientList.link} 
+                            key={index}
+                            onClick={() => {setClientModalOpen(true); setClientModalData(client)}}
+                        >
+                            <ListItem sx={styles.clientList.listItem}>
+                                <ListItemText 
+                                    primary={`${client.user.fname} ${client.user.lname}`} 
+                                    secondary={client.user.email} 
+                                    primaryTypographyProps={{variant: "h5"}}
+                                    secondaryTypographyProps={{variant: "caption"}}
+                                />
+                                <ArrowForwardIosRoundedIcon />
+                            </ListItem>
+                            <Divider sx={styles.clientList.divider} flexItem variant='middle' />
+                        </Box>
+                    ))}
+                    <Typography sx={styles.clientList.caption} variant="caption" component='div' align="center">-- END OF LIST --</Typography>
+                </List>
+            </Box>
 
             <Toast response={responseMessage} setResponse={setResponseMessage} hideIn={6000} />
             <Spinner open={isLoading} dialogStyle={styles.spinDialog} spinStyle={styles.spinStyle} />
@@ -172,7 +174,14 @@ const ClientList = () => {
 export default ClientList
 
 const styles = {
+    innerBox: {
+        maxWidth: 500,
+        mx: 'auto',
+        px: 0,
+        mt: {sm: 3},
+    },
     clientList: {
+        width: "100%",
         header: {
             display: 'flex',
             flexDirection: 'column',
