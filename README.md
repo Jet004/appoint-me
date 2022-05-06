@@ -24,10 +24,21 @@ Install all of the project dependencies:
 
 `npm install`
 
-## Configuration
 
-This application is preconfigured to access the associated backend development web service built for this project.
-To change the web service address to access a deployed version of the web service simply change the URL in the .env.local environment file. The backend web service address is assigned to the `NEXT_PUBLIC_API_URL` variable.
+### Configure environment variables
+
+This project implements the `dotenv` environment file package to ensure that key configurations remain private and secure. As such, this distribution omits the .env.local file necessary for the application to access the backend API web service.
+
+You should always configure a unique `.env.local` file for the specific environment in which the application will operate. **Never commit your environment files to Github**.
+
+The following environment variables are required for the web service to run and should be implemented in a fashion suitable to your environment.
+
+- NEXT_PUBLIC_API_URL
+
+##### NEXT_PUBLIC_API_URL
+
+This is the host and port number of the web service this application will access for fetching dynamic data.
+`eg. http://localhost:8200`
 
 ## Running the development server
 
