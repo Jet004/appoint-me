@@ -419,6 +419,8 @@ const styles = {
     },
     profileBox: {
         width: {xs: "100%", sm: "80%", lg: "60%"},
+        minWidth: 340,
+        maxWidth: 600,
         display: "flex",
         justifyContent: {xs: "center", sm: "flex-start"},
         alignItems: "center",

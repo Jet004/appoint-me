@@ -20,7 +20,7 @@ const FeatureBox = ({children, title, iconLeft, iconRight, clickRightIcon, sx, h
 
   return (
     <>
-        <Box sx={{...styles.innerBox, ...sx}}>
+        <Box sx={{...styles.innerBox, ...sx}} className="FeatureBox">
             <Box sx={{...styles.innerBoxHeader(theme), ...headerProps}}>
                 <Box sx={styles.headerContent}>
                     <Typography sx={styles.innerBoxHeaderTitle} variant="h5">

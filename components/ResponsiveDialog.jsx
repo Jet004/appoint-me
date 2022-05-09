@@ -17,8 +17,7 @@ const ResponsiveDialog = ({ children, open, onClose, ...rest}) => {
     return (
         <Dialog
             PaperProps={{sx: styles.clientDialog}} 
-            fullScreen={fullScreen} 
-            fullWidth={!fullScreen} 
+            fullScreen={fullScreen}
             scroll="paper"
             open={open}
             onClose={onClose}
@@ -42,12 +41,19 @@ export default ResponsiveDialog
 
 const styles = {
     clientDialog: {
+        minWidth: "340px",
+        maxWidth: "600px",
+        width: {sm: 450, md: 470, lg: 600},
         backgroundImage: "none",
+        pb: 2,
+        "& .FeatureBox": {
+            width: "90%",
+        },
     },
     closeButton: {
         position: 'absolute',
         right: 8,
         top: 8,
         color: "custom.constrastText",
-    },
+    }
 }
