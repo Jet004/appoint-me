@@ -71,6 +71,8 @@ const restrictAccess = (router, loggedIn, userType) => {
 
     const businessRepUrls = [
         '/business-profile/client-list/[businessId]',
+        '/admin/services/[businessId]',
+        '/admin/access/[businessId]'
     ]
 
     // Get URL path from next router

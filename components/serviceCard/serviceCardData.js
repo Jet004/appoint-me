@@ -1,7 +1,8 @@
-import WorkRoundedIcon from '@mui/icons-material/WorkRounded'; // Business Profile
-import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded'; // Services
-import InsertInvitationRoundedIcon from '@mui/icons-material/InsertInvitationRounded'; // View calendar
-import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded'; // Make apointment
+import WorkRoundedIcon from '@mui/icons-material/WorkRounded' // Business Profile
+import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded' // Services
+import InsertInvitationRoundedIcon from '@mui/icons-material/InsertInvitationRounded' // View calendar
+import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded' // Make apointment
+import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded'; // Access control
 
 export const serviceData = {
     unauthenticated: [
@@ -52,10 +53,16 @@ export const serviceData = {
             path: "/admin/services/5ee9f9f8f9f9f9f9f9f9f9f9"
         },
         {
-            title: "business",
-            icon: (sx) => (<WorkRoundedIcon sx={sx} />),
-            text: "Manage business profile",
-            path: "/admin/business/5ee9f9f8f9f9f9f9f9f9f9f9"
+            title: "access",
+            icon: (sx) => (<ShieldRoundedIcon sx={sx} />),
+            text: "Manage access privileges",
+            path: "/admin/access/5ee9f9f8f9f9f9f9f9f9f9f9"
         }
+        // {
+        //     title: "business",
+        //     icon: (sx) => (<WorkRoundedIcon sx={sx} />),
+        //     text: "Manage business profile",
+        //     path: "/admin/business/5ee9f9f8f9f9f9f9f9f9f9f9"
+        // }
     ]
 }

@@ -22,7 +22,6 @@ export default function BusinessProfile() {
         <>
             <BusinessProfileLayout logo="full" title="" page="Business Profile">
                 <Box sx={styles.innerBox}>
-                    { userData.userType === "businessRep" && (<div>This page will comprise the admin panel for businessReps and will be implemented in the next iteration of the project</div>)}
                     { data && data.map(item => (
                         <Link sx={styles.link} href={item.path} key={item.title} > {/* The href is currently hardcoded to the business profile page but will be made dynamic in the future */}
                             <ServiceCard text={item.text} icon={item.icon}/>
