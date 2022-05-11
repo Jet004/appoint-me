@@ -44,7 +44,7 @@ const Header = ({ page, windowWidth }) => {
     const [tabValue, setTabValue] = useState(() => validTabPaths.includes(router.asPath) ? router.asPath : "/home")
 
     const displayHeader = (windowWidth > theme.breakpoints.values.sm && userData.loggedIn)
-console.log("VALID TAB PATH: ", validTabPaths.includes(router.asPath))
+
     return (
         <AppBar position="sticky" sx={styles.header}>
             <Toolbar>

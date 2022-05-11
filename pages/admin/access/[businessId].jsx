@@ -235,7 +235,7 @@ const Access = () => {
                                     <>
                                         {/* Only show delete button if there is more than one IP address in list */}
                                         { (ipList.length > 1) && (
-                                            <IconButton edge="start" aria-label="delete" color="error" onClick={() => handleDeleteIP(ip.ip)}>
+                                            <IconButton edge="end" aria-label="delete" color="error" onClick={() => handleDeleteIP(ip.ip)}>
                                                 <ClearIcon />
                                             </IconButton>
                                         )}
@@ -294,7 +294,8 @@ const styles = {
         },
     },
     ipList: {
-        width: '45%',
+        width: '50%',
+        maxWidth: 180,
         margin: '0 auto',
         "&.MuiList-root": {
             margin: 0,
