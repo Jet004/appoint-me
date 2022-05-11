@@ -22,6 +22,10 @@ import navData from './navData'
 import userContext from '../../utility/appContext'
 
 
+// Build list of valid paths for tabs
+const validTabPaths = navData.businessRep.map(tabData => tabData.path)
+
+
 const Header = ({ page, windowWidth }) => {
     // Initialise next router
     const router = useRouter()
@@ -37,10 +41,10 @@ const Header = ({ page, windowWidth }) => {
     const navLinkData = navData[user.userType]
 
     // Control the link highlighting for page links
-    const [tabValue, setTabValue] = useState(router.asPath)
+    const [tabValue, setTabValue] = useState(() => validTabPaths.includes(router.asPath) ? router.asPath : "/home")
 
     const displayHeader = (windowWidth > theme.breakpoints.values.sm && userData.loggedIn)
-
+console.log("VALID TAB PATH: ", validTabPaths.includes(router.asPath))
     return (
         <AppBar position="sticky" sx={styles.header}>
             <Toolbar>
