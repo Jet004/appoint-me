@@ -78,7 +78,7 @@ export default function UpdateUserForm({ refreshServiceList, closeDialog, busine
             // Get form data
             const form = getValues()
 
-            // Send fetch request to server's update user route
+            // Send fetch request to server's create new service route
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/businesses/services/${businessId}`, {
                     method: "POST",

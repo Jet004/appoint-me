@@ -136,8 +136,6 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
             setLoggedIn(false)
             setUser({})
             setUserType(null)
-            sessionStorage.setItem('accessToken', '')
-            localStorage.setItem('refreshToken', '')
         }
     }}, [user, userType, loggedIn])
 
