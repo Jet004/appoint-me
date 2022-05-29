@@ -387,8 +387,8 @@ const NewAppointmentForm = ({ client }) => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <Typography variant="body1">Please confirm that the details below are correct to book this appointment.</Typography>
-                    <Typography variant="caption"></Typography>
+                    <Typography variant="body1" gutterBottom>Please confirm that the details below are correct to book this appointment.</Typography>
+                    <Typography variant="caption">{selectedService?.name} - {format(new Date(selectedTime), "dd MMMM yyyy H:mm aaa")}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" color="primary" onClick={() => {handleSubmit(handleAddAppointment(selectedTime)); setConfirmDialog(false) }}>Confirm</Button>

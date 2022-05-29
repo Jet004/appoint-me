@@ -54,6 +54,7 @@ const validationSchema = yup.object().shape({
         .typeError('Date of birth must be a valid date'),
     unit: yup.string()
         .optional()
+        .nullable()
         .matches(/^[0-9]*$/, 'Unit must only contain numbers')
         .min(0, 'Unit must have at least 1 digit')
         .max(4, 'Unit must have 4 digits or less'),

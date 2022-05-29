@@ -52,6 +52,7 @@ const restrictAccess = (router, loggedIn, userType) => {
         '/',
         '/login',
         '/register',
+        '/help',
         '/business-profile/services/[businessId]',
         '/business-profile/appointments/[businessId]',
         '/business-profile/about/[businessId]',
@@ -62,6 +63,7 @@ const restrictAccess = (router, loggedIn, userType) => {
         '/home',
         '/calendar',
         '/profile',
+        '/help',
         '/business-profile/[businessId]',
         '/business-profile/services/[businessId]',
         '/business-profile/appointments/[businessId]',
@@ -184,7 +186,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) 
     theme = responsiveFontSizes(theme)
 
     // Set up timer for periodically checking that the access token is still valid
-    useEffect(async () => {
+    useEffect(() => {
         const timer = setInterval(async () => {
                 if(UserContext.loggedIn) {
                 try {

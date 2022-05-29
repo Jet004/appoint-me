@@ -1,24 +1,25 @@
 import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import localForage from 'localforage'
+import ThemeContext from '../../utility/themeContext'
+import { useTheme } from '@mui/material/styles'
+import userContext from '../../utility/appContext'
 
-// Style and UX
+// Import components
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import Tune from '@mui/icons-material/Tune'
-import { RiContrast2Fill } from 'react-icons/ri'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import Switch from '@mui/material/Switch'
 
-// Set context objects
-import ThemeContext from '../../utility/themeContext'
-import { useTheme } from '@mui/material/styles'
-// THIS WILL CHANGE
-import userContext from '../../utility/appContext'
+// Import Icons
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded'
+import { RiContrast2Fill } from 'react-icons/ri'
+import Tune from '@mui/icons-material/Tune'
+
 
 const SettingsMenu = () => {
     // Set the anchor element for settings menu
@@ -83,6 +84,17 @@ const SettingsMenu = () => {
                             onChange={() => {toggleTheme()}}
                         />
                     </ListItem>
+                    <ListItem 
+                        sx={styles.listText}
+                        button
+                        disableRipple
+                        onClick={() => router.push('/help')}
+                    >
+                        <ListItemIcon sx={styles.listIcon}>
+                            <HelpRoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Help" />
+                    </ListItem>
                     {/* This feature is disabled at the moment and may not be implemented in future versions
                     <ListItem 
                         sx={styles.listText}
@@ -120,6 +132,12 @@ export default SettingsMenu
 
 
 const styles = {
+    settingsMenu: {
+        color: 'custom.contrastText',
+        '&:hover': {
+            color: '#fff',
+        },
+    },
     drawer: {
         
     },
@@ -129,9 +147,12 @@ const styles = {
     listIcon: {
         color: 'custom.contrastText',
         justifyContent: 'center',
+        '& > svg': {
+            fontSize: '1.3em',
+        }
     },
     listItem: {
-
+        
     },
     listText: {
         color: "custom.primaryContrastText",
