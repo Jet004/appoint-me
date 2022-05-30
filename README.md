@@ -1,6 +1,20 @@
 # Appoint Me: frontend application
 
-This project encompasses the Next.js frontend implementation for a progressive web application (PWA) called Appoint Me. The frontend application operates as a standalone static PWA running on Next.js and implements the backend web service API for data persistence and fetching dynamic data. Combined with the backend web service, this full-stack project represents a MERN stack PWA.
+AppointMe is an appointment management and CRM application for businesses employing an appointment based business model. Businesses can define a suite of services to offer to clients and manage bookings for those services. The core of the system revolves around the calendar system which provides a graphical display of appointments. Clients can view the services offered by the business and book appointments via the app.
+
+AppointMe is a PWA built using the Next.js architectural framework. The frontend application operates as a standalone static PWA running on Next.js and implements the backend web service API for data persistence and fetching dynamic data. Combined with the backend web service, this full-stack project represents a MERN stack PWA. The layout, styling and theming of the application has been implemented using the MUI layout framework for React. Client side form validation is implemented with react-hook-forms and Yup for the validation schema. Below is a list of the key packages and modules used in the project and the versions used:
+
+- date-fns – version 2.28.0
+- emotion/cache – version 11.7.1
+- fontsource/roboto – version 4.5.3
+- mui/material – version 5.4.4
+- localforage – version 1.10.0
+- next – version 12.1.0
+- next-pwa – version 5.5.2
+- react – version 17.0.2
+- rect-hook-form – version 7.29.0
+- sharp – version 0.30.4
+- yup – 0.32.11
 
 This project was prepared as part of the Web UX Cluster course at TAFE in 2022.
 
