@@ -6,7 +6,7 @@ import localForage from 'localforage'
 
 // Components
 import Alert from '@mui/material/Alert' // This is not implemented at present - will be used to display overdue payment messages
-import AppointmentList from '../components/appointmentList'
+import AppointmentList from '../components/AppointmentList'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import FeatureBox from '../components/featureBox'

@@ -6,7 +6,7 @@ import userContext from '../utility/appContext'
 import localForage from 'localforage'
 
 // Components
-import AppointmentList from '../components/appointmentList'
+import AppointmentList from '../components/AppointmentList'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
